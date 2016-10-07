@@ -7,6 +7,9 @@ var data;
 var map;
 var svg;
 
+var deathsToColorScale;
+var deathsToOpacityScale;
+	
 window.onload = function() {
 	
 	var height = window.innerHeight;
@@ -15,7 +18,7 @@ window.onload = function() {
 	var root = d3.select("#root");	
 	root.style("height", height + "px")
 	root.style("width", width + "px");
-
+	
 	var mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
        			token: 'pk.eyJ1IjoiZHJld3N0aWxlcyIsImEiOiJjaWw2YXR4eXgwMWl6dWhsdjhrZGxuMXBqIn0.4rYaU8tPJ9Mw2bniPfAKdQ'
@@ -23,7 +26,7 @@ window.onload = function() {
 	
 	map = L.map('map')
 		.addLayer(mapboxTiles)
-		.setView([33.775335, -118.195071], 12);
+		.setView([33.785335, -118.125071], 12);
 	
 	svg = d3.select(map.getPanes().overlayPane).append("svg")
 		.attr("height", height)
@@ -32,6 +35,28 @@ window.onload = function() {
 	var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
 	d3.csv("lb_out.csv", function(dd) {
+		
+		dd = dd.filter(function(d) {
+			var ret;
+			if (d.LATITUDE != "" && d.LONGITUDE != "") {
+				ret = true;
+			}
+			else {
+				ret = false;
+			}
+			
+			return ret;
+		});
+		
+		var maxDeaths = d3.max(dd.map(function(d) { return d.NUMBER_KILLED; }));
+		
+		deathsToColorScale = d3.scale.linear()
+			.domain([0, maxDeaths])
+			.range(["blue", "red"]);
+			
+		deathsToOpacityScale = d3.scale.linear()
+			.domain([0, maxDeaths])
+			.range([0.25, 0.75]);
 		
 		data = dd;
 
@@ -46,8 +71,7 @@ window.onload = function() {
 };
 
 function draw() {
-		
-			console.log("exe");
+
 			mapCoordinatesToPixels(data);
 						
 			svg.selectAll("circle")
@@ -56,9 +80,9 @@ function draw() {
 				.append("circle")
 				.attr("cy", function(d) { return d.PIXEL_Y; })
 				.attr("cx",	 function(d) { return d.PIXEL_X; })
-				.attr("r", 7)
-				.style("opacity", 0.7)
-				.style("fill", "blue")
+				.attr("r", 4)
+				.style("opacity", function(d) { return deathsToOpacityScale(parseInt(d.NUMBER_KILLED)); })
+				.style("fill", function(d) { return deathsToColorScale(parseInt(d.NUMBER_KILLED)); })
 				.append("title")
 				.text(function(d) { 
 					var txt = "Primary Road: " + d.PRIMARY_RD + "\n"
