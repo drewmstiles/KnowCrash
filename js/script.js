@@ -39,9 +39,16 @@ window.onload = function() {
 			.append("circle")
 			.attr("cy", function(d) { return d.PIXEL_Y; })
 			.attr("cx",	 function(d) { return d.PIXEL_X; })
-			.attr("r", 5)
+			.attr("r", 7)
 			.style("opacity", 0.7)
-			.style("fill", "blue");
+			.style("fill", "blue")
+			.append("title")
+			.text(function(d) { 
+				var txt = "Primary Road: " + d.PRIMARY_RD + "\n"
+					+ "Secondary Road: " + d.SECONDARY_RD; 
+					
+				return txt;
+			});
 			
 		function applyLatLngToLayer(d) {
 			var y = d.LATITUDE;
