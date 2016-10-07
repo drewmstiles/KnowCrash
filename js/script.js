@@ -19,7 +19,8 @@ window.onload = function() {
 	root.style("height", height + "px")
 	root.style("width", width + "px");
 	
-	var mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token={token}', {
+	// http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png
+	var mapboxTiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
        			token: 'pk.eyJ1IjoiZHJld3N0aWxlcyIsImEiOiJjaWw2YXR4eXgwMWl6dWhsdjhrZGxuMXBqIn0.4rYaU8tPJ9Mw2bniPfAKdQ'
 	});
@@ -51,12 +52,12 @@ window.onload = function() {
 		var maxDeaths = d3.max(dd.map(function(d) { return d.NUMBER_KILLED; }));
 		
 		deathsToColorScale = d3.scale.linear()
-			.domain([0, maxDeaths])
-			.range(["blue", "red"]);
+			.domain([1, 4])
+			.range(["red", "yellow"]);
 			
 		deathsToOpacityScale = d3.scale.linear()
-			.domain([0, maxDeaths])
-			.range([0.25, 0.75]);
+			.domain([1, 4])
+			.range([0.90, 0.25]);
 		
 		data = dd;
 
@@ -81,8 +82,24 @@ function draw() {
 				.attr("cy", function(d) { return d.PIXEL_Y; })
 				.attr("cx",	 function(d) { return d.PIXEL_X; })
 				.attr("r", 4)
-				.style("opacity", function(d) { return deathsToOpacityScale(parseInt(d.NUMBER_KILLED)); })
-				.style("fill", function(d) { return deathsToColorScale(parseInt(d.NUMBER_KILLED)); })
+				.style("opacity", function(d) { 
+					var cs = d.COLLISION_SEVERITY;
+					if (cs == 0) {
+						return 0.2;
+					}
+					else {
+						return deathsToOpacityScale(cs); 
+					}
+				})
+				.style("fill", function(d) { 				
+					var cs = d.COLLISION_SEVERITY;
+					if (cs == 0) {
+						return "blue";
+					}
+					else {
+						return deathsToColorScale(cs); 
+					}
+				})
 				.append("title")
 				.text(function(d) { 
 					var txt = "Primary Road: " + d.PRIMARY_RD + "\n"
