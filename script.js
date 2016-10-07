@@ -269,5 +269,9 @@ window.onload = function() {
 		drawTime(currentTime);
 		
 	}); // end d3.json function
-		
+	
+	
+	d3.csv("lb.csv", function(data) {
+		console.log(data);
+	});	
 };
