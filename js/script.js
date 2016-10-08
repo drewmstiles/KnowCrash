@@ -2,13 +2,20 @@
  * drew's script
  */ 
 
+var CIRCLE_RADIUS = 2.5;
 
 var data;
 var map;
 var svg;
 
-var deathsToColorScale;
-var deathsToOpacityScale;
+var deathsToColorScale = d3.scale.linear()
+			.domain([1, 4])
+			.range(["red", "yellow"]);
+			
+var deathsToOpacityScale = d3.scale.linear()
+			.domain([1, 4])
+			.range([0.80, 0.20]);
+			
 	
 window.onload = function() {
 	
@@ -27,7 +34,7 @@ window.onload = function() {
 	
 	map = L.map('map')
 		.addLayer(mapboxTiles)
-		.setView([33.785335, -118.125071], 12);
+		.setView([33.810335, -118.135071], 13);
 	
 	svg = d3.select(map.getPanes().overlayPane).append("svg")
 		.attr("height", height)
@@ -37,29 +44,19 @@ window.onload = function() {
 	
 	d3.csv("lb_out.csv", function(dd) {
 		
-		dd = dd.filter(function(d) {
+		data = dd.filter(function(d) {
 			var ret;
-			if (d.LATITUDE != "" && d.LONGITUDE != "") {
-				ret = true;
-			}
-			else {
+							console.log(d);
+			if (d.LATITUDE == "" || d.LONGITUDE == "") {
 				ret = false;
 			}
-			
+			else {
+				ret = true;
+			}
 			return ret;
 		});
 		
-		var maxDeaths = d3.max(dd.map(function(d) { return d.NUMBER_KILLED; }));
-		
-		deathsToColorScale = d3.scale.linear()
-			.domain([1, 4])
-			.range(["red", "yellow"]);
-			
-		deathsToOpacityScale = d3.scale.linear()
-			.domain([1, 4])
-			.range([0.90, 0.25]);
-		
-		data = dd;
+		console.log(data.length);
 
 		draw();
 		
@@ -81,11 +78,12 @@ function draw() {
 				.append("circle")
 				.attr("cy", function(d) { return d.PIXEL_Y; })
 				.attr("cx",	 function(d) { return d.PIXEL_X; })
-				.attr("r", 4)
+				.attr("r", CIRCLE_RADIUS)
 				.style("opacity", function(d) { 
 					var cs = d.COLLISION_SEVERITY;
+					
 					if (cs == 0) {
-						return 0.2;
+						return 0.1;
 					}
 					else {
 						return deathsToOpacityScale(cs); 
@@ -94,7 +92,7 @@ function draw() {
 				.style("fill", function(d) { 				
 					var cs = d.COLLISION_SEVERITY;
 					if (cs == 0) {
-						return "blue";
+						return "white";
 					}
 					else {
 						return deathsToColorScale(cs); 
