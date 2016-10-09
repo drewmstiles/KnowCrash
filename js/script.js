@@ -3,7 +3,10 @@
  */ 
 
 var CIRCLE_RADIUS = 2.5;
-
+var MAX_RADIUS = 5.0;
+var MIN_RADIUS = 2.0;
+var MAX_OPACITY = 1.00;
+var MIN_OPACITY = 0.50;
 var data;
 var map;
 var svg;
@@ -14,9 +17,12 @@ var deathsToColorScale = d3.scale.linear()
 			
 var deathsToOpacityScale = d3.scale.linear()
 			.domain([1, 4])
-			.range([0.80, 0.20]);
+			.range([MAX_OPACITY,MIN_OPACITY]);
 			
-	
+var deathsToRadiusScale = d3.scale.linear()
+			.domain([1, 4])
+			.range([MAX_RADIUS,MIN_RADIUS]);
+			
 window.onload = function() {
 	
 	var height = window.innerHeight;
@@ -46,7 +52,6 @@ window.onload = function() {
 		
 		data = dd.filter(function(d) {
 			var ret;
-							console.log(d);
 			if (d.LATITUDE == "" || d.LONGITUDE == "") {
 				ret = false;
 			}
@@ -78,12 +83,21 @@ function draw() {
 				.append("circle")
 				.attr("cy", function(d) { return d.PIXEL_Y; })
 				.attr("cx",	 function(d) { return d.PIXEL_X; })
-				.attr("r", CIRCLE_RADIUS)
+				.attr("r",  function(d) { 
+					var cs = d.COLLISION_SEVERITY;
+					
+					if (cs == 0) {
+						return MIN_RADIUS;
+					}
+					else {
+						return deathsToRadiusScale(cs); 
+					}
+				})
 				.style("opacity", function(d) { 
 					var cs = d.COLLISION_SEVERITY;
 					
 					if (cs == 0) {
-						return 0.1;
+						return MIN_OPACITY;
 					}
 					else {
 						return deathsToOpacityScale(cs); 
