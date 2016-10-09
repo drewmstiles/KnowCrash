@@ -3,11 +3,11 @@
  */ 
 
 var CIRCLE_RADIUS = 2.5;
-var MAX_RADIUS = 5.0;
+var MAX_RADIUS = 8.0;
 var MIN_RADIUS = 2.0;
 var MAX_OPACITY = 0.75;
 var MIN_OPACITY = 0.50;
-var MAX_RADIUS_M = 1.75;
+var MAX_RADIUS_M = 1.5;
 var MIN_RADIUS_M = 1.0;
 var INIT_MAP_ZOOM = 13;
 
@@ -30,7 +30,7 @@ var deathsToRadiusScale = d3.scale.linear()
 	.range([MAX_RADIUS,MIN_RADIUS]);
 
 var zoomToRadiusMultiplierScale = d3.scale.linear()
-	.domain([13, 16])
+	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 			
 window.onload = function() {
@@ -47,7 +47,10 @@ window.onload = function() {
        			token: 'pk.eyJ1IjoiZHJld3N0aWxlcyIsImEiOiJjaWw2YXR4eXgwMWl6dWhsdjhrZGxuMXBqIn0.4rYaU8tPJ9Mw2bniPfAKdQ'
 	});
 	
-	map = L.map('map')
+	map = L.map('map', {
+		minZoom: 12,
+		maxZoom: 15
+		})
 		.addLayer(mapboxTiles)
 		.setView([33.810335, -118.135071], INIT_MAP_ZOOM);
 	
@@ -89,6 +92,7 @@ function clean() {
 
 function append() {
 
+
 	svg.selectAll("circle")
 		.data(data)
 		.enter()
@@ -118,7 +122,7 @@ function append() {
 			var cs = d.COLLISION_SEVERITY;
 		
 			if (cs == 0) {
-				return MIN_RADIUS;
+				return MIN_RADIUS * zoomToRadiusMultiplierScale(map._zoom);
 			}
 			else {
 				return deathsToRadiusScale(cs) * zoomToRadiusMultiplierScale(map._zoom);
