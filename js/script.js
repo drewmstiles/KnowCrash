@@ -12,16 +12,17 @@ var map;
 var svg;
 
 var deathsToColorScale = d3.scale.linear()
-			.domain([1, 4])
-			.range(["red", "yellow"]);
+	.domain([1, 4])
+	.range(["red", "yellow"]);
 			
 var deathsToOpacityScale = d3.scale.linear()
-			.domain([1, 4])
-			.range([MAX_OPACITY,MIN_OPACITY]);
+	.domain([1, 4])
+	.range([MAX_OPACITY,MIN_OPACITY]);
 			
 var deathsToRadiusScale = d3.scale.linear()
-			.domain([1, 4])
-			.range([MAX_RADIUS,MIN_RADIUS]);
+	.domain([1, 4])
+	.range([MAX_RADIUS,MIN_RADIUS]);
+
 			
 window.onload = function() {
 	
@@ -32,7 +33,6 @@ window.onload = function() {
 	root.style("height", height + "px")
 	root.style("width", width + "px");
 	
-	// http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png
 	var mapboxTiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
        			token: 'pk.eyJ1IjoiZHJld3N0aWxlcyIsImEiOiJjaWw2YXR4eXgwMWl6dWhsdjhrZGxuMXBqIn0.4rYaU8tPJ9Mw2bniPfAKdQ'
@@ -42,84 +42,110 @@ window.onload = function() {
 		.addLayer(mapboxTiles)
 		.setView([33.810335, -118.135071], 13);
 	
+	map.on("zoomstart", clean);
+	
+	map.on("zoomend", draw);
+	
 	svg = d3.select(map.getPanes().overlayPane).append("svg")
 		.attr("height", height)
 		.attr("width", width);
 	
 	var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
-	d3.csv("lb_out.csv", function(dd) {
+	render();
+};
+
+	
+function proprocess(d) {
+	var include = false
+	var hasCoords = (d.LATITUDE != "" && d.LONGITUDE != "")
+	var isYear = (d.COLLISION_DATE.slice(0,4) == getYear());
+	return hasCoords && isYear;
+
+}
+
+function getYear() {
+	return d3.select("#year").html();
+}
+
+function setYear(yr) {
+	d3.select("#year").html(yr);
+}
+
+function clean() {
+
+	svg.selectAll("circle")
+// 		.transition()
+// 		.duration(1000)
+// 		.attr("r", 0)
+		.remove();
+
+}
+
+function append() {
+
+	svg.selectAll("circle")
+		.data(data)
+		.enter()
+		.append("circle")
+		.attr("cy", function(d) { return d.PIXEL_Y; })
+		.attr("cx",	 function(d) { return d.PIXEL_X; })
+		.style("opacity", function(d) { 
+			var cs = d.COLLISION_SEVERITY;
 		
-		data = dd.filter(function(d) {
-			var ret;
-			if (d.LATITUDE == "" || d.LONGITUDE == "") {
-				ret = false;
+			if (cs == 0) {
+				return MIN_OPACITY;
 			}
 			else {
-				ret = true;
+				return deathsToOpacityScale(cs); 
 			}
-			return ret;
+		})
+		.style("fill", function(d) { 				
+			var cs = d.COLLISION_SEVERITY;
+			if (cs == 0) {
+				return "white";
+			}
+			else {
+				return deathsToColorScale(cs); 
+			}
+		})
+// 		.attr("r", 0)
+// 		.transition()
+// 		.duration(1000)
+		.attr("r",  function(d) { 
+			var cs = d.COLLISION_SEVERITY;
+		
+			if (cs == 0) {
+				return MIN_RADIUS;
+			}
+			else {
+				return deathsToRadiusScale(cs); 
+			}
+		});
+}
+
+function draw() {
+
+	mapCoordinatesToPixels(data);
+						
+	clean();
+	
+	append();
+}
+
+		
+function render() {
+	d3.csv("lb_all.csv", function(dd) {
+		
+		data = dd.filter(function(d) {
+			return proprocess(d);
 		});
 		
 		console.log(data.length);
 
 		draw();
-		
-		map.on("zoomstart", function() {
-			svg.selectAll("circle").remove();
-		});
-		
-		map.on("zoomend", draw);
 	});
-};
-
-function draw() {
-
-			mapCoordinatesToPixels(data);
-						
-			svg.selectAll("circle")
-				.data(data)
-				.enter()
-				.append("circle")
-				.attr("cy", function(d) { return d.PIXEL_Y; })
-				.attr("cx",	 function(d) { return d.PIXEL_X; })
-				.attr("r",  function(d) { 
-					var cs = d.COLLISION_SEVERITY;
-					
-					if (cs == 0) {
-						return MIN_RADIUS;
-					}
-					else {
-						return deathsToRadiusScale(cs); 
-					}
-				})
-				.style("opacity", function(d) { 
-					var cs = d.COLLISION_SEVERITY;
-					
-					if (cs == 0) {
-						return MIN_OPACITY;
-					}
-					else {
-						return deathsToOpacityScale(cs); 
-					}
-				})
-				.style("fill", function(d) { 				
-					var cs = d.COLLISION_SEVERITY;
-					if (cs == 0) {
-						return "white";
-					}
-					else {
-						return deathsToColorScale(cs); 
-					}
-				})
-				.append("title")
-				.text(function(d) { 
-					var txt = "Primary Road: " + d.PRIMARY_RD + "\n"
-						+ "Secondary Road: " + d.SECONDARY_RD; 
-					
-					return txt;
-				});
-		}
+}
 			
 function applyLatLngToLayer(d) {
 	var y = d.LATITUDE;
@@ -134,3 +160,14 @@ function mapCoordinatesToPixels(dd) {
 		data[i].PIXEL_Y = coordinates.y;
 	}
 }
+
+$(document).on("click", "#lastYear", function() {
+	console.log("click");
+	setYear(parseInt(getYear()) - 1);
+	render();
+});
+
+$(document).on("click", "#nextYear", function() {
+	setYear(parseInt(getYear()) + 1);
+	render();
+});

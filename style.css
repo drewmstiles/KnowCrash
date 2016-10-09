@@ -30,7 +30,8 @@ border:none;
 height:75px;
 line-height:75px;
 font-family: 'Droid Sans Mono', monospace;
-font-weight:bold;
+/* font-family:  'Helvetica Neue', sans-serif; */
+font-weight:bolder;
 text-align:center; 
 color:white;
 }
