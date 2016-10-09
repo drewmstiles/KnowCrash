@@ -34,7 +34,6 @@ border:none;
 height:75px;
 line-height:75px;
 font-family: 'Droid Sans Mono', monospace;
-/* font-family:  'Helvetica Neue', sans-serif; */
 font-weight:bolder;
 text-align:center; 
 color:white;
@@ -50,6 +49,7 @@ font-size:32px;
 #lastYear, #nextYear {
 	width:25%;
 	font-size:25px;
+	cursor:pointer;
 }
 
 .filterTxt {
