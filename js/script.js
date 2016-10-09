@@ -15,6 +15,7 @@ var data;
 var map;
 var svg;
 var severity = "*";
+var alcohol = "*";
 
 var deathsToColorScale = d3.scale.linear()
 	.domain([1, 4])
@@ -65,14 +66,28 @@ window.onload = function() {
 
 	
 function proprocess(d) {
-	var include = false
-	var hasCoords = (d.LATITUDE != "" && d.LONGITUDE != "")
-	var isYear = (d.COLLISION_DATE.slice(0,4) == getYear());
-	var hasSev = (getSeverity() == "*" || d.COLLISION_SEVERITY == getSeverity());
-	return hasCoords && isYear && hasSev;
+
+	var alc = getAlcohol();
+	var sev = getSeverity();
+	
+	console.log(alc);
+	
+	var hasPos = (d.LATITUDE != "" && d.LONGITUDE != "")
+	var hasYear = (d.COLLISION_DATE.slice(0,4) == getYear());
+	var hasSev = (sev == "*" || d.COLLISION_SEVERITY == sev);
+	var hasAlc = (alc == "*" || d.ALCOHOL_INVOLVED == alc);
+	
+	return hasPos && hasYear && hasSev && hasAlc;
 
 }
 
+function setAlcohol(alc) {
+	alcohol = alc;
+}
+
+function getAlcohol() {
+	return alcohol;
+}
 
 function setSeverity(sv) {
 	severity = sv;
@@ -153,8 +168,6 @@ function render() {
 		data = dd.filter(function(d) {
 			return proprocess(d);
 		});
-		
-		console.log(data.length);
 
 		draw();
 	});
@@ -187,8 +200,11 @@ $(document).on("click", "#nextYear", function() {
 
 $(document).on("change", "#sev", function() {
 	setSeverity($(this).find(":selected").val());
-	console.log("select");
 	render();
 });
 
+$(document).on("change", "#alc", function() {
+	setAlcohol($(this).find(":selected").val());
+	render();
+});
 
