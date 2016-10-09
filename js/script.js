@@ -14,6 +14,7 @@ var INIT_MAP_ZOOM = 13;
 var data;
 var map;
 var svg;
+var severity = "*";
 
 var deathsToColorScale = d3.scale.linear()
 	.domain([1, 4])
@@ -67,8 +68,18 @@ function proprocess(d) {
 	var include = false
 	var hasCoords = (d.LATITUDE != "" && d.LONGITUDE != "")
 	var isYear = (d.COLLISION_DATE.slice(0,4) == getYear());
-	return hasCoords && isYear;
+	var hasSev = (getSeverity() == "*" || d.COLLISION_SEVERITY == getSeverity());
+	return hasCoords && isYear && hasSev;
 
+}
+
+
+function setSeverity(sv) {
+	severity = sv;
+}
+
+function getSeverity() {
+	return severity;
 }
 
 function getYear() {
@@ -135,7 +146,6 @@ function draw() {
 	
 	append();
 }
-
 		
 function render() {
 	d3.csv("lb_all.csv", function(dd) {
@@ -174,3 +184,11 @@ $(document).on("click", "#nextYear", function() {
 	setYear(parseInt(getYear()) + 1);
 	render();
 });
+
+$(document).on("change", "#sev", function() {
+	setSeverity($(this).find(":selected").val());
+	console.log("select");
+	render();
+});
+
+
