@@ -67,18 +67,16 @@ window.onload = function() {
 	
 function proprocess(d) {
 
-	var yr = $("#year").html();
-	var alc = $("#alc").find(":selected").val();
+	var yrr = $("#year").html();
 	var sev = $("#sev").find(":selected").val();
-	var run = $("#run").find(":selected").val();
+	var fac = $("#fac").find(":selected").val();
 	
-	var hasPos = (d.LATITUDE != "" && d.LONGITUDE != "")
-	var hasYear = (d.COLLISION_DATE.slice(0,4) == yr);
+	var hasPos = (d.LATITUDE != "" && d.LONGITUDE != "");
+	var hasYrr = (d.COLLISION_DATE.slice(0,4) == yrr);
 	var hasSev = (sev == "*" || d.COLLISION_SEVERITY == sev);
-	var hasAlc = (alc == "*" || d.ALCOHOL_INVOLVED == alc);
-	var hasRun = (run == "*" || d.HIT_AND_RUN == run);
+	var hasFac = (fac == "*" || d.PCF_VIOL_CATEGORY == fac);
 	
-	return hasPos && hasYear && hasSev && hasAlc && hasRun;
+	return hasPos && hasYrr && hasSev && hasFac;
 
 }
 
@@ -178,7 +176,5 @@ $(document).on("click", "#nextYear", function() {
 
 $(document).on("change", "#sev", render)
 
-$(document).on("change", "#alc", render);
-
-$(document).on("change", "#run", render);
+$(document).on("change", "#fac", render);
 
