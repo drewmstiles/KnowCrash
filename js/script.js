@@ -67,42 +67,19 @@ window.onload = function() {
 	
 function proprocess(d) {
 
-	var alc = getAlcohol();
-	var sev = getSeverity();
-	
-	console.log(alc);
+	var yr = $("#year").html();
+	var alc = $("#alc").find(":selected").val();
+	var sev = $("#sev").find(":selected").val();
+	var run = $("#run").find(":selected").val();
 	
 	var hasPos = (d.LATITUDE != "" && d.LONGITUDE != "")
-	var hasYear = (d.COLLISION_DATE.slice(0,4) == getYear());
+	var hasYear = (d.COLLISION_DATE.slice(0,4) == yr);
 	var hasSev = (sev == "*" || d.COLLISION_SEVERITY == sev);
 	var hasAlc = (alc == "*" || d.ALCOHOL_INVOLVED == alc);
+	var hasRun = (run == "*" || d.HIT_AND_RUN == run);
 	
-	return hasPos && hasYear && hasSev && hasAlc;
+	return hasPos && hasYear && hasSev && hasAlc && hasRun;
 
-}
-
-function setAlcohol(alc) {
-	alcohol = alc;
-}
-
-function getAlcohol() {
-	return alcohol;
-}
-
-function setSeverity(sv) {
-	severity = sv;
-}
-
-function getSeverity() {
-	return severity;
-}
-
-function getYear() {
-	return d3.select("#year").html();
-}
-
-function setYear(yr) {
-	d3.select("#year").html(yr);
 }
 
 function clean() {
@@ -188,23 +165,20 @@ function mapCoordinatesToPixels(dd) {
 }
 
 $(document).on("click", "#lastYear", function() {
-	console.log("click");
-	setYear(parseInt(getYear()) - 1);
+	var yr = $("#year");
+	yr.html(parseInt(yr.html()) - 1);
 	render();
-});
+})
 
 $(document).on("click", "#nextYear", function() {
-	setYear(parseInt(getYear()) + 1);
+	var yr = $("#year");
+	yr.html(parseInt(yr.html()) + 1);
 	render();
-});
+})
 
-$(document).on("change", "#sev", function() {
-	setSeverity($(this).find(":selected").val());
-	render();
-});
+$(document).on("change", "#sev", render)
 
-$(document).on("change", "#alc", function() {
-	setAlcohol($(this).find(":selected").val());
-	render();
-});
+$(document).on("change", "#alc", render);
+
+$(document).on("change", "#run", render);
 
