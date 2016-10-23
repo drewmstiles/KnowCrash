@@ -17,30 +17,23 @@ var svg;
 var severity = "*";
 var alcohol = "*";
 
-var deathsToColorScale = d3.scale.linear()
+var deathsToColorScale = d3.scaleLinear()
 	.domain([1, 4])
 	.range(["red", "yellow"]);
 			
-var deathsToOpacityScale = d3.scale.linear()
+var deathsToOpacityScale = d3.scaleLinear()
 	.domain([1, 4])
 	.range([MAX_OPACITY,MIN_OPACITY]);
 			
-var deathsToRadiusScale = d3.scale.linear()
+var deathsToRadiusScale = d3.scaleLinear()
 	.domain([1, 4])
 	.range([MAX_RADIUS,MIN_RADIUS]);
 
-var zoomToRadiusMultiplierScale = d3.scale.linear()
+var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 			
 window.onload = function() {
-	
-	var height = window.innerHeight;
-	var width = window.innerWidth;
-	
-	var root = d3.select("#root");	
-	root.style("height", height + "px")
-	root.style("width", width + "px");
 	
 	var mapboxTiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
@@ -59,8 +52,8 @@ window.onload = function() {
 	map.on("zoomend", draw);
 	
 	svg = d3.select(map.getPanes().overlayPane).append("svg")
-		.attr("height", height)
-		.attr("width", width);
+		.attr("height", window.innerHeight)
+		.attr("width", window.innerWidth);
 	
 	var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
@@ -91,7 +84,6 @@ function clean() {
 }
 
 function append() {
-
 
 	svg.selectAll("circle")
 		.data(data)
@@ -132,8 +124,6 @@ function append() {
 
 function draw() {
 
-	console.log(map._zoom);
-	 
 	mapCoordinatesToPixels(data);
 						
 	clean();
