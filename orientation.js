@@ -24,9 +24,12 @@ $(document).on("change", "#fac", render);
 $(document).on("click", "#or", orientDown);
 
 function orientDown() {
-	$(".view").animate({
+	
+	clean();
+	
+	$(".view").delay(1000).animate({
 		top: "-=" + height,
-	}, 700, function() {
+	}, 1000, function() {
 		console.log("end animation");
 	});	
 }
