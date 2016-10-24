@@ -14,6 +14,8 @@ var root = d3.select("#heatmap")
 	
 	
 var svg = root.append("svg")
+	.style("position", "absolute")
+	.style("top", "0")
 	.attr("width", window.innerWidth)
 	.attr("height", window.innerHeight)
 	.append("g");
