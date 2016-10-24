@@ -1,3 +1,10 @@
+var row = 0,
+	col = 0;
+	
+var navMap = [
+	[0,0],
+	[0,0]
+];
 
 $("#heatmap").css("top",window.innerHeight + "px");
 
@@ -20,28 +27,41 @@ $(document).on("change", "#sev", render)
 $(document).on("change", "#fac", render);
 
 $(document).on("click", ".nav", function() {
-	orient($(this).attr("id"));
+	orient($(this).attr("id"), this);
 });
 
-function orient(dir) {
+function orient(dir, elem) {
 
-	var anim = {};
-	if (dir == "down") {
-		anim.top = "-=" + window.innerHeight;
-	}
-	else if (dir == "left") {
-		anim = anim.left = "+=" + window.innerWidth;
-	}
-	else if (dir == "right") {
-		anim.left = "-=" + window.innerWidth;
+	if ($(elem).hasClass("disabled")) {
+		// Do nothing.
 	}
 	else {
-		anim.top = "+=" + window.innerHeight;
+		var fn;
+		var anim = {};
+		
+		console.log("row: " + row + " col " + col);
+		if (dir == "down" && (row + 1) < navMap.length) {
+			row += 1;
+			anim.top = "-=" + window.innerHeight;
+		}
+		else if (dir == "left" && (col - 1) >= 0) {
+			col -= 1;
+			anim.left = "+=" + window.innerWidth;
+		}
+		else if (dir == "right" && (col + 1) < navMap[0].length) {
+			col += 1;
+			anim.left = "-=" + window.innerWidth;
+		}
+		else if (dir == "up" && (row - 1)  >= 0) {
+			row -= 1;
+			anim.top = "+=" + window.innerHeight;
+		}
+		else {
+			console.log("Where are you going?");
+		}
+	
+		$(".view").animate(anim, 1000, function() {
+			showHeatmap();
+		});	
 	}
-	
-	clean();
-	
-	$(".view").animate(anim, 1000, function() {
-		showHeatmap();
-	});	
 }
