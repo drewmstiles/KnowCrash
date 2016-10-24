@@ -1,6 +1,6 @@
-var margin = { top: 50, right: 0, bottom: 100, left: 30 },
-	width = 960 - margin.left - margin.right,
-	height = 430 - margin.top - margin.bottom,
+var margin = { top: window.innerHeight/2 - 430/2, right: 50, bottom: 100, left: 50 },
+	width = window.innerWidth - margin.left - margin.right,
+	height = 430,
 	gridSize = Math.floor(width / 24),
 	legendElementWidth = gridSize * 2,
 	buckets = 9,
@@ -41,13 +41,14 @@ var timeLabels = svg.selectAll(".timeLabel")
 		.attr("transform", "translate(" + gridSize / 2 + ", -6)")
 		.attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
 		
+var cards;
 		
-	d3.csv("lb_agg.csv", function (error, data) {
+d3.csv("lb_agg.csv", function (error, data) {
 		var colorScale = d3.scaleLinear()
 			.domain([d3.min(data, function(d) { return +d.value; }), d3.max(data, function (d) { return +d.value; })])
 			.range(colors);
 			
-		var cards = svg.selectAll(".hour")
+		cards = svg.selectAll(".hour")
 			.data(data, function(d) { return d.day + ":" + d.hour; });
 			
 		cards.append("title");
@@ -60,6 +61,7 @@ var timeLabels = svg.selectAll(".timeLabel")
 			.attr("class", "hour bordered")
 			.attr("width", gridSize)
 			.attr("height", gridSize)
+			.attr("opacity", 0.0)
 			.transition()
 				.duration(1000)
 				.style("fill", function(d) { return colorScale(d.value); });
@@ -89,3 +91,17 @@ var timeLabels = svg.selectAll(".timeLabel")
 			
 		legend.exit().remove();
 });
+
+
+function showHeatmap() {
+	d3.selectAll(".hour")
+		.transition()
+		.duration(1000)
+		.style("opacity", 1.0);
+}
+
+function hideHeatmap() {
+	d3.selectAll(".hour")
+		.duration(1000)
+		.style("opacity", 0.0);
+}

@@ -27,9 +27,9 @@ function orientDown() {
 	
 	clean();
 	
-	$(".view").delay(1000).animate({
+	$(".view").animate({
 		top: "-=" + height,
 	}, 1000, function() {
-		console.log("end animation");
+		showHeatmap();
 	});	
 }
