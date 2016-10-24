@@ -1,7 +1,6 @@
-var margin = { top: window.innerHeight/2 - 430/2, right: 50, bottom: 100, left: 50 },
-	width = window.innerWidth - margin.left - margin.right,
-	height = 430,
-	gridSize = Math.floor(width / 24),
+
+var margin = { top: 0, right: 50, bottom: 100, left: 50 },
+	gridSize = Math.floor((window.innerWidth - margin.left - margin.right) / 24),
 	legendElementWidth = gridSize * 2,
 	buckets = 9,
 	colors = ["yellow","red"],
@@ -15,11 +14,9 @@ var root = d3.select("#heatmap")
 	
 	
 var svg = root.append("svg")
-	.attr("width", width + margin.left + margin.right)
-	.attr("height", height + margin.top + margin.bottom)
-	.append("g")
-	.attr("transform","translate(" + margin.left + "," + margin.top + ")");
-	
+	.attr("width", window.innerWidth)
+	.attr("height", window.innerHeight)
+	.append("g");
 	
 var dayLabels = svg.selectAll(".dayLabel")
 	.data(days)
@@ -90,6 +87,11 @@ d3.csv("lb_agg.csv", function (error, data) {
 			.attr("y", height + gridSize);
 			
 		legend.exit().remove();
+		
+
+		// Position heatmap.		
+		margin.top = (height/2 - svg.node().getBBox().height/2);
+		svg.attr("transform","translate(" + margin.left + "," + margin.top + ")");
 });
 
 
