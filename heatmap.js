@@ -13,14 +13,14 @@ var root = d3.select("#heatmap")
 	.attr("height", window.innerHeight);
 	
 	
-var svg = root.append("svg")
+var heatSvg = root.append("svg")
 	.style("position", "absolute")
 	.style("top", "0")
 	.attr("width", window.innerWidth)
 	.attr("height", window.innerHeight)
 	.append("g");
 	
-var dayLabels = svg.selectAll(".dayLabel")
+var dayLabels = heatSvg.selectAll(".dayLabel")
 	.data(days)
 	.enter().append("text")
 		.text(function (d) { return d; })
@@ -30,7 +30,7 @@ var dayLabels = svg.selectAll(".dayLabel")
 		.attr("transform", "translate(-6," + gridSize / 1.5 + ")")
 		.attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); });
 
-var timeLabels = svg.selectAll(".timeLabel")
+var timeLabels = heatSvg.selectAll(".timeLabel")
 	.data(times)
 	.enter().append("text")
 		.text(function(d) {return d; })
@@ -47,7 +47,7 @@ d3.csv("lb_agg.csv", function (error, data) {
 			.domain([d3.min(data, function(d) { return +d.value; }), d3.max(data, function (d) { return +d.value; })])
 			.range(colors);
 			
-		cards = svg.selectAll(".hour")
+		cards = heatSvg.selectAll(".hour")
 			.data(data, function(d) { return d.day + ":" + d.hour; });
 			
 		cards.append("title");
@@ -69,7 +69,7 @@ d3.csv("lb_agg.csv", function (error, data) {
 		
 		cards.exit().remove();
 		
-		var legend = svg.select(".legend");
+		var legend = heatSvg.select(".legend");
 // 					.data([0].concat(colorScale.quantiles()), function (d) { return d; });
 			
 		legend.enter().append("g")
@@ -77,7 +77,7 @@ d3.csv("lb_agg.csv", function (error, data) {
 			
 		legend.append("rect")
 			.attr("x", function(d, i) { return legendElementWidth * i; })
-			.attr("y", height)
+			.attr("y", window.innerHeight)
 			.attr("width", legendElementWidth)
 			.attr("height", gridSize / 2)
 			.style("fill", function(d, i) { return colors[i]; });
@@ -86,18 +86,19 @@ d3.csv("lb_agg.csv", function (error, data) {
 			.attr("class", "mono")
 			.text(function (d) { return ">= " + Math.round(d); })
 			.attr("x", function(d, i) { return legendElementWidth * i })
-			.attr("y", height + gridSize);
+			.attr("y", window.innerHeight + gridSize);
 			
 		legend.exit().remove();
 		
 
 		// Position heatmap.		
-		margin.top = (height/2 - svg.node().getBBox().height/2);
-		svg.attr("transform","translate(" + margin.left + "," + margin.top + ")");
+		margin.top = (window.innerHeight/2 - heatSvg.node().getBBox().height/2);
+		heatSvg.attr("transform","translate(" + margin.left + "," + margin.top + ")");
 });
 
 
 function showHeatmap() {
+	console.log(d3.selectAll(".hour"));
 	d3.selectAll(".hour")
 		.transition()
 		.duration(1000)

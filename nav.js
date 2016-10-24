@@ -1,7 +1,5 @@
-var width = $(window).width();
-var height = $(window).height();
 
-$("#heatmap").css("top",height + "px");
+$("#heatmap").css("top",window.innerHeight + "px");
 
 $(document).on("click", "#lastYear", function() {
 	var yr = $("#year");
@@ -21,15 +19,29 @@ $(document).on("change", "#sev", render)
 
 $(document).on("change", "#fac", render);
 
-$(document).on("click", "#or", orientDown);
+$(document).on("click", ".nav", function() {
+	orient($(this).attr("id"));
+});
 
-function orientDown() {
+function orient(dir) {
+
+	var anim = {};
+	if (dir == "down") {
+		anim.top = "-=" + window.innerHeight;
+	}
+	else if (dir == "left") {
+		anim = anim.left = "+=" + window.innerWidth;
+	}
+	else if (dir == "right") {
+		anim.left = "-=" + window.innerWidth;
+	}
+	else {
+		anim.top = "+=" + window.innerHeight;
+	}
 	
 	clean();
 	
-	$(".view").animate({
-		top: "-=" + height,
-	}, 1000, function() {
+	$(".view").animate(anim, 1000, function() {
 		showHeatmap();
 	});	
 }

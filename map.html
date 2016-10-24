@@ -19,9 +19,9 @@
 			<h1 id="heatmapTitle">Accident Frequency by Date and Time</h1>
 		</div>
 		<div id="ctrl">
-			<p id="lastYear" class="year">&lt;</p>
+			<p id="lastYear" class="year yearArrow">&#x2190;</p>
 			<p id="year" class="year">2001</p>
-			<p id="nextYear" class="year">&gt;</p>
+			<p id="nextYear" class="year yearArrow">&#x2192;</p>
 			<hr/>
 			<p id="sevTxt" class="filterTxt">Severity 
 				<select id="sev">
@@ -47,7 +47,11 @@
 					<option value="24">Driver Fell Asleep</option> 		
 				</select>
 			</p>
-			<button id="or">OR</button>
+			<hr/>
+			<p id="up" class="vert nav">&#x2191;</p>
+			<p id="left" class="horz nav">&#x2190;</p>
+			<p id="right" class="horz nav">&#x2192;</p>
+			<p id="down" class="vert nav">&#x2193;</p>
 		</div>
 </body>
 <script type="text/javascript" src="script.js"></script>
