@@ -7,22 +7,17 @@ var navMap = [
 	[0,0]
 ];
 
+$("#wrapper").css("width",window.innerWidth + "px");
+$("#wrapper").css("height",window.innerHeight + "px");
+
 $("#heatmap").css("top",window.innerHeight + "px");
+$("#futureMap").css("left",window.innerWidth + "px");
 
 $(document).on("click", "#lastYear", function() {
-// 	var yr = $("#year");
-// 	yr.css("color", "gray");
-// 	yr.html(parseInt(yr.html()) - 1);
-// 	setTimeout(render, 100);
-
- 	Model.find({
- 				'COLLISION_DATE' : 20010101,
-  			 	'COLLISION_TIME' : 110 
-  			 })
-  			.select('PRIMARY_RD')
-  			.exec(function(err, acc) {
- 	 			console.log(acc);
-	});
+	var yr = $("#year");
+	yr.css("color", "gray");
+	yr.html(parseInt(yr.html()) - 1);
+	setTimeout(render, 100);
 })
 
 $(document).on("click", "#nextYear", function() {
@@ -70,8 +65,21 @@ function orient(dir, elem) {
 			console.log("Where are you going?");
 		}
 	
-		$(".view").animate(anim, 1000, function() {
-			showHeatmap();
-		});	
+		$(".view").animate(anim, 1000);
+		
+		setTimeout(function() {
+			console.log("comp");
+			if (row == 0 && col == 0) {
+				if (fmap == undefined) fmap.remove();
+				showHistoricalMap();
+			}
+			else if (row == 0 && col == 1) {
+				if (map == undefined)  map.remove();
+				showFuture();
+			}
+			else if (row == 1 && col == 0) {
+				showHeatmap();
+			}
+		}, 1010);
 	}
 }

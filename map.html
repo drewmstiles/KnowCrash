@@ -14,10 +14,12 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+<div id="wrapper">
 		<div id="map" class="view"></div>
 		<div id="heatmap" class="view">
 			<h1 id="heatmapTitle">Accident Frequency by Date and Time</h1>
 		</div>
+		<div id="futureMap" class="view"></div>
 		<div id="ctrl">
 			<p id="lastYear" class="year yearArrow">&#x2190;</p>
 			<p id="year" class="year">2001</p>
@@ -53,8 +55,13 @@
 			<p id="right" class="horz nav">&#x2192;</p>
 			<p id="down" class="vert nav">&#x2193;</p>
 		</div>
+</div>
 </body>
 <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript" src="heatmap.js"></script>
 <script type="text/javascript" src="nav.js"></script>
+<script type="text/javascript" src="futureMap.js"></script>
+<script>
+	window.onload = showHistoricalMap();
+</script>
 </html>
