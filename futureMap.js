@@ -99,18 +99,22 @@ function drawf() {
 function renderf() {
 	d3.csv("lb_inters.csv", function(dd) {
 		
-		fdata = dd.slice(0,40);
+		fdata = dd.slice(0,25);
 
 		for (var i = 0; i < fdata.length; i++) {
-			var count = fdata[i].COUNT;
-			var lambda = count / (365 * 10);
-			fdata[i].PROB = ((lambda) * (1 / Math.E));
+			
+			fdata[i].PROB = poisson(fdata[i].COUNT);
 		}
 		
 		drawf();
 	});
 }
-			
+	
+function poisson(count) {
+	var lambda = count / (365 * 10);
+	return ((lambda) * (1 / Math.E))
+}	
+	
 function applyLatLngToLayerf(d) {
 	var y = parseFloat(d.LATITUDE);
 	var x = parseFloat(d.LONGITUDE);

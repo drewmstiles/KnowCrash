@@ -1,9 +1,9 @@
 var height = window.innerHeight;
-var width = window.innerWidth - 40;
+var width = window.innerWidth;
 
 var countToColorScale = d3.scaleLinear();
 	
-var MIN_INDEX = 40;
+var MIN_INDEX = 25;
 
 d3.csv("lb_inters.csv", function(faData) {
 
@@ -14,7 +14,7 @@ d3.csv("lb_inters.csv", function(faData) {
 
 	var yScale = d3.scaleLinear()
 		.domain([0, faData[0].COUNT])
-		.range([0, height - 20]);
+		.range([height/4, height - 20]);
 
 	countToColorScale
 		.domain([faData[MIN_INDEX].COUNT, faData[0].COUNT])
@@ -29,12 +29,14 @@ d3.csv("lb_inters.csv", function(faData) {
 		.append("svg")
 		.style('width', width + 'px')
 		.style('height', height + 'px')
-		.style('margin-left', 20);
+		.style('background-color', "#D9D9D9")
+		.style('stroke-width', 0);
 
-	fasvg.selectAll('rect')
+	var fad = fasvg.selectAll('rect')
 		.data(faData)
-		.enter()
-		.append('rect')
+		.enter();
+		
+	fad.append('rect')
 		.attr('class', 'bar')
 		.attr("x", function (d, i) {
 			return xScale(i);
@@ -50,7 +52,7 @@ d3.csv("lb_inters.csv", function(faData) {
 		})
 		.attr("height", 0)
 		.transition()
-		.duration(250)
+		.duration(1000)
 		.delay(function (d, i) {
 			return i * 250;
 		})
@@ -60,4 +62,22 @@ d3.csv("lb_inters.csv", function(faData) {
 		.attr("height", function (d, i) {
 			return yScale(d.COUNT);
 		});
+		
+	fad.append("text")
+		.attr("fill", "white")
+		.attr("y", height - 40)
+		.attr("x", function (d, i) { return xScale(i) + barWidth/2; })
+		.attr("transform", function (d, i) { 
+			return ("rotate(-90 " + (xScale(i) + barWidth/2) + " " + (height - 40) + ")");
+		})
+		.attr("font-size", "10px")
+		.text(function(d) { return d.PRIMARY_RD + " & " + d.SECONDARY_RD });
+		
+	fad.append("text")
+	.attr("fill", "white")
+	.attr("y", function(d) { return height - yScale(d.COUNT) - 5; })
+	.attr("x", function (d, i) { return xScale(i) + 5; })
+	.attr("font-size", "10px")
+	.attr("fill", function(d) { return countToColorScale(d.COUNT); })
+	.text(function(d) { return Number(poisson(d.COUNT)).toFixed(3) + "%"; });
 });
