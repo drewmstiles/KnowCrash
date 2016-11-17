@@ -70,12 +70,10 @@ function orient(dir, elem) {
 		setTimeout(function() {
 			console.log("comp");
 			if (row == 0 && col == 0) {
-				if (fmap == undefined) fmap.remove();
-				showHistoricalMap();
+				
 			}
 			else if (row == 0 && col == 1) {
-				if (map == undefined)  map.remove();
-				showFuture();
+				
 			}
 			else if (row == 1 && col == 0) {
 				showHeatmap();
