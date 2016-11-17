@@ -1,3 +1,4 @@
+
 var row = 0,
 	col = 0;
 	
@@ -9,10 +10,19 @@ var navMap = [
 $("#heatmap").css("top",window.innerHeight + "px");
 
 $(document).on("click", "#lastYear", function() {
-	var yr = $("#year");
-	yr.css("color", "gray");
-	yr.html(parseInt(yr.html()) - 1);
-	setTimeout(render, 100);
+// 	var yr = $("#year");
+// 	yr.css("color", "gray");
+// 	yr.html(parseInt(yr.html()) - 1);
+// 	setTimeout(render, 100);
+
+ 	Model.find({
+ 				'COLLISION_DATE' : 20010101,
+  			 	'COLLISION_TIME' : 110 
+  			 })
+  			.select('PRIMARY_RD')
+  			.exec(function(err, acc) {
+ 	 			console.log(acc);
+	});
 })
 
 $(document).on("click", "#nextYear", function() {
