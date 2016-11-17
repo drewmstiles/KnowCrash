@@ -15,9 +15,9 @@ var fdata;
 var fmap;
 var fsvg;
 			
-var countToRadiusScale = d3.scaleLinear()
-	.domain([1, 4])
-	.range([MAX_RADIUS,MIN_RADIUS]);
+var probToColorScale = d3.scaleLinear()
+	.domain([0.01, 0.07])
+	.range(["blue","red"]);
 
 var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
@@ -59,15 +59,25 @@ function cleanf() {
 
 function appendf() {
 
-	fsvg.selectAll("circle")
+	var nodes = fsvg.selectAll("g")
 		.data(fdata)
 		.enter()
-		.append("circle")
-		.attr("cy", function(d) { return d.PIXEL_Y; })
-		.attr("cx",	 function(d) { return d.PIXEL_X; })
-		.style("opacity", 1)
-		.style("fill", "blue")
-		.attr("r",  5);
+		.append("g")
+			.attr("transform", function(d) {
+				return "translate(" + d.PIXEL_X + "," + d.PIXEL_Y + ")";
+		})
+		nodes.append("circle")
+			.style("opacity", 0.6)
+			.style("fill", function(d) { return probToColorScale(d.PROB) })
+			.attr("r",  20);
+			
+		nodes.append("text")
+			.text(function(d) { return Number(d.PROB).toFixed(2); })
+			.style("fill", "white")
+			.style("text-anchor", "middle")
+			.style("font-size", "10px")
+			.attr("dy", "3px")
+			.style("font-weight", "bold");
 		
 		// Here render to screen
 }
@@ -89,8 +99,14 @@ function drawf() {
 function renderf() {
 	d3.csv("lb_inters.csv", function(dd) {
 		
-		fdata = dd.slice(0,20);
+		fdata = dd.slice(0,40);
 
+		for (var i = 0; i < fdata.length; i++) {
+			var count = fdata[i].COUNT;
+			var lambda = count / (365 * 10);
+			fdata[i].PROB = ((lambda) * (1 / Math.E));
+		}
+		
 		drawf();
 	});
 }
