@@ -1,9 +1,13 @@
 var height = window.innerHeight;
 var width = window.innerWidth - 40;
 
+var countToColorScale = d3.scaleLinear();
+	
+var MIN_INDEX = 40;
+
 d3.csv("lb_inters.csv", function(faData) {
 
-	faData = faData.slice(0,40);
+	faData = faData.slice(0,MIN_INDEX + 1);
 
 	var barPadding = 2;
 	var barWidth = (width / faData.length) - barPadding;
@@ -12,6 +16,10 @@ d3.csv("lb_inters.csv", function(faData) {
 		.domain([0, faData[0].COUNT])
 		.range([0, height - 20]);
 
+	countToColorScale
+		.domain([faData[MIN_INDEX].COUNT, faData[0].COUNT])
+		.range(["blue","red"]);
+		
 	var xScale = d3.scaleLinear()
 		.domain([0, faData.length])
 		.range([0, width]);
@@ -37,8 +45,8 @@ d3.csv("lb_inters.csv", function(faData) {
 		.attr("width", function (d, i) {
 			return barWidth;
 		})
-		.attr("fill", function (d, i) {
-			return 'blue';
+		.attr("fill", function (d) {
+			return countToColorScale(d.COUNT);
 		})
 		.attr("height", 0)
 		.transition()
