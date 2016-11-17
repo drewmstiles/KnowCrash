@@ -36,7 +36,7 @@ function showFuture() {
 		maxZoom: 15
 		})
 		.addLayer(fmapboxTiles)
-		.setView([33.810335, -118.135071], INIT_MAP_ZOOM);
+		.setView([33.810335, -118.135071], 12);
 	
 	fmap.on("zoomstart", clean);
 	
