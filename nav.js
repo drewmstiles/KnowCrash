@@ -12,6 +12,8 @@ $("#wrapper").css("height",window.innerHeight + "px");
 
 $("#heatmap").css("top",window.innerHeight + "px");
 $("#futureMap").css("left",window.innerWidth + "px");
+$("#futureAbstract").css("top",window.innerHeight + "px");
+$("#futureAbstract").css("left",window.innerWidth + "px");
 
 $(document).on("click", "#lastYear", function() {
 	var yr = $("#year");

@@ -19,7 +19,10 @@
 		<div id="heatmap" class="view">
 			<h1 id="heatmapTitle">Accident Frequency by Date and Time</h1>
 		</div>
-		<div id="futureMap" class="view"></div>
+		<div id="futureMap" class="view">
+			<h1 id="heatmapTitle">Today's Intersection Accident Probabilities</h1>
+		</div>
+		<div id="futureAbstract" class="view"></div>
 		<div id="ctrl">
 			<p id="lastYear" class="year yearArrow">&#x2190;</p>
 			<p id="year" class="year">2001</p>
@@ -61,6 +64,7 @@
 <script type="text/javascript" src="heatmap.js"></script>
 <script type="text/javascript" src="nav.js"></script>
 <script type="text/javascript" src="futureMap.js"></script>
+<script type="text/javascript" src="futureAbstract.js"></script>
 <script>
 	window.onload = showHistoricalMap();
 	window.onload = showFuture();
