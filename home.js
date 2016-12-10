@@ -21,3 +21,12 @@ d3.selectAll(".homePer").on("click", function() {
 		.attr("x-data-selected", "yes")
 		.style("text-decoration", "underline");
 });
+
+
+d3.select("#visButton").on("click", function() {
+	var h = window.innerHeight;
+	d3.select("#home")
+		.transition()
+		.duration(1000)
+		.style("top", -h + "px");
+});
