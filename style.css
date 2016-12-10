@@ -199,10 +199,24 @@ font-size:32px;
  * HEATMAP
  */
  
+ #map {
+	display:none;
+}
+
  #heatmap {
  	background-color:black;
  	color:white;
+ 	display:none;
  }
+
+#futureMap {
+	display:none;
+}
+
+#futureAbstract {
+	display:none;
+}
+
 
 #heatmapTitle {
 	margin: 40px 0 0 40px;

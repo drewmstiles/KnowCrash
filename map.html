@@ -20,26 +20,26 @@
 					<p class="homeLabel">What city are you interested in?</p>
 					<div class="homeFieldContainer">
 						<p class="homeText homeArrow homeLeftArrow"></p>
-						<input class="homeText homeField" value="Long Beach">
+						<input id="homeCity" class="homeText homeField" value="Long Beach">
 						<p class="homeText homeArrow homeRightArrow"></p>
 					</div>
 				</section>
 				<section class="homeSec">
 					<p class="homeLabel">What do you want to know about?</p>
 					<div class="homeFieldContainer">
-						<p id="homeHistView" class="homeText homeHalfPara homeKnow">Historical Trends</p>
-						<p id="homeFutuView" class="homeText homeHalfPara homeKnow">Future Predictions</p>
+						<p id="homeHistView" class="homeText homeHalfPara homeKnow" x-data-value="0">Historical Trends</p>
+						<p id="homeFutuView" class="homeText homeHalfPara homeKnow" x-data-value="1">Future Predictions</p>
 					</div>
 				</section>
 				<section class="homeSec">
 					<p class="homeLabel">Which perspective would you like to see?</p>
 					<div class="homeFieldContainer">
-						<p id="histMapToggle" class="homeText homeFullPara homePer">Accidents Maps by Year</p>
-						<p id="histAbsToggle" class="homeText homeFullPara homePer">Accident Frequency by Time</p>
+						<p id="histMapToggle" class="homeText homeFullPara homePer" x-data-value="0">Accidents Maps by Year</p>
+						<p id="histAbsToggle" class="homeText homeFullPara homePer" x-data-value="1">Accident Frequency by Time</p>
 					</div>
 				</section>
 				<section class="homeSec">
-					<button id="visButton">Visualize</buttton>
+					<button id="visButton">Visualize</button>
 				</section>
 			</div>
 		</div>
