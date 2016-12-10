@@ -23,7 +23,7 @@ var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 			
-function showFuture() {
+function showFuture(callback) {
 	
 	var fmapboxTiles = new L.tileLayer('https://api.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
@@ -48,7 +48,7 @@ function showFuture() {
 	
 	var fg = fsvg.append("g").attr("class", "leaflet-zoom-hide");
 	
-	renderf();
+	renderf(callback);
 };
 
 function cleanf() {
@@ -57,7 +57,7 @@ function cleanf() {
 
 }
 
-function appendf() {
+function appendf(callback) {
 
 	var nodes = fsvg.selectAll("g")
 		.data(fdata)
@@ -69,7 +69,7 @@ function appendf() {
 		nodes.append("circle")
 			.style("opacity", 0.6)
 			.style("fill", function(d) { return probToColorScale(d.PROB) })
-			.attr("r",  20);
+			.attr("r",  20)
 			
 		nodes.append("text")
 			.text(function(d) { return Number(d.PROB).toFixed(2); })
@@ -77,18 +77,19 @@ function appendf() {
 			.style("text-anchor", "middle")
 			.style("font-size", "10px")
 			.attr("dy", "3px")
-			.style("font-weight", "bold");
+			.style("font-weight", "bold")
+			.call(callback);
 		
 		// Here render to screen
 }
 
-function drawf() {
+function drawf(callback) {
 
 	mapCoordinatesToPixelsf(fdata);
 						
 	cleanf();
 	
-	appendf();
+	appendf(callback);
 	
 	d3.select("#year")
 		.transition()
@@ -96,7 +97,7 @@ function drawf() {
 		.style("color", "white");
 }
 		
-function renderf() {
+function renderf(callback) {
 	d3.csv("lb_inters.csv", function(dd) {
 		
 		fdata = dd.slice(0,25);
@@ -106,7 +107,7 @@ function renderf() {
 			fdata[i].PROB = poisson(fdata[i].COUNT);
 		}
 		
-		drawf();
+		drawf(callback);
 	});
 }
 	

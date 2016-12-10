@@ -43,10 +43,10 @@ function loadScreen(know, perspective, endFunction) {
 		showHeatmap(endFunction);
 	}
 	else if (know == 1 && perspective == 0) {
-		showHistoricalMap(endFunction);
+		showFuture(endFunction);
 	}
 	else {
-		showHistoricalMap(endFunction);
+		showFutureBars(endFunction);
 	}
 }
 	
