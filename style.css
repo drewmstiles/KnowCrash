@@ -78,7 +78,7 @@ body{
 	padding:0;
 }
 
-#homeHistView {
+#homeHistView, #histMapToggle {
 	text-decoration: underline;
 }
 .homeArrow {
