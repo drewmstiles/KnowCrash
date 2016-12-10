@@ -33,7 +33,7 @@ var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 			
-function showHistoricalMap(endFunction) {
+function showHistoricalMap(endFunction, year) {
 	
 	var mapboxTiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
@@ -42,7 +42,8 @@ function showHistoricalMap(endFunction) {
 	
 	map = L.map('map', {
 		minZoom: 12,
-		maxZoom: 15
+		maxZoom: 15,
+		attributionControl: false
 		})
 		.addLayer(mapboxTiles)
 		.setView([33.810335, -118.135071], INIT_MAP_ZOOM);
@@ -57,22 +58,21 @@ function showHistoricalMap(endFunction) {
 	
 	var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
-	render(endFunction);
+	render(endFunction, year);
 };
 
 	
-function proprocess(d) {
+function proprocess(d,year) {
 
-	var yrr = $("#year").html();
 	var sev = $("#sev").find(":selected").val();
 	var fac = $("#fac").find(":selected").val();
-	
 	var hasPos = (d.LATITUDE != "" && d.LONGITUDE != "");
-	var hasYrr = (d.COLLISION_DATE.slice(0,4) == yrr);
+	var hasYrr = (d.COLLISION_DATE.slice(0,4) == year);
 	var hasSev = (sev == "*" || d.COLLISION_SEVERITY == sev);
 	var hasFac = (fac == "*" || d.PCF_VIOL_CATEGORY == fac);
-	
-	return hasPos && hasYrr && hasSev && hasFac;
+
+	return hasPos && hasYrr;	
+// 	return hasPos && hasYrr && hasSev && hasFac;
 
 }
 
@@ -136,13 +136,15 @@ function draw(endFunction) {
 		.style("color", "white");
 }
 		
-function render(endFunction) {
+function render(endFunction, year) {
 	d3.csv("lb_all.csv", function(dd) {
 		
 		data = dd.filter(function(d) {
-			return proprocess(d);
+			return proprocess(d, year);
 		});
 
+		console.log(data.length);
+		
 		draw(endFunction);
 	});
 }

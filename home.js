@@ -48,6 +48,13 @@ function hideHomeScreen() {
 			.transition()
 			.duration(1000)
 			.style("top", -h + "px");
+			
+		d3.select("#ctrl")
+			.style("display","block")
+			.transition()
+			.duration(1000)
+			.delay(1000)
+				.style("opacity", 1.0);
 }
 
 function getSelectedValueForClass(className) {

@@ -53,6 +53,27 @@
 		</div>
 		<div id="futureAbstract" class="screen"></div>
 		<div id="ctrl">
+			<div id=ctrlHead">
+				<img id="ctrlHome" class="ctrlIcon" src="img/home.png">
+				<img id="ctrlInfo" class="ctrlIcon" src="img/info.png">
+				<img id="ctrlSett" class="ctrlIcon" src="img/sett.png">
+			</div>
+			<hr id="ctrlLine" />
+			<div id="ctrlBody">
+			<p>function endall(transition, callback) { 
+    if (!callback) callback = function(){};
+    if (transition.size() === 0) { callback() }
+    var n = 0; 
+    transition 
+        .each(function() { ++n; }) 
+        .each("end", function() { if (!--n) callback.apply(this, arguments); }); 
+  } 
+
+  d3.selectAll("g").transition().call(endall, function() { console.log("all done") });
+  </p>
+			</div>
+				
+<!-- 
 			<p id="lastYear" class="year yearArrow">&#x2190;</p>
 			<p id="year" class="year">2001</p>
 			<p id="nextYear" class="year yearArrow">&#x2192;</p>
@@ -81,11 +102,7 @@
 					<option value="24">Driver Fell Asleep</option> 		
 				</select>
 			</p>
-			<hr/>
-			<p id="up" class="vert nav">&#x2191;</p>
-			<p id="left" class="horz nav">&#x2190;</p>
-			<p id="right" class="horz nav">&#x2192;</p>
-			<p id="down" class="vert nav">&#x2193;</p>
+ -->
 		</div>
 </div>
 </body>

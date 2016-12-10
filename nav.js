@@ -37,7 +37,7 @@ function loadScreen(know, perspective, endFunction) {
 	d3.select(screenId).style("display","block");
 	
 	if (know == 0 && perspective == 0) {
-		showHistoricalMap(endFunction);
+		showHistoricalMap(endFunction, 2001);
 	}
 	else if (know == 0 && perspective == 1) {
 		showHeatmap(endFunction);
