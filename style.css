@@ -1,10 +1,10 @@
 
 body{
 	font-family:Helvetica;
+		overflow: hidden;
 }
 
 #wrapper {
-	overflow: hidden;
 }
 
 .view {
@@ -15,6 +15,111 @@ body{
 	left:0;
 }
 
+#home {
+	position:absolute;
+	top:0;
+	right:0;
+	background-color:rgba(208, 208, 208, 0.88);
+	z-index:1000;
+	overflow:scroll;
+}
+
+#homeContainer {
+	width:50%;
+	margin:60px auto 0 auto;	
+}
+
+.homeText {
+	font-size:20px;
+}
+
+.homeSec {
+	margin:30px auto;
+}
+
+#homeTitle {
+	position: relative;
+	width:100%;
+	height:auto;
+	margin:30px auto;
+	text-align:center;
+	font-size:80px;
+}
+
+#homeSubtitle {
+	position: relative;
+	width:100%;
+	height:auto;
+	text-align:center;
+	font-size:24px;
+}
+
+.homeLabel {
+	text-align:center;
+	font-size:24px;
+	padding:0;
+	border:none;
+	font-weight: bold;
+}
+
+.homeHalfPara {
+	text-align: center;
+	display:inline-block;
+	width:49%;
+	border:none;
+	padding:0;
+}
+
+.homeFullPara {
+	text-align:center;
+	display:inline-block;
+	width:100%;
+	border:none;
+	padding:0;
+}
+
+#homeHistView {
+	text-decoration: underline;
+}
+.homeArrow {
+	display:inline-block;
+	width:20%;
+	padding:0;
+	margin:10px 0;
+	border:none;
+}
+
+.homeLeftArrow {
+	text-align:right;
+}
+
+.homeRightArrow {
+	text-align:left;
+}
+
+.homeField {
+	display:inline-block;
+	width:58%;
+	padding:0;
+	margin:0;
+	border:none;
+	background: none;
+	text-align:center;
+	font-size:22px;
+}
+
+#visButton {
+	display: block;
+	width:80%;
+	height:30px;
+	margin:auto;
+	background-color: rgba(255, 0, 0, 1.0);
+	border:none;
+	font-size: 18px;
+	font-weight:bold;
+	color:white;
+}
+
 #ctrl {
 	position:absolute;
 	top: 20px;
@@ -22,10 +127,10 @@ body{
 	z-index:10;
 	width:250px;
 	height:300px;
-	opacity:0.8;
+	opacity:0.0;
 	display:block;
 	border:2px solid gray;
-   background-color:black;
+	background-color:black;
 	color:white;
 	transition:opacity 500ms linear;
 }
