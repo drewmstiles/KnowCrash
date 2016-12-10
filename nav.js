@@ -39,5 +39,14 @@ function loadScreen(know, perspective, endFunction) {
 	if (know == 0 && perspective == 0) {
 		showHistoricalMap(endFunction);
 	}
+	else if (know == 0 && perspective == 1) {
+		showHeatmap(endFunction);
+	}
+	else if (know == 1 && perspective == 0) {
+		showHistoricalMap(endFunction);
+	}
+	else {
+		showHistoricalMap(endFunction);
+	}
 }
 	

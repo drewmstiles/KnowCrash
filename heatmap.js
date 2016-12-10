@@ -41,8 +41,11 @@ var timeLabels = heatSvg.selectAll(".timeLabel")
 		.attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
 		
 var cards;
-		
-d3.csv("lb_agg.csv", function (error, data) {
+
+
+function showHeatmap(callback) {
+	console.log("exe");
+	d3.csv("lb_agg.csv", function (error, data) {
 		var colorScale = d3.scaleLinear()
 			.domain([d3.min(data, function(d) { return +d.value; }), d3.max(data, function (d) { return +d.value; })])
 			.range(colors);
@@ -61,16 +64,17 @@ d3.csv("lb_agg.csv", function (error, data) {
 			.attr("width", gridSize)
 			.attr("height", gridSize)
 			.attr("opacity", 0.0)
-			.transition()
-				.duration(1000)
-				.style("fill", function(d) { return colorScale(d.value); });
+			.style("fill", function(d) { return colorScale(d.value); })
+			.call(function() {
+				callback();
+				showHeatmapTiles();
+			});
 			
 		cards.select("title").text(function(d) { return d.value; });
 		
 		cards.exit().remove();
 		
 		var legend = heatSvg.select(".legend");
-// 					.data([0].concat(colorScale.quantiles()), function (d) { return d; });
 			
 		legend.enter().append("g")
 			.attr("class", "legend");
@@ -94,18 +98,19 @@ d3.csv("lb_agg.csv", function (error, data) {
 		// Position heatmap.		
 		margin.top = (window.innerHeight/2 - heatSvg.node().getBBox().height/2);
 		heatSvg.attr("transform","translate(" + margin.left + "," + margin.top + ")");
-});
+	});
 
 
-function showHeatmap() {
-	console.log(d3.selectAll(".hour"));
+}
+
+function showHeatmapTiles() {
 	d3.selectAll(".hour")
 		.transition()
 		.duration(1000)
-		.style("opacity", 1.0);
+		.attr("opacity", 1.0);
 }
 
-function hideHeatmap() {
+function hideHeatmapTiles() {
 	d3.selectAll(".hour")
 		.duration(1000)
 		.style("opacity", 0.0);

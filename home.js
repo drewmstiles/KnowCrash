@@ -42,14 +42,12 @@ d3.select("#visButton").on("click", function() {
 });
 
 function hideHomeScreen() {
-	setTimeout(function() {
 		clearInterval(homeLoadInterval);
 		var h = window.innerHeight;
 		d3.select("#home")
 			.transition()
 			.duration(1000)
 			.style("top", -h + "px");
-	}, 500);
 }
 
 function getSelectedValueForClass(className) {
