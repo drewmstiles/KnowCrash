@@ -18,3 +18,26 @@ $(document).on("click", "#nextYear", function() {
 $(document).on("change", "#sev", render)
 
 $(document).on("change", "#fac", render);
+
+
+// ==========================================
+
+
+var screens = [
+	[ "map", "heatmap" ],
+	[ "futureMap", "futureAbstract" ]
+];
+
+function loadScreen(know, perspective, endFunction) {
+	var screenId = "#" + screens[know][perspective];
+
+	d3.selectAll(".screen")
+		.style("display", "none");
+		
+	d3.select(screenId).style("display","block");
+	
+	if (know == 0 && perspective == 0) {
+		showHistoricalMap(endFunction);
+	}
+}
+	

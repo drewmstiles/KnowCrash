@@ -33,7 +33,7 @@ var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 			
-function showHistoricalMap() {
+function showHistoricalMap(endFunction) {
 	
 	var mapboxTiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
@@ -57,7 +57,7 @@ function showHistoricalMap() {
 	
 	var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
-	render();
+	render(endFunction);
 };
 
 	
@@ -82,7 +82,7 @@ function clean() {
 
 }
 
-function append() {
+function append(endFunction) {
 
 	svg.selectAll("circle")
 		.data(data)
@@ -118,16 +118,17 @@ function append() {
 			else {
 				return deathsToRadiusScale(cs) * zoomToRadiusMultiplierScale(map._zoom);
 			}
-		});
+		})
+		.call(endFunction);
 }
 
-function draw() {
+function draw(endFunction) {
 
 	mapCoordinatesToPixels(data);
 						
 	clean();
 	
-	append();
+	append(endFunction);
 	
 	d3.select("#year")
 		.transition()
@@ -135,14 +136,14 @@ function draw() {
 		.style("color", "white");
 }
 		
-function render() {
+function render(endFunction) {
 	d3.csv("lb_all.csv", function(dd) {
 		
 		data = dd.filter(function(d) {
 			return proprocess(d);
 		});
 
-		draw();
+		draw(endFunction);
 	});
 }
 			

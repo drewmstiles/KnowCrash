@@ -1,3 +1,4 @@
+var homeLoadInterval;
 
 d3.selectAll(".homeKnow").on("click", function() {
 	d3.selectAll(".homeKnow").each(function() {
@@ -25,22 +26,31 @@ d3.selectAll(".homePer").on("click", function() {
 
 d3.select("#visButton").on("click", function() {
 	
+	d3.select(this).style("display", "none");
+	d3.select("#homeLoadingText").style("display", "block");
+	
 	var city = d3.select("#homeCity").attr("value");
-	console.log(city);
 	
-	var know = getSelectedValueForClass("homeKnow")
-	console.log(know);
+	var know = getSelectedValueForClass("homeKnow");
 	
-	var perspective = getSelectedValueForClass("homePer")
-	console.log(perspective);
+	var perspective = getSelectedValueForClass("homePer");
+	
+	setTimeout(function() {
+		loadScreen(know, perspective, hideHomeScreen)
+	}, 100);
 
-// 	var h = window.innerHeight;
-// 	d3.select("#home")
-// 		.transition()
-// 		.duration(1000)
-// 		.style("top", -h + "px");
 });
 
+function hideHomeScreen() {
+	setTimeout(function() {
+		clearInterval(homeLoadInterval);
+		var h = window.innerHeight;
+		d3.select("#home")
+			.transition()
+			.duration(1000)
+			.style("top", -h + "px");
+	}, 500);
+}
 
 function getSelectedValueForClass(className) {
 		var value = "";
