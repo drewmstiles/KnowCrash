@@ -19,7 +19,7 @@ var dbPath  = "mongodb://"+config.USER + ":"+
     config.DATABASE;
 
  var accidentSchema = mongoose.Schema({
-  COLLISION_DATE : Number,
+  COLLISION_DATE : String,
   COLLISION_TIME : Number,
   DAY_OF_WEEK : Number,
   PRIMARY_RD : String,
@@ -47,20 +47,18 @@ var dbPath  = "mongodb://"+config.USER + ":"+
 
 
 db = mongoose.connect(dbPath).connection.once("open", function () {
-        console.log("OOO");
+        console.log("DB Connected");
 });
 
 var Model = db.model('lb', accidentSchema, 'lb');
 
 
 app.get('/', function(req, res){
-	console.log(req);
-  	Model.find({  
-  			'COLLISION_DATE' : 20010101,
-			'COLLISION_TIME' : 110 })
-		.select('PRIMARY_RD')
-		.exec(function(err, acc) {
-			res.send(acc);
+	var query = { 'COLLISION_DATE' : new RegExp(req.query.year + '.*') };
+	console.log(query);
+  	Model.find(query, function(err, result) {
+			console.log(result);
+			res.send(result);
 		});
 });
 

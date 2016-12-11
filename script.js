@@ -11,7 +11,7 @@ var MAX_RADIUS_M = 2.0;
 var MIN_RADIUS_M = 1.0;
 var INIT_MAP_ZOOM = 13;
 
-var data;
+var mapData;
 var map;
 var svg;
 var severity = "*";
@@ -33,7 +33,7 @@ var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 			
-function showHistoricalMap(endFunction, year) {
+function showHistoricalMap(endFunction, conditions) {
 	
 	var mapboxTiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
@@ -65,23 +65,8 @@ function showHistoricalMap(endFunction, year) {
 	
 	var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
-	render(endFunction, year);
+	render(endFunction, conditions);
 };
-
-	
-function proprocess(d,year) {
-
-	var sev = $("#sev").find(":selected").val();
-	var fac = $("#fac").find(":selected").val();
-	var hasPos = (d.LATITUDE != "" && d.LONGITUDE != "");
-	var hasYrr = (d.COLLISION_DATE.slice(0,4) == year);
-	var hasSev = (sev == "*" || d.COLLISION_SEVERITY == sev);
-	var hasFac = (fac == "*" || d.PCF_VIOL_CATEGORY == fac);
-
-	return hasPos && hasYrr;	
-// 	return hasPos && hasYrr && hasSev && hasFac;
-
-}
 
 function clean() {
 
@@ -92,7 +77,7 @@ function clean() {
 function append(endFunction) {
 
 	svg.selectAll("circle")
-		.data(data)
+		.data(mapData)
 		.enter()
 		.append("circle")
 		.attr("cy", function(d) { return d.PIXEL_Y; })
@@ -131,7 +116,7 @@ function append(endFunction) {
 
 function draw(endFunction) {
 
-	mapCoordinatesToPixels(data);
+	mapCoordinatesToPixels(mapData);
 						
 	clean();
 	
@@ -143,13 +128,9 @@ function draw(endFunction) {
 		.style("color", "white");
 }
 		
-function render(endFunction, year) {
-	d3.csv("lb_all.csv", function(dd) {
-		
-		data = dd.filter(function(d) {
-			return proprocess(d, year);
-		});
-		
+function render(endFunction, conditions) {
+	$.get("http://ec2-54-67-114-248.us-west-1.compute.amazonaws.com:8080", conditions, function(data, status) {
+		mapData = data;
 		draw(endFunction);
 	});
 }
@@ -157,14 +138,15 @@ function render(endFunction, year) {
 function applyLatLngToLayer(d) {
 	var y = d.LATITUDE;
 	var x = d.LONGITUDE;
+	console.log(d);
 	return map.latLngToLayerPoint(new L.LatLng(y, x))
 }
 
 function mapCoordinatesToPixels(dd) {
 	for (var i = 0; i < dd.length; i++) {
-		var coordinates = applyLatLngToLayer(data[i]);
-		data[i].PIXEL_X = coordinates.x;
-		data[i].PIXEL_Y = coordinates.y;
+		var coordinates = applyLatLngToLayer(mapData[i]);
+		mapData[i].PIXEL_X = coordinates.x;
+		mapData[i].PIXEL_Y = coordinates.y;
 	}
 }
 

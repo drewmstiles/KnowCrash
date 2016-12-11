@@ -37,7 +37,11 @@ function loadScreen(know, perspective, endFunction) {
 	d3.select(screenId).style("display","block");
 	
 	if (know == 0 && perspective == 0) {
-		showHistoricalMap(endFunction, 2001);
+		var year = d3.select("#ctrlMapYear").html();
+		
+		var request = { "year" : year };
+		
+		showHistoricalMap(endFunction, request);
 	}
 	else if (know == 0 && perspective == 1) {
 		showHeatmap(endFunction);
