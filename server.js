@@ -3,7 +3,7 @@ var http = require('http');
 var mongoose = require('mongoose');
 var express = require('express');
 var app = express();
-
+var db;
 var config = {
       "USER" : "",           
       "PASS" : "",
@@ -45,12 +45,25 @@ var dbPath  = "mongodb://"+config.USER + ":"+
   LONGITUDE : Number
 }); 
 
-global.db = mongoose.connect(dbPath); 
+
+db = mongoose.connect(dbPath).connection.once("open", function () {
+        console.log("OOO");
+});
 
 var Model = db.model('lb', accidentSchema, 'lb');
 
-var connect = require('connect');
-var serveStatic = require('serve-static');
-connect().use(serveStatic(__dirname)).listen(8080, function(){
-    console.log('Server running on 8080...');
+
+app.get('/', function(req, res){
+	console.log(req);
+  	Model.find({  
+  			'COLLISION_DATE' : 20010101,
+			'COLLISION_TIME' : 110 })
+		.select('PRIMARY_RD')
+		.exec(function(err, acc) {
+			res.send(acc);
+		});
 });
+
+console.log('starting the Express (NodeJS) Web server');
+app.listen(8080);
+console.log('Webserver is listening on port 8080');

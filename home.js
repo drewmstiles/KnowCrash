@@ -26,6 +26,11 @@ d3.selectAll(".homePer").on("click", function() {
 
 d3.select("#visButton").on("click", function() {
 	
+	$.get("http://ec2-54-67-114-248.us-west-1.compute.amazonaws.com:8080", "Client Request", function(data, status) {
+		console.log("Server status %s", status);
+		console.log(data);
+	});
+	
 	d3.select(this).html("Loading...");
 	
 	var city = d3.select("#homeCity").attr("value");
