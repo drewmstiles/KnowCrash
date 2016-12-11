@@ -57,67 +57,72 @@
 				<div id="ctrlInfo" class="ctrlIcon"></div>
 				<div id="ctrlSett" class="ctrlIcon"></div>
 			</div>
-			<div id="ctrlMapBody" class="ctrlBody">
-					<hr id="ctrlLine" />
-					<h2 class=ctrlBodyTitle>Accidents Mapped by Year</h2>
-					<h3>Summary</h3>
-					<p>This perspective shows accidents that occurred in Long Beach over the given year. Accidents are presented as a circular marker at the location where the accident occurred. Accident severity is encoded in both the size and color of the marker as shown in the legend given below.
-					</p>
-					<h3>Legend</h3>
-					<div id="ctrlMapLegend">
-						<div class="ctrlMapLegendEntry">
-							<div class="ctrlMapCircle" id="ctrlMapCircleRed"></div>
-							<div class="ctrlMapCircleLabel">Fatal</div>	
-						</div>
-						<div class="ctrlMapLegendEntry">
-							<div class="ctrlMapCircle" id="ctrlMapCircleOrange"></div>
-							<div class="ctrlMapCircleLabel">Severe</div>	
-						</div>
-						<div class="ctrlMapLegendEntry">
-							<div class="ctrlMapCircle" id="ctrlMapCircleMustard"></div>
-							<div class="ctrlMapCircleLabel">Mild</div>	
-						</div>
-						<div class="ctrlMapLegendEntry">
-							<div class="ctrlMapCircle" id="ctrlMapCircleYellow"></div>
-							<div class="ctrlMapCircleLabel">Minor</div>	
-						</div>
-						<div class="ctrlMapLegendEntry">
-							<div class="ctrlMapCircle" id="ctrlMapCircleWhite"></div>
-							<div class="ctrlMapCircleLabel">No Injury</div>	
-						</div> 		
-					</div>				
+			<div id="ctrlBody">
+				<div id="ctrlMapInfoBody">
+						<hr class="ctrlLine" />
+						<h2 class=ctrlBodyTitle>Accidents Mapped by Year</h2>
+						<h3>Summary</h3>
+						<p>This perspective shows accidents that occurred in Long Beach over the given year. Accidents are presented as a circular marker at the location where the accident occurred. Accident severity is encoded in both the size and color of the marker as shown in the legend given below.
+						</p>
+						<h3>Legend</h3>
+						<div id="ctrlMapLegend">
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleRed"></div>
+								<div class="ctrlMapCircleLabel">Fatal</div>	
+							</div>
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleOrange"></div>
+								<div class="ctrlMapCircleLabel">Severe</div>	
+							</div>
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleMustard"></div>
+								<div class="ctrlMapCircleLabel">Mild</div>	
+							</div>
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleYellow"></div>
+								<div class="ctrlMapCircleLabel">Minor</div>	
+							</div>
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleWhite"></div>
+								<div class="ctrlMapCircleLabel">No Injury</div>	
+							</div> 		
+						</div>				
+				</div>
+				<div id="ctrlMapSettBody">
+					<hr class="ctrlLine" />
+					<div id="ctrlMapYearSection" class="ctrlMapSettingSection">
+						<p id="ctrlMapLastYear" class="ctrlMapYear ctrlMapYearArrow">&#x2190;</p>
+						<p id="ctrlMapYear" class="ctrlMapYear">2001</p>
+						<p id="ctrlMapNextYear" class="ctrlMapYear ctrlMapYearArrow">&#x2192;</p>
+					</div>
+					
+					<div id="ctrlMapSeveritySetting" class="ctrlMapSettingSection">
+						<div id="sevTxt" class="ctrlMapSettingLabel">Severity</div>
+						<div class="ctrlMapSelectBox"><select id="sev" class="ctrlMapSelect">
+							<option value="*" selected>All</option>
+							<option value="1">Fatal</option>
+							<option value="2">Injury (Severe)</option>
+							<option value="3">Injury (Visible)</option>
+							<option value="4">Injury (Complaint)</option>
+							<option value="0">None</option>
+						</select></div>
+					</div>
+					<div id="ctrlMapFactorSetting" class="ctrlMapSettingSection">
+						<div id="facTxt" class="ctrlMapSettingLabel">Factor</div>
+						<div class="ctrlMapSelectBox"><select id="fac" class="ctrlMapSelect">
+							<option value="*" selected>All</option>
+							<option value="1">Driving Under theInfluence</option>
+							<option value="3">Speeding</option>
+							<option value="4">Tailgating</option> 
+							<option value="5">Wrong Side of Road</option> 								
+							<option value="6">Improper Passing</option>
+							<option value="11">Pedestrian Violation</option>
+							<option value="12">Traffic Signal Malfunction</option> 		
+							<option value="24">Driver Fell Asleep</option> 		
+						</select></div>
+					</div>	
+					<br />
 			</div>
-				
-<!-- 
-			<p id="lastYear" class="year yearArrow">&#x2190;</p>
-			<p id="year" class="year">2001</p>
-			<p id="nextYear" class="year yearArrow">&#x2192;</p>
-			<hr/>
-			<p id="sevTxt" class="filterTxt">Severity 
-				<select id="sev">
-					<option value="*" selected>All</option>
-					<option value="1">Fatal</option>
-					<option value="2">Injury (Severe)</option>
-					<option value="3">Injury (Visible)</option>
-					<option value="4">Injury (Complaint)</option>
-					<option value="0">None</option>
-				</select>
-			</p>
-			<hr/>
-			<p id="facTxt" class="filterTxt">Factor
-				<select id="fac">
-					<option value="*" selected>All</option>
-					<option value="1">Driving Under theInfluence</option>
-					<option value="3">Speeding</option>
-					<option value="4">Tailgating</option> 
-					<option value="5">Wrong Side of Road</option> 								
-					<option value="6">Improper Passing</option>
-					<option value="11">Pedestrian Violation</option>
-					<option value="12">Traffic Signal Malfunction</option> 		
-					<option value="24">Driver Fell Asleep</option> 		
-				</select>
-			</p>
- -->
 		</div>
 </div>
 </body>

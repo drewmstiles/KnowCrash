@@ -8,18 +8,20 @@ d3.select("#ctrlHome").on("click", function() {
 });
 
 d3.select("#ctrlInfo").on("click", function() {
-
-	var elem = d3.select(this);
-	var state = ctrlSwapIcons(elem, "info");
 	
 	var screenName = navGetCurrentScreenName();
-	
+	d3.select("#ctrl" + screenName + "SettBody").style("display", "none");
+	d3.select("#ctrl" + screenName + "InfoBody").style("display", "block");
+		
+	var elem = d3.select(this);
+	var state = ctrlSwapIcons(elem, "info");
+		
 	var headHeight = d3.select("#ctrlHead").node().getBoundingClientRect().height;
-	var bodyHeight = d3.select("#ctrl" + screenName + "Body").node().getBoundingClientRect().height;
+	var bodyHeight = d3.select("#ctrl" + screenName + "InfoBody").node().getBoundingClientRect().height;
 	
 	if (state == "on") {
 
-		d3.select("#ctrlLine")
+		d3.selectAll(".ctrlLine")
 						.transition()
 						.duration(1000)
 							.style("opacity", 1.0);
@@ -30,7 +32,44 @@ d3.select("#ctrlInfo").on("click", function() {
 				.style("height", (headHeight + bodyHeight) + "px")
 	}
 	else {
-		d3.select("#ctrlLine")
+		d3.selectAll(".ctrlLine")
+		.transition()
+		.duration(1000)
+			.style("opacity", 0.0);
+							
+		d3.select("#ctrl")
+			.transition()
+			.duration(1000)
+				.style("height", headHeight + "px")
+	}
+});
+
+d3.select("#ctrlSett").on("click", function() {
+	
+	var screenName = navGetCurrentScreenName();
+	d3.select("#ctrl" + screenName + "InfoBody").style("display", "none");
+	d3.select("#ctrl" + screenName + "SettBody").style("display", "block");
+	
+	var elem = d3.select(this);
+	var state = ctrlSwapIcons(elem, "sett");
+		
+	var headHeight = d3.select("#ctrlHead").node().getBoundingClientRect().height;
+	var bodyHeight = d3.select("#ctrl" + screenName + "SettBody").node().getBoundingClientRect().height;
+	
+	if (state == "on") {
+
+		d3.selectAll(".ctrlLine")
+						.transition()
+						.duration(1000)
+							.style("opacity", 1.0);
+							
+		d3.select("#ctrl")
+			.transition()
+			.duration(1000)
+				.style("height", (headHeight + bodyHeight) + "px")
+	}
+	else {
+		d3.selectAll(".ctrlLine")
 		.transition()
 		.duration(1000)
 			.style("opacity", 0.0);
