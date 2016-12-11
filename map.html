@@ -34,7 +34,7 @@
 				<section class="homeSec">
 					<p class="homeLabel">Which perspective would you like to see?</p>
 					<div class="homeFieldContainer">
-						<p id="histMapToggle" class="homeText homeFullPara homePer" x-data-selected="yes" x-data-value="0">Accidents Maps by Year</p>
+						<p id="histMapToggle" class="homeText homeFullPara homePer" x-data-selected="yes" x-data-value="0">Accidents Mapped by Year</p>
 						<p id="histAbsToggle" class="homeText homeFullPara homePer" x-data-selected="no" x-data-value="1">Accident Frequency by Time</p>
 					</div>
 				</section>
@@ -52,13 +52,16 @@
 		</div>
 		<div id="futureAbstract" class="screen"></div>
 		<div id="ctrl">
-			<div id=ctrlHead">
+			<div id="ctrlHead">
 				<div id="ctrlHome" class="ctrlIcon"></div>
 				<div id="ctrlInfo" class="ctrlIcon"></div>
 				<div id="ctrlSett" class="ctrlIcon"></div>
 			</div>
 			<hr id="ctrlLine" />
-			<div id="ctrlBody">
+			<div id="ctrlMapBody" class="ctrlBody">
+					<h3 class=ctrlBodyTitle>Accidents Mapped by Year</h3>
+					<p>This perspective shows accidents that occurred in Long Beach over the given year. Accidents are presented as a circular marker at the location where the accident occurred. Accident severity is encoded in both the size and color of the marker as shown in the legend given below.
+					</p>
 			</div>
 				
 <!-- 

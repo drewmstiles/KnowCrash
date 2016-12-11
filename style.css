@@ -135,12 +135,14 @@ body{
 	position:absolute;
 	top: 20px;
 	right:20px;
+	height:80px;
 	max-width:309px;
 	z-index:10;
 	display:none;
 	opacity:0.0;
 	border:2px solid gray;
 	background-color:rgba(208, 208, 208, 0.88);
+	overflow:hidden;
 }
 
 #ctrlLine {
@@ -174,6 +176,13 @@ body{
 	background-size: 32px 32px;
 }
 
+.ctrlBody {
+	display:block;
+	width:100%;
+	padding: 0 10px;
+	margin:0;
+	border:0;
+}
 /*
  * HEATMAP
  */

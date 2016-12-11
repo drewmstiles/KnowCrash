@@ -50,4 +50,21 @@ function loadScreen(know, perspective, endFunction) {
 	}
 }
 	
+function navGetCurrentScreenName() {
+	
+	var name = "";
+	
+	d3.selectAll(".screen")
+		.each(function() {
+			var screen = d3.select(this);
+			if (screen.style("display") == "block") {
+				name = screen.attr("id");
+			}
+			else {
+				// Keep looking.
+			}
+		});
+		
+	return name[0].toUpperCase() + name.substring(1);
+}
 	

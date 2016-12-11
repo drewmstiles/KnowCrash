@@ -7,6 +7,21 @@ d3.select("#ctrlHome").on("click", function() {
 	
 });
 
+d3.select("#ctrlInfo").on("click", function() {
+
+	var elem = d3.select(this);
+	ctrlSwapIcons(elem, "info");
+	
+	var screenName = navGetCurrentScreenName();
+	
+	var headHeight = d3.select("#ctrlHead").node().getBoundingClientRect().height;
+	var bodyHeight = d3.select("#ctrl" + screenName + "Body").node().getBoundingClientRect().height;
+	
+	d3.select("#ctrl")
+		.transition()
+		.duration(1000)
+			.style("height", (headHeight + bodyHeight) + "px");
+});
 
 function ctrlSwapIcons(elem, name) {
 
@@ -44,3 +59,14 @@ function ctrlHide(callback) {
 			callback();
 		});
 }
+
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
