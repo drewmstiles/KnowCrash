@@ -54,23 +54,12 @@
 		<div id="futureAbstract" class="screen"></div>
 		<div id="ctrl">
 			<div id=ctrlHead">
-				<img id="ctrlHome" class="ctrlIcon" src="img/home.png">
-				<img id="ctrlInfo" class="ctrlIcon" src="img/info.png">
-				<img id="ctrlSett" class="ctrlIcon" src="img/sett.png">
+				<div id="ctrlHome" class="ctrlIcon"></div>
+				<div id="ctrlInfo" class="ctrlIcon"></div>
+				<div id="ctrlSett" class="ctrlIcon"></div>
 			</div>
 			<hr id="ctrlLine" />
 			<div id="ctrlBody">
-			<p>function endall(transition, callback) { 
-    if (!callback) callback = function(){};
-    if (transition.size() === 0) { callback() }
-    var n = 0; 
-    transition 
-        .each(function() { ++n; }) 
-        .each("end", function() { if (!--n) callback.apply(this, arguments); }); 
-  } 
-
-  d3.selectAll("g").transition().call(endall, function() { console.log("all done") });
-  </p>
 			</div>
 				
 <!-- 
@@ -111,6 +100,7 @@
 <script type="text/javascript" src="nav.js"></script>
 <script type="text/javascript" src="futureMap.js"></script>
 <script type="text/javascript" src="home.js"></script>
+<script type="text/javascript" src="ctrl.js"></script>
 <script type="text/javascript" src="futureAbstract.js"></script>
 <script>
 

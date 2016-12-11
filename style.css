@@ -135,7 +135,7 @@ body{
 	position:absolute;
 	top: 20px;
 	right:20px;
-	max-width:288px;
+	max-width:309px;
 	z-index:10;
 	display:none;
 	opacity:0.0;
@@ -144,6 +144,7 @@ body{
 }
 
 #ctrlLine {
+	display:none;
 	width:80%;
 	margin:auto;
 	border-color: black;
@@ -151,11 +152,26 @@ body{
 	
 .ctrlIcon {
 	display:inline-block;
-	height:32px;
-	width:32px;
+	height:40px;
+	width:40px;
 	margin:20px 30px;
 	padding:0;
-	border:none;
+	border-radius: 20px;
+}
+
+#ctrlHome {
+	background:url("img/home_off.png") no-repeat center;
+	background-size: 32px 32px;
+}
+
+#ctrlInfo {
+	background:url("img/info_off.png") no-repeat center;
+	background-size: 32px 32px;
+}
+
+#ctrlSett {
+	background:url("img/sett_off.png") no-repeat center;
+	background-size: 32px 32px;
 }
 
 /*
