@@ -39,14 +39,21 @@ function showHistoricalMap(endFunction, year) {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
        			token: 'pk.eyJ1IjoiZHJld3N0aWxlcyIsImEiOiJjaWw2YXR4eXgwMWl6dWhsdjhrZGxuMXBqIn0.4rYaU8tPJ9Mw2bniPfAKdQ'
 	});
+
 	
-	map = L.map('map', {
+	if (map._container == undefined) {
+		// Initialize map.
+		map = L.map('map', {
 		minZoom: 12,
 		maxZoom: 15,
 		attributionControl: false
 		})
 		.addLayer(mapboxTiles)
 		.setView([33.810335, -118.135071], INIT_MAP_ZOOM);
+	}
+	else {
+		// Map already initialized.
+	}
 	
 	map.on("zoomstart", clean);
 	
@@ -142,8 +149,6 @@ function render(endFunction, year) {
 		data = dd.filter(function(d) {
 			return proprocess(d, year);
 		});
-
-		console.log(data.length);
 		
 		draw(endFunction);
 	});

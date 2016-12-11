@@ -44,7 +44,6 @@ var cards;
 
 
 function showHeatmap(callback) {
-	console.log("exe");
 	d3.csv("lb_agg.csv", function (error, data) {
 		var colorScale = d3.scaleLinear()
 			.domain([d3.min(data, function(d) { return +d.value; }), d3.max(data, function (d) { return +d.value; })])
