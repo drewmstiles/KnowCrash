@@ -179,10 +179,71 @@ body{
 
 .ctrlBody {
 	display:block;
-	width:100%;
-	padding: 10px 10px;
+	width:92%;
 	margin:0;
 	border:0;
+	padding:0 4%;
+	font-size: 12px;
+}
+
+.ctrlBodyTitle {
+	text-align: center;
+}
+
+#ctrlMapLegend {
+	height:auto;
+	width:100%;
+	margin:10px auto 20px auto;
+}
+
+.ctrlMapLegendEntry {
+	display:inline-block;
+	height:80px;
+	width: 19%;
+	border:none;
+}
+
+
+.ctrlMapCircle {
+	height:50px;
+	width:100%;
+	padding:0;
+	margin:0;
+	border:none;
+}
+
+.ctrlMapCircleLabel {
+	text-align:center;
+	height:30px;
+	width:100%;
+	padding:0;
+	margin:0;
+	border:none;		
+}
+
+#ctrlMapCircleRed {
+	background:url("img/red.png") no-repeat center;
+	background-size: 28px 28px;
+}
+
+#ctrlMapCircleOrange {
+	background:url("img/orange.png") no-repeat center;
+	background-size: 24px 24px;
+}
+
+#ctrlMapCircleMustard {
+	background:url("img/mustard.png") no-repeat center;
+	background-size: 20px 20px;
+}
+
+#ctrlMapCircleYellow {
+	background:url("img/yellow.png") no-repeat center;
+	background-size: 16px 16px;
+}
+
+#ctrlMapCircleWhite {
+	background:url("img/white.png") no-repeat center;
+	background-size: 12px 12px;
 }
 /*
  * HEATMAP

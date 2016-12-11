@@ -57,11 +57,35 @@
 				<div id="ctrlInfo" class="ctrlIcon"></div>
 				<div id="ctrlSett" class="ctrlIcon"></div>
 			</div>
-			<hr id="ctrlLine" />
 			<div id="ctrlMapBody" class="ctrlBody">
-					<h3 class=ctrlBodyTitle>Accidents Mapped by Year</h3>
+					<hr id="ctrlLine" />
+					<h2 class=ctrlBodyTitle>Accidents Mapped by Year</h2>
+					<h3>Summary</h3>
 					<p>This perspective shows accidents that occurred in Long Beach over the given year. Accidents are presented as a circular marker at the location where the accident occurred. Accident severity is encoded in both the size and color of the marker as shown in the legend given below.
 					</p>
+					<h3>Legend</h3>
+					<div id="ctrlMapLegend">
+						<div class="ctrlMapLegendEntry">
+							<div class="ctrlMapCircle" id="ctrlMapCircleRed"></div>
+							<div class="ctrlMapCircleLabel">Fatal</div>	
+						</div>
+						<div class="ctrlMapLegendEntry">
+							<div class="ctrlMapCircle" id="ctrlMapCircleOrange"></div>
+							<div class="ctrlMapCircleLabel">Severe</div>	
+						</div>
+						<div class="ctrlMapLegendEntry">
+							<div class="ctrlMapCircle" id="ctrlMapCircleMustard"></div>
+							<div class="ctrlMapCircleLabel">Mild</div>	
+						</div>
+						<div class="ctrlMapLegendEntry">
+							<div class="ctrlMapCircle" id="ctrlMapCircleYellow"></div>
+							<div class="ctrlMapCircleLabel">Minor</div>	
+						</div>
+						<div class="ctrlMapLegendEntry">
+							<div class="ctrlMapCircle" id="ctrlMapCircleWhite"></div>
+							<div class="ctrlMapCircleLabel">No Injury</div>	
+						</div> 		
+					</div>				
 			</div>
 				
 <!-- 
