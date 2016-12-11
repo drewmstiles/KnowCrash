@@ -10,31 +10,56 @@ d3.select("#ctrlHome").on("click", function() {
 d3.select("#ctrlInfo").on("click", function() {
 
 	var elem = d3.select(this);
-	ctrlSwapIcons(elem, "info");
+	var state = ctrlSwapIcons(elem, "info");
 	
 	var screenName = navGetCurrentScreenName();
 	
 	var headHeight = d3.select("#ctrlHead").node().getBoundingClientRect().height;
 	var bodyHeight = d3.select("#ctrl" + screenName + "Body").node().getBoundingClientRect().height;
 	
-	d3.select("#ctrl")
+	if (state == "on") {
+
+		d3.select("#ctrlLine")
+						.transition()
+						.duration(1000)
+							.style("opacity", 1.0);
+							
+		d3.select("#ctrl")
+			.transition()
+			.duration(1000)
+				.style("height", (headHeight + bodyHeight) + "px")
+	}
+	else {
+		d3.select("#ctrlLine")
 		.transition()
 		.duration(1000)
-			.style("height", (headHeight + bodyHeight) + "px");
+			.style("opacity", 0.0);
+							
+		d3.select("#ctrl")
+			.transition()
+			.duration(1000)
+				.style("height", headHeight + "px")
+	}
 });
 
 function ctrlSwapIcons(elem, name) {
 
+	var state = "";
+	
 	var background = "";
 	if (elem.style("background").includes("off")) { 		
 		background = "url('img/" + name + "_on.png') no-repeat center";
+		state = "on";
 	}
 	else {
 		background = "url('img/" + name + "_off.png') no-repeat center";
+		state = "off";
 	}
 	
 	elem.style("background", background)
 		.style("background-size", "32px 32px");
+	
+	return state;
 }
 
 function ctrlShow() {
