@@ -71,13 +71,17 @@ function ctrlShow() {
 		.style("opacity", 1.0);
 }
 
-
 function ctrlHide(callback) {
 	d3.select("#ctrl")
 	.transition()
 	.duration(1000)
 		.style("opacity", 0.0)
 		.on("end", function() {
+		
+			d3.select("#ctrlHome")
+				.style("background", "url('img/home_off.png') no-repeat center")
+				.style("background-size", "32px 32px");
+				
 			d3.select(this)
 				.style("display","none")
 				
