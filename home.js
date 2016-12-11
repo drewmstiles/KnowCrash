@@ -26,8 +26,7 @@ d3.selectAll(".homePer").on("click", function() {
 
 d3.select("#visButton").on("click", function() {
 	
-	d3.select(this).style("display", "none");
-	d3.select("#homeLoadingText").style("display", "block");
+	d3.select(this).html("Loading...");
 	
 	var city = d3.select("#homeCity").attr("value");
 	
@@ -36,25 +35,32 @@ d3.select("#visButton").on("click", function() {
 	var perspective = getSelectedValueForClass("homePer");
 	
 	setTimeout(function() {
-		loadScreen(know, perspective, hideHomeScreen)
+		loadScreen(know, perspective, homeHide)
 	}, 100);
 
 });
 
-function hideHomeScreen() {
-		clearInterval(homeLoadInterval);
-		var h = window.innerHeight;
-		d3.select("#home")
-			.transition()
-			.duration(1000)
-			.style("top", -h + "px");
-			
-		d3.select("#ctrl")
-			.style("display","block")
-			.transition()
-			.duration(1000)
-			.delay(1000)
-				.style("opacity", 1.0);
+function homeHide() {
+
+	clearInterval(homeLoadInterval);
+
+	var h = window.innerHeight;
+	d3.select("#home")
+		.transition()
+		.duration(1000)
+		.style("top", -h + "px")
+		.on("end", function() {
+			d3.select("#visButton").html("Visualize");
+		});
+		
+	ctrlShow();
+}
+
+function homeShow() {	
+	d3.select("#home")
+		.transition()
+		.duration(1000)
+		.style("top","0px");
 }
 
 function getSelectedValueForClass(className) {
