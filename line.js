@@ -38,8 +38,16 @@ function showHeatLine(callback) {
 			return d3.ascending(x.hour, y.hour);
 		});
 
-	  x.domain([0, 24]);
+	  x.domain([1, 24]);
 	  y.domain([0, d3.max(heatLineData, function(d) { return d.value; }) ]);
+		
+		
+	lineG.append("text")
+		.attr("fill", "white")
+		.attr("transform", "translate(" + heatLineWidth/2 + ",-25)")
+		.attr("text-anchor", "middle")
+		.text("Accident Frequency Chart");
+		
 		
 	  lineG.append("g")
 		  .attr("class", "lineAxis lineAxis--x")
@@ -57,11 +65,10 @@ function showHeatLine(callback) {
 		  .call(d3.axisLeft(y).tickSize(-heatLineWidth))
 		.append("text")
 		  .attr("fill", "#fff")
-		  .attr("transform", "rotate(-90)")
-		  .attr("y", 6)
+		  .attr("transform", "translate(-40," + heatLineHeight/2 + ")rotate(-90)")
 		  .attr("dy", "0.71em")
-		  .style("text-anchor", "end")
-		  .text("Number of Accidents");
+		  .style("text-anchor", "middle")
+		  .text("Accident Count");
 
 	  lineG.append("path")
 		  .datum(heatLineData)

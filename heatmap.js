@@ -27,6 +27,12 @@ var heatSvg = root.append("svg")
 	.attr("height", window.innerHeight/2)
 	.append("g");
 	
+	heatSvg.append("text")
+		.attr("fill", "white")
+		.attr("transform", "translate(" + heatMapGridSize * 12 + ",-40)")
+		.attr("text-anchor", "middle")
+		.text("Accident Frequency Heatmap");
+	
 var dayLabels = heatSvg.selectAll(".dayLabel")
 	.data(days)
 	.enter().append("text")
