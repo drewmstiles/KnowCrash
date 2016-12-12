@@ -39,7 +39,11 @@ function loadScreen(know, perspective, endFunction) {
 	if (know == 0 && perspective == 0) {
 		var year = d3.select("#ctrlMapYear").html();
 		
-		var request = { "year" : year };
+		var request = { 
+			"year" : year,
+			"severity" : "*",
+			"factor" : "*"
+		};
 		
 		showHistoricalMap(endFunction, request);
 	}

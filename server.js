@@ -54,7 +54,10 @@ var Model = db.model('lb', accidentSchema, 'lb');
 
 
 app.get('/', function(req, res){
-	var query = { 'COLLISION_DATE' : new RegExp(req.query.year + '.*') };
+	var query = {};
+	query['COLLISION_DATE'] = new RegExp(req.query.year + '.*');
+	if (req.query.severity != '*') query['COLLISION_SEVERITY'] = req.query.severity;
+	if (req.query.factor != '*') query['PCF_VIOL_CATEGORY'] = req.query.factor;
 	console.log(query);
   	Model.find(query, function(err, result) {
 			console.log(result);

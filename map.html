@@ -98,29 +98,32 @@
 					
 					<div id="ctrlMapSeveritySetting" class="ctrlMapSettingSection">
 						<div id="sevTxt" class="ctrlMapSettingLabel">Severity</div>
-						<div class="ctrlMapSelectBox"><select id="sev" class="ctrlMapSelect">
+						<div class="ctrlMapSelectBox"><select id="ctrlMapSeverity" class="ctrlMapSelect">
 							<option value="*" selected>All</option>
 							<option value="1">Fatal</option>
-							<option value="2">Injury (Severe)</option>
-							<option value="3">Injury (Visible)</option>
-							<option value="4">Injury (Complaint)</option>
-							<option value="0">None</option>
+							<option value="2">Severe</option>
+							<option value="3">Mild</option>
+							<option value="4">Minor</option>
+							<option value="0">No Injury</option>
 						</select></div>
 					</div>
 					<div id="ctrlMapFactorSetting" class="ctrlMapSettingSection">
 						<div id="facTxt" class="ctrlMapSettingLabel">Factor</div>
-						<div class="ctrlMapSelectBox"><select id="fac" class="ctrlMapSelect">
+						<div class="ctrlMapSelectBox"><select id="ctrlMapFactor" class="ctrlMapSelect">
 							<option value="*" selected>All</option>
-							<option value="1">Driving Under theInfluence</option>
-							<option value="3">Speeding</option>
-							<option value="4">Tailgating</option> 
-							<option value="5">Wrong Side of Road</option> 								
-							<option value="6">Improper Passing</option>
+							<option value="01">Driving Under theInfluence</option>
+							<option value="03">Speeding</option>
+							<option value="04">Tailgating</option> 
+							<option value="05">Wrong Side of Road</option> 								
+							<option value="06">Improper Passing</option>
 							<option value="11">Pedestrian Violation</option>
 							<option value="12">Traffic Signal Malfunction</option> 		
 							<option value="24">Driver Fell Asleep</option> 		
 						</select></div>
 					</div>	
+					<div id="ctrlMapFilterSection">
+							<button id="ctrlMapFilterButton" class="filterButton">Filter</button>
+					</div>
 					<br />
 			</div>
 		</div>

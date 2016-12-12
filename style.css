@@ -7,6 +7,16 @@ body{
 #wrapper {
 }
 
+button {
+	display: block;
+	background-color: rgba(255, 0, 0, 1.0);
+	margin:auto;
+	border-radius: 5px;		
+	font-weight:bold;
+	color:white;
+	border:none;
+}
+
 .screen {
 	display:none;
 	width: 100%;
@@ -119,17 +129,18 @@ body{
 }
 
 #visButton {
-	display: block;
 	width:80%;
 	height:40px;
-	margin:auto;
-	background-color: rgba(255, 0, 0, 1.0);
-	border:none;
-	border-radius: 5px;
 	font-size: 18px;
-	font-weight:bold;
-	color:white;
 }
+
+.filterButton {
+	width:80%;
+	height:28px;
+	margin:10px auto;
+	font-size: 14px;
+}
+
 
 #ctrl {
 	position:absolute;
@@ -264,6 +275,7 @@ body{
 	display:block;
 	text-align:center;
 	font-weight: bold;
+	font-size:14px;
 }
 
 .ctrlMapSelectBox {

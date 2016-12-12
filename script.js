@@ -138,7 +138,6 @@ function render(endFunction, conditions) {
 function applyLatLngToLayer(d) {
 	var y = d.LATITUDE;
 	var x = d.LONGITUDE;
-	console.log(d);
 	return map.latLngToLayerPoint(new L.LatLng(y, x))
 }
 
@@ -150,3 +149,23 @@ function mapCoordinatesToPixels(dd) {
 	}
 }
 
+d3.select("#ctrlMapFilterButton").on("click", function() {
+
+	var year = d3.select("#ctrlMapYear").html();
+	
+	var severity = d3.select("#ctrlMapSeverity").node();
+	var severityValue = severity.options[severity.selectedIndex].value;
+	console.log("Severity = " + severityValue);
+	
+	var factor = d3.select("#ctrlMapFactor").node();
+	var factorValue = factor.options[factor.selectedIndex].value;
+	console.log("Factor = " + factorValue);
+	
+	var request = {
+		"year" : year,
+		"severity" : severityValue,
+		"factor" : factorValue
+	};
+		
+	render(function() {}, request);
+});
