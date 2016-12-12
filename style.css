@@ -328,6 +328,31 @@ button {
 	border:none;
 }
 
+
+
+#ctrlHeatmapGradient {
+	width:80%;
+	height:30px;
+	margin:auto;
+	display:block;
+	background:url("img/heatmap_gradient.png") no-repeat center;
+	background-size: 100% 100%;
+}
+
+.ctrlHeatmapGradientMarker {
+	margin:10px auto 20px auto;
+	display:inline-block;
+	width:49%;
+}
+
+#ctrlHeatmapGradientMarkerLeft {
+	text-align:left;
+}
+
+#ctrlHeatmapGradientMarkerRight{
+	text-align:right;
+}
+
 /*
  * HEATMAP
  */

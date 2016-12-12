@@ -58,7 +58,7 @@
 				<div id="ctrlSett" class="ctrlIcon"></div>
 			</div>
 			<div id="ctrlBody">
-				<div id="ctrlMapInfoBody">
+				<div id="ctrlMapInfoBody" class="ctrlBody">
 						<hr class="ctrlLine" />
 						<h2 class=ctrlBodyTitle>Accidents Mapped by Year</h2>
 						<h3>Summary</h3>
@@ -88,7 +88,7 @@
 							</div> 		
 						</div>				
 				</div>
-				<div id="ctrlMapSettBody">
+				<div id="ctrlMapSettBody" class="ctrlBody">
 					<hr class="ctrlLine" />
 					<div id="ctrlMapYearSection" class="ctrlMapSettingSection">
 						<p id="ctrlMapLastYear" class="ctrlMapYear ctrlMapYearArrow">&#x2190;</p>
@@ -126,6 +126,38 @@
 					</div>
 					<br />
 			</div>
+				<div id="ctrlHeatmapInfoBody" class="ctrlBody">
+						<hr class="ctrlLine" />
+						<h2 class=ctrlBodyTitle>Accidents Frequency by Time</h2>
+						<h3>Summary</h3>
+						<p>This perspective shows the distribution of accidents across day of the week and time over the years 2001-2009. In the <b>Accident Frequency Heatmap</b> perspective, accidents are represented by a color gradient that increases from yellow to red depending on how many accidents occurred in that time range. This scale can be seen in the legend below. In the <b>Accident Frequency Chart</b> the number of accidents for a given day are plotted against a discrete time scale. These two visualization give different perspectives on the same underlying dataset, accident frequencies at a date and time.
+						</p>
+						<h3>Legend</h3>
+						<div id="ctrlMapLegend">
+							<div id="ctrlHeatmapGradient"></div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerLeft">Less Accidents</div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerRight">More Accidents</div>
+						</div>				
+				</div>
+				<div id="ctrlHeatmapSettBody" class="ctrlBody">
+					<hr class="ctrlLine" />
+					<div id="ctrlMapSeveritySetting" class="ctrlMapSettingSection">
+						<div id="ctrlHeatmapDayTxt" class="ctrlMapSettingLabel">Day of the Week</div>
+						<div class="ctrlMapSelectBox"><select id="ctrlHeatmapDay" class="ctrlMapSelect">
+							<option value="1" selected>Monday</option>
+							<option value="2">Tuesday</option>
+							<option value="3">Wednesday</option>
+							<option value="4">Thursday</option>
+							<option value="5">Friday</option>
+							<option value="6">Saturday</option>
+							<option value="7">Sunday</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapFilterSection">
+							<button id="ctrlHeatmapFilterButton" class="filterButton">Filter</button>
+					</div>
+					<br />
 		</div>
 </div>
 </body>

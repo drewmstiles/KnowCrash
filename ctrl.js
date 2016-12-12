@@ -10,7 +10,7 @@ d3.select("#ctrlHome").on("click", function() {
 d3.select("#ctrlInfo").on("click", function() {
 	
 	var screenName = navGetCurrentScreenName();
-	d3.select("#ctrl" + screenName + "SettBody").style("display", "none");
+	d3.selectAll(".ctrlBody").style("display", "none");
 	d3.select("#ctrl" + screenName + "InfoBody").style("display", "block");
 		
 	var elem = d3.select(this);
@@ -47,7 +47,7 @@ d3.select("#ctrlInfo").on("click", function() {
 d3.select("#ctrlSett").on("click", function() {
 	
 	var screenName = navGetCurrentScreenName();
-	d3.select("#ctrl" + screenName + "InfoBody").style("display", "none");
+	d3.selectAll(".ctrlBody").style("display", "none");
 	d3.select("#ctrl" + screenName + "SettBody").style("display", "block");
 	
 	var elem = d3.select(this);
