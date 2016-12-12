@@ -29,7 +29,7 @@ function showHeatLine(callback) {
 		return d;
 		}, function(error, heatLineData) {
 	  if (error) throw error;
-	
+			
 		heatLineData = heatLineData.filter(function(d) {
 			return d.day == currentDay;
 		});
@@ -44,7 +44,13 @@ function showHeatLine(callback) {
 	  lineG.append("g")
 		  .attr("class", "lineAxis lineAxis--x")
 		  .attr("transform", "translate(0," + heatLineHeight + ")")
-		  .call(d3.axisBottom(x));
+		  .call(d3.axisBottom(x))
+		.append("text")
+		  .attr("fill", "#fff")
+		  .attr("transform", "translate(" + (heatLineWidth - 28)+ ",0)")
+		  .attr("y", -12)
+		  .attr("dy", "0.71em")
+		  .text("Time of Day");
 
 	  lineG.append("g")
 		  .attr("class", "lineAxis lineAxis--y")
