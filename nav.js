@@ -48,6 +48,7 @@ function loadScreen(know, perspective, endFunction) {
 		showHistoricalMap(endFunction, request);
 	}
 	else if (know == 0 && perspective == 1) {
+		showHeatmap(function() {});
 		showHeatLine(endFunction);
 	}
 	else if (know == 1 && perspective == 0) {

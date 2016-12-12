@@ -1,10 +1,10 @@
 // Based on example at https://bl.ocks.org/mbostock/3883245
 
-var heatLineSvgHeight = 500;
-var heatLineSvgWidth = 900;
+var heatLineSvgHeight = window.innerHeight/2;
+var heatLineSvgWidth = window.innerWidth;
 
-var lineSvg = d3.select("#heatmap").append("svg").attr("id", "heatline").style("width", heatLineSvgWidth).style("height", heatLineSvgHeight),
-    heatLineMargin = {top: 20, right: 20, bottom: 30, left: 50},
+var lineSvg = d3.select("#heatmap").append("svg").attr("id", "heatline").style("width", heatLineSvgWidth).style("height", heatLineSvgHeight).style("margin-top", window.innerHeight/2);
+    heatLineMargin = {top: 80, right: heatLineSvgWidth - (heatMapGridSize * 24 + heatMapMargin.left), bottom: 30, left: heatMapMargin.left},
     heatLineWidth = heatLineSvgWidth - heatLineMargin.left - heatLineMargin.right,
     heatLineHeight = heatLineSvgHeight - heatLineMargin.top - heatLineMargin.bottom,
     lineG = lineSvg.append("g")
@@ -38,8 +38,8 @@ function showHeatLine(callback) {
 			return d3.ascending(x.hour, y.hour);
 		});
 
-	  x.domain(d3.extent(heatLineData, function(d) { return d.hour; }));
-	  y.domain(d3.extent(heatLineData, function(d) { return d.value; }));
+	  x.domain([0, 24]);
+	  y.domain([0, d3.max(heatLineData, function(d) { return d.value; }) ]);
 		
 	  lineG.append("g")
 		  .attr("class", "lineAxis lineAxis--x")
@@ -54,7 +54,7 @@ function showHeatLine(callback) {
 
 	  lineG.append("g")
 		  .attr("class", "lineAxis lineAxis--y")
-		  .call(d3.axisLeft(y))
+		  .call(d3.axisLeft(y).tickSize(-heatLineWidth))
 		.append("text")
 		  .attr("fill", "#fff")
 		  .attr("transform", "rotate(-90)")

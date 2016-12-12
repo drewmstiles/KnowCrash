@@ -1,23 +1,30 @@
 
-var margin = { top: 0, right: 50, bottom: 100, left: 50 },
-	gridSize = Math.floor((window.innerWidth - margin.left - margin.right) / 24),
-	legendElementWidth = gridSize * 2,
+var heatMapMargin = { top: 80, right: 50, bottom: 0, left: 50 },
+	heatMapGridSize = Math.min(	Math.floor((window.innerWidth - heatMapMargin.left - heatMapMargin.right) / 24),
+								Math.floor((window.innerHeight/2 - heatMapMargin.top - heatMapMargin.bottom) / 7)),
+	legendElementWidth = heatMapGridSize * 2,
 	buckets = 9,
 	colors = ["yellow","red"],
 	days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
 	times = ["1a", "2a", "3a", "4a", "5a", "6a", "7a", "8a", "9a", "10a", "11a", "12a", "1p", "2p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "10p", "11p", "12p"];
 	
+
+	if (heatMapGridSize == Math.floor((window.innerHeight/2 - heatMapMargin.top - heatMapMargin.bottom) / 7)) {
+		var excessSpace = window.innerWidth - (heatMapGridSize * 24);
+		heatMapMargin.right = excessSpace / 2;
+		heatMapMargin.left = excessSpace / 2;
+	}
 	
 var root = d3.select("#heatmap")
 	.attr("width", window.innerWidth)
-	.attr("height", window.innerHeight);
+	.attr("height", window.innerHeight / 2);
 	
 	
 var heatSvg = root.append("svg")
 	.style("position", "absolute")
 	.style("top", "0")
 	.attr("width", window.innerWidth)
-	.attr("height", window.innerHeight)
+	.attr("height", window.innerHeight/2)
 	.append("g");
 	
 var dayLabels = heatSvg.selectAll(".dayLabel")
@@ -25,19 +32,19 @@ var dayLabels = heatSvg.selectAll(".dayLabel")
 	.enter().append("text")
 		.text(function (d) { return d; })
 		.attr("x", 0)
-		.attr("y", function(d, i) { return i * gridSize; })
+		.attr("y", function(d, i) { return i * heatMapGridSize; })
 		.style("text-anchor", "end")
-		.attr("transform", "translate(-6," + gridSize / 1.5 + ")")
+		.attr("transform", "translate(-6," + heatMapGridSize / 1.5 + ")")
 		.attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); });
 
 var timeLabels = heatSvg.selectAll(".timeLabel")
 	.data(times)
 	.enter().append("text")
 		.text(function(d) {return d; })
-		.attr("x", function(d, i) { return i * gridSize; })
+		.attr("x", function(d, i) { return i * heatMapGridSize; })
 		.attr("y", 0)
 		.style("text-anchor", "middle")
-		.attr("transform", "translate(" + gridSize / 2 + ", -6)")
+		.attr("transform", "translate(" + heatMapGridSize / 2 + ", -6)")
 		.attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
 		
 var cards;
@@ -55,15 +62,15 @@ function showHeatmap(callback) {
 		cards.append("title");
 		
 		cards.enter().append("rect")
-			.attr("x", function(d) { return (d.hour - 1) * gridSize; })
-			.attr("y", function(d) { return (d.day - 1) * gridSize; })
+			.attr("x", function(d) { return (d.hour - 1) * heatMapGridSize; })
+			.attr("y", function(d) { return (d.day - 1) * heatMapGridSize; })
 			.attr("rx", 4)
 			.attr("ry", 4)
 			.attr("class", "hour bordered")
-			.attr("width", gridSize)
-			.attr("height", gridSize)
+			.attr("width", heatMapGridSize)
+			.attr("height", heatMapGridSize)
 			.attr("opacity", 0.0)
-			.style("fill", function(d) { return colorScale(d.value); })
+			.style("fill", function(d) { return heatMapColorScale(d.value); })
 			.call(function() {
 				callback();
 				showHeatmapTiles();
@@ -82,21 +89,20 @@ function showHeatmap(callback) {
 			.attr("x", function(d, i) { return legendElementWidth * i; })
 			.attr("y", window.innerHeight)
 			.attr("width", legendElementWidth)
-			.attr("height", gridSize / 2)
+			.attr("height", heatMapGridSize / 2)
 			.style("fill", function(d, i) { return colors[i]; });
 			
 		legend.append("text")
 			.attr("class", "mono")
 			.text(function (d) { return ">= " + Math.round(d); })
 			.attr("x", function(d, i) { return legendElementWidth * i })
-			.attr("y", window.innerHeight + gridSize);
+			.attr("y", window.innerHeight + heatMapGridSize);
 			
 		legend.exit().remove();
 		
 
 		// Position heatmap.		
-		margin.top = (window.innerHeight/2 - heatSvg.node().getBBox().height/2);
-		heatSvg.attr("transform","translate(" + margin.left + "," + margin.top + ")");
+		heatSvg.attr("transform","translate(" + heatMapMargin.left + "," + heatMapMargin.top + ")");
 	});
 
 
