@@ -6,9 +6,9 @@ var heatLineSvgWidth = window.innerWidth;
 var lineSvg = d3.select("#heatmap").append("svg").attr("id", "heatline").style("width", heatLineSvgWidth).style("height", heatLineSvgHeight).style("margin-top", window.innerHeight/2);
     heatLineMargin = {top: 80, right: heatLineSvgWidth - (heatMapGridSize * 24 + heatMapMargin.left), bottom: 30, left: heatMapMargin.left},
     heatLineWidth = heatLineSvgWidth - heatLineMargin.left - heatLineMargin.right,
-    heatLineHeight = heatLineSvgHeight - heatLineMargin.top - heatLineMargin.bottom,
-    lineG = lineSvg.append("g")
-    	.attr("transform", "translate(" + heatLineMargin.left + "," + heatLineMargin.top + ")");
+    heatLineHeight = heatLineSvgHeight - heatLineMargin.top - heatLineMargin.bottom;
+    
+var lineG;
 
 var x = d3.scaleLinear()
     .rangeRound([0, heatLineWidth]);
@@ -20,8 +20,6 @@ var line = d3.line()
     .x(function(d) { return x(d.hour); })
     .y(function(d) { return y(d.value); });
 
-var currentDay = "1";
-
 function showHeatLine(callback) {
 	d3.csv("lb_agg.csv",function(d) {
 		d.hour = +d.hour;
@@ -29,9 +27,19 @@ function showHeatLine(callback) {
 		return d;
 		}, function(error, heatLineData) {
 	  if (error) throw error;
-			
+	
+		if (lineG != undefined) {
+			lineG.remove();
+		}
+		
+		lineG = lineSvg.append("g")
+    		.attr("transform", "translate(" + heatLineMargin.left + "," + heatLineMargin.top + ")");
+		
+		
+		var day = d3.select("#ctrlHeatmapDay").node();
+		var dayValue = day.options[day.selectedIndex].value;
 		heatLineData = heatLineData.filter(function(d) {
-			return d.day == currentDay;
+			return d.day == dayValue;
 		});
 		
 		heatLineData.sort(function(x, y) {
@@ -78,3 +86,28 @@ function showHeatLine(callback) {
 		callback();
 	});
 }
+
+
+
+d3.select("#ctrlHeatmapFilterButton").on("click", function() {
+
+	d3.select(this).html("Loading");
+		
+	var loadInterval = setInterval(function() {
+		var elem = d3.select("#ctrlMapFilterButton");
+		var html = elem.html();
+		if (html == "Loading...") {
+			elem.html("Loading");
+		}
+		else {
+			elem.html(html + ".");
+		}
+	}, 1000);
+	
+	var callback = function() { 
+		clearInterval(loadInterval); 
+		d3.select("#ctrlHeatmapFilterButton").html("Filter");
+	};
+	
+	showHeatLine(callback);
+});
