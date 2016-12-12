@@ -2,6 +2,8 @@
  * drew's script
  */ 
 
+var MAP_MIN_YEAR = 2001;
+var MAP_MAX_YEAR = 2009;
 var CIRCLE_RADIUS = 2.5;
 var MAX_RADIUS = 6.5;
 var MIN_RADIUS = 1.5;
@@ -169,3 +171,46 @@ d3.select("#ctrlMapFilterButton").on("click", function() {
 		
 	render(function() {}, request);
 });
+
+d3.select("#ctrlMapNextYear").on("click", function() {
+	var year = parseInt(d3.select("#ctrlMapYear").html());
+	
+	d3.select("#ctrlMapLastYear").style("opacity", 1.0);
+	
+	if (year < MAP_MAX_YEAR) {	
+		year += 1;
+		d3.select("#ctrlMapYear").html(year);
+		if (year == MAP_MAX_YEAR) {
+			d3.select(this).style("opacity", 0.2);
+		}
+		else {
+			d3.select(this).style("opacity", 1.0);
+		}
+	}
+	else {
+		// Already at max year.
+	}
+});
+
+d3.select("#ctrlMapLastYear").on("click", function() {
+	var year = parseInt(d3.select("#ctrlMapYear").html());
+
+	d3.select("#ctrlMapNextYear").style("opacity", 1.0);
+	
+	if (year > MAP_MIN_YEAR) {	
+		year -= 1;
+		d3.select("#ctrlMapYear").html(year);
+		if (year == MAP_MIN_YEAR) {
+			d3.select(this).style("opacity", 0.2);
+		
+		}
+		else {
+			d3.select(this).style("opacity", 1.0);
+		}
+	}
+	else {
+		// Already at max year.
+	}
+});
+
+

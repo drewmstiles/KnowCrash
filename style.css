@@ -2,6 +2,7 @@
 body{
 	font-family:Helvetica;
 		overflow: hidden;
+		cursor:pointer;
 }
 
 #wrapper {
@@ -302,6 +303,7 @@ button {
 }
 
 #ctrlMapLastYear {
+	opacity: 0.2; /* Site loads at min year */
 	text-align:right;
 }
 
