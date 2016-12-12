@@ -48,7 +48,8 @@ function showHistoricalMap(endFunction, conditions) {
 		map = L.map('map', {
 		minZoom: 12,
 		maxZoom: 15,
-		attributionControl: false
+		attributionControl: false,
+		zoomControl: false
 		})
 		.addLayer(mapboxTiles)
 		.setView([33.810335, -118.135071], INIT_MAP_ZOOM);
@@ -153,15 +154,26 @@ function mapCoordinatesToPixels(dd) {
 
 d3.select("#ctrlMapFilterButton").on("click", function() {
 
+	d3.select(this).html("Loading");
+		
+	var loadInterval = setInterval(function() {
+		var elem = d3.select("#ctrlMapFilterButton");
+		var html = elem.html();
+		if (html == "Loading...") {
+			elem.html("Loading");
+		}
+		else {
+			elem.html(html + ".");
+		}
+	}, 1000);
+			
 	var year = d3.select("#ctrlMapYear").html();
 	
 	var severity = d3.select("#ctrlMapSeverity").node();
 	var severityValue = severity.options[severity.selectedIndex].value;
-	console.log("Severity = " + severityValue);
 	
 	var factor = d3.select("#ctrlMapFactor").node();
 	var factorValue = factor.options[factor.selectedIndex].value;
-	console.log("Factor = " + factorValue);
 	
 	var request = {
 		"year" : year,
@@ -169,7 +181,12 @@ d3.select("#ctrlMapFilterButton").on("click", function() {
 		"factor" : factorValue
 	};
 		
-	render(function() {}, request);
+	var callback = function() { 
+		clearInterval(loadInterval); 
+		d3.select("#ctrlMapFilterButton").html("Filter");
+	};
+	
+	render(callback, request);
 });
 
 d3.select("#ctrlMapNextYear").on("click", function() {

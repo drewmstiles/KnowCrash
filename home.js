@@ -26,7 +26,19 @@ d3.selectAll(".homePer").on("click", function() {
 
 d3.select("#visButton").on("click", function() {
 	
-	d3.select(this).html("Loading...");
+	d3.select(this).html("Loading");
+	
+	homeLoadInterval = setInterval(function() {
+		var button = d3.select("#visButton");
+		var html = button.html();
+		if (html == "Loading...") {
+			button.html("Loading");
+		}
+		else {
+			button.html(html + ".");
+		}
+		console.log("exe");
+	}, 1000);
 	
 	var city = d3.select("#homeCity").attr("value");
 	
