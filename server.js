@@ -52,17 +52,45 @@ db = mongoose.connect(dbPath).connection.once("open", function () {
 
 var Model = db.model('lb', accidentSchema, 'lb');
 
+/*
+ * AWS Initialization
+ */
+
+var AWS = require('aws-sdk');
+AWS.config.update({region:'us-east-1'});
+AWS.config.credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+
 
 app.get('/', function(req, res){
-	var query = {};
-	query['COLLISION_DATE'] = new RegExp(req.query.year + '.*');
-	if (req.query.severity != '*') query['COLLISION_SEVERITY'] = req.query.severity;
-	if (req.query.factor != '*') query['PCF_VIOL_CATEGORY'] = req.query.factor;
-	console.log(query);
-  	Model.find(query, function(err, result) {
-			console.log(result);
-			res.send(result);
+	if (req.query.target == "db") {
+		var query = {};
+		query['COLLISION_DATE'] = new RegExp(req.query.year + '.*');
+		if (req.query.severity != '*') query['COLLISION_SEVERITY'] = req.query.severity;
+		if (req.query.factor != '*') query['PCF_VIOL_CATEGORY'] = req.query.factor;
+		console.log(query);
+		Model.find(query, function(err, result) {
+				console.log(result);
+				res.send(result);
+			});
+	}
+	else {
+		var machineLearning = new AWS.MachineLearning();
+		
+		var params = {
+			"MLModelId" : "ml-hNZUvqto8HX",
+			 "Record" : {
+			   "DAY" : "2",
+			   "TIME" : "1623",
+			   "WEATHER" : "A"
+			 },
+			 "PredictEndpoint" : "https://realtime.machinelearning.us-east-1.amazonaws.com"
+			};
+			
+		machineLearning.predict(params, function(err, data) {
+			if (err) console.log(err, err.stack);
+			else res.send(data);
 		});
+	}
 });
 
 console.log('starting the Express (NodeJS) Web server');

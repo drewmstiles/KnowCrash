@@ -40,6 +40,7 @@ function loadScreen(know, perspective, endFunction) {
 		var year = d3.select("#ctrlMapYear").html();
 		
 		var request = { 
+			"type" : "db",
 			"year" : year,
 			"severity" : "*",
 			"factor" : "*"
