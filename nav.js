@@ -40,7 +40,7 @@ function loadScreen(know, perspective, endFunction) {
 		var year = d3.select("#ctrlMapYear").html();
 		
 		var request = { 
-			"type" : "db",
+			"target" : "db",
 			"year" : year,
 			"severity" : "*",
 			"factor" : "*"
@@ -53,7 +53,22 @@ function loadScreen(know, perspective, endFunction) {
 		showHeatLine(endFunction);
 	}
 	else if (know == 1 && perspective == 0) {
-		showFuture(endFunction);
+	
+		var now = new Date();
+		var day = now.getDay();
+		if (day == 0) day = 7;
+		var hour = now.getHours();
+		var min = now.getMinutes();
+		var weather = "A";
+		
+		var request = {
+			"target" : "ml",
+			"day" : day,
+			"time" : hour + "" +  min,
+			"weather" : weather
+		};
+		
+		showFuture(request, endFunction);
 	}
 	else {
 		showFutureBars(endFunction);

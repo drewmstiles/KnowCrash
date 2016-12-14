@@ -79,9 +79,9 @@ app.get('/', function(req, res){
 		var params = {
 			"MLModelId" : "ml-hNZUvqto8HX",
 			 "Record" : {
-			   "DAY" : "3",
-			   "TIME" : "747",
-			   "WEATHER" : "A"
+			   "DAY" : req.query.day,
+			   "TIME" : req.query.time,
+			   "WEATHER" : req.query.weather
 			 },
 			 "PredictEndpoint" : "https://realtime.machinelearning.us-east-1.amazonaws.com"
 			};

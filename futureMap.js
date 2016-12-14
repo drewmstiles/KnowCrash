@@ -27,7 +27,7 @@ var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 			
-function showFuture(callback) {
+function showFuture(request, callback) {
 	
 	var fmapboxTiles = new L.tileLayer('https://api.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token={token}', {
        			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
@@ -52,24 +52,28 @@ function showFuture(callback) {
 	
 	var fg = fsvg.append("g").attr("class", "leaflet-zoom-hide");
 	
-	renderf(callback);
+	renderf(request, callback);
 };
 
 function cleanf() {
 
-	fsvg.selectAll("circle").remove();
+	fsvg.selectAll("g").remove();
 
 }
 
 function appendf(callback) {
 
+	console.log("appended");
+	
 	var nodes = fsvg.selectAll("g")
 		.data(fdata)
 		.enter()
 		.append("g")
 			.attr("transform", function(d) {
 				return "translate(" + d.PIXEL_X + "," + d.PIXEL_Y + ")";
-		})
+		});
+		
+		
 		nodes.append("circle")
 			.style("opacity",function(d) { return futureMapProbToOpacityScale(d.PROB) })
 			.style("fill", function(d) { return futureMapProbToColorScale(d.PROB) })
@@ -94,20 +98,13 @@ function drawf(callback) {
 	cleanf();
 	
 	appendf(callback);
-	
-	d3.select("#year")
-		.transition()
-		.duration(1000)
-		.style("color", "white");
 }
 		
-function renderf(callback) {
-	var request = {
-		"target" : "ml"
-	};
+function renderf(request, callback) {
 	
 	d3.csv("lb_map.csv", function(dd) {
 		$.get("http://ec2-54-67-114-248.us-west-1.compute.amazonaws.com:8080", request, function(predictions, status) {
+	
 			var latLongMap = {};
 			for (var i = 0; i < dd.length; i++) {
 				var d = dd[i];
@@ -126,6 +123,7 @@ function renderf(callback) {
 				}
 			}
 			
+						console.log(formattedPredictions);
 			fdata = formattedPredictions;
 			drawf(callback);
 			});
@@ -152,3 +150,54 @@ function mapCoordinatesToPixelsf(dd) {
 }
 
 
+d3.select("#ctrlFutureMapFilterButton").on("click", function() {
+
+	d3.select(this).html("Loading");
+		
+	var loadInterval = setInterval(function() {
+		var elem = d3.select("#ctrlFutureMapFilterButton");
+		var html = elem.html();
+		if (html == "Loading...") {
+			elem.html("Loading");
+		}
+		else {
+			elem.html(html + ".");
+		}
+	}, 1000);
+
+	var day = d3.select("#ctrlFutureMapDay").node();
+	var dayValue = day.options[day.selectedIndex].value;
+	
+	var hour = d3.select("#ctrlFutureMapHour").node();
+	var hourValue = hour.options[hour.selectedIndex].value;
+	
+	var meridiem = d3.select("#ctrlFutureMapMer").node();
+	var meridiemValue = meridiem.options[meridiem.selectedIndex].value;
+	
+	if (meridiemValue == "pm") {
+		var hour = parseInt(hour) + 12;
+		if (hour == 24) {
+			hour = 0;
+		}
+		else {
+			// Do nothing.
+		}
+	}
+	else {
+		// Do nothing.
+	}
+		
+	var request = {
+		"target" : "ml",
+		"day" : dayValue,
+		"time" : hourValue + "00",
+		"weather" : "A"
+	};
+		
+	var callback = function() { 
+		clearInterval(loadInterval); 
+		d3.select("#ctrlFutureMapFilterButton").html("Filter");
+	};
+	
+	renderf(request, callback);
+});
