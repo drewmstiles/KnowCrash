@@ -69,10 +69,10 @@ function appendf(callback) {
 		nodes.append("circle")
 			.style("opacity", 0.6)
 			.style("fill", function(d) { return probToColorScale(d.PROB) })
-			.attr("r",  20)
+			.attr("r",  10)
 			
 		nodes.append("text")
-			.text(function(d) { return Number(d.PROB).toFixed(2); })
+			.text(function(d) { return Number(d.PROB * 100).toFixed(2); })
 			.style("fill", "white")
 			.style("text-anchor", "middle")
 			.style("font-size", "10px")
@@ -103,12 +103,29 @@ function renderf(callback) {
 	};
 	
 	d3.csv("lb_map.csv", function(dd) {
-		$.get("http://ec2-54-67-114-248.us-west-1.compute.amazonaws.com:8080", request, function(data, status) {
-			console.log(status);
-			console.log(data);
+		$.get("http://ec2-54-67-114-248.us-west-1.compute.amazonaws.com:8080", request, function(predictions, status) {
+			var latLongMap = {};
+			for (var i = 0; i < dd.length; i++) {
+				var d = dd[i];
+				latLongMap[d.INTER] = [d.LAT, d.LONG];
+			};
+		
+			var formattedPredictions = [];
+			var i = 0;
+			for (property in predictions) {
+				var coords = latLongMap[property];
+				formattedPredictions[i++] = {
+					"INTER" : property,
+					"LATITUDE" : coords[0],
+					"LONGITUDE" : coords[1],
+					"PROB" : predictions[property]
+				}
+			}
+			
+			fdata = formattedPredictions;
+			drawf(callback);
+			});
 		});
-// 		drawf(callback);
-	});
 }
 	
 function poisson(count) {

@@ -88,7 +88,7 @@ app.get('/', function(req, res){
 			
 		machineLearning.predict(params, function(err, data) {
 			if (err) console.log(err, err.stack);
-			else res.send(data);
+			else res.send(data.Prediction.predictedScores);
 		});
 	}
 });
