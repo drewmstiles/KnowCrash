@@ -14,8 +14,12 @@ var INIT_MAP_ZOOM = 13;
 var fdata;
 var fmap;
 var fsvg;
-			
-var probToColorScale = d3.scaleLinear()
+	
+var futureMapProbToOpacityScale = d3.scaleLinear()
+	.domain([0.0, 0.05])
+	.range([0.0,1.0]);		
+	
+var futureMapProbToColorScale = d3.scaleLinear()
 	.domain([0.01, 0.07])
 	.range(["blue","red"]);
 
@@ -36,7 +40,7 @@ function showFuture(callback) {
 		maxZoom: 15
 		})
 		.addLayer(fmapboxTiles)
-		.setView([33.810335, -118.135071], 12);
+		.setView([33.810335, -118.135071], 13);
 	
 	fmap.on("zoomstart", clean);
 	
@@ -67,18 +71,18 @@ function appendf(callback) {
 				return "translate(" + d.PIXEL_X + "," + d.PIXEL_Y + ")";
 		})
 		nodes.append("circle")
-			.style("opacity", 0.6)
-			.style("fill", function(d) { return probToColorScale(d.PROB) })
+			.style("opacity",function(d) { return futureMapProbToOpacityScale(d.PROB) })
+			.style("fill", function(d) { return futureMapProbToColorScale(d.PROB) })
 			.attr("r",  10)
-			
-		nodes.append("text")
-			.text(function(d) { return Number(d.PROB * 100).toFixed(2); })
-			.style("fill", "white")
-			.style("text-anchor", "middle")
-			.style("font-size", "10px")
-			.attr("dy", "3px")
-			.style("font-weight", "bold")
 			.call(callback);
+			
+// 		nodes.append("text")
+// 			.text(function(d) { return Number(d.PROB * 100).toFixed(2); })
+// 			.style("fill", "white")
+// 			.style("text-anchor", "middle")
+// 			.style("font-size", "10px")
+// 			.attr("dy", "3px")
+// 			.style("font-weight", "bold")
 		
 		// Here render to screen
 }
@@ -146,4 +150,5 @@ function mapCoordinatesToPixelsf(dd) {
 		dd[i].PIXEL_Y = coordinates.y;
 	}
 }
+
 

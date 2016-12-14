@@ -90,15 +90,15 @@
 				</div>
 				<div id="ctrlMapSettBody" class="ctrlBody">
 					<hr class="ctrlLine" />
-					<div id="ctrlMapYearSection" class="ctrlMapSettingSection">
+					<div id="ctrlMapYearSection" class="ctrlSettingSection">
 						<p id="ctrlMapLastYear" class="ctrlMapYear ctrlMapYearArrow">&#x2190;</p>
 						<p id="ctrlMapYear" class="ctrlMapYear">2001</p>
 						<p id="ctrlMapNextYear" class="ctrlMapYear ctrlMapYearArrow">&#x2192;</p>
 					</div>
 					
-					<div id="ctrlMapSeveritySetting" class="ctrlMapSettingSection">
-						<div id="sevTxt" class="ctrlMapSettingLabel">Severity</div>
-						<div class="ctrlMapSelectBox"><select id="ctrlMapSeverity" class="ctrlMapSelect">
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="sevTxt" class="ctrlSettingLabel">Severity</div>
+						<div class="ctrlSelectBox"><select id="ctrlMapSeverity" class="ctrlSelect">
 							<option value="*" selected>All</option>
 							<option value="1">Fatal</option>
 							<option value="2">Severe</option>
@@ -108,8 +108,8 @@
 						</select></div>
 					</div>
 					<div id="ctrlMapFactorSetting" class="ctrlMapSettingSection">
-						<div id="facTxt" class="ctrlMapSettingLabel">Factor</div>
-						<div class="ctrlMapSelectBox"><select id="ctrlMapFactor" class="ctrlMapSelect">
+						<div id="facTxt" class="ctrlSettingLabel">Factor</div>
+						<div class="ctrlSelectBox"><select id="ctrlMapFactor" class="ctrlSelect">
 							<option value="*" selected>All</option>
 							<option value="01">Driving Under theInfluence</option>
 							<option value="03">Speeding</option>
@@ -141,9 +141,9 @@
 				</div>
 				<div id="ctrlHeatmapSettBody" class="ctrlBody">
 					<hr class="ctrlLine" />
-					<div id="ctrlMapSeveritySetting" class="ctrlMapSettingSection">
-						<div id="ctrlHeatmapDayTxt" class="ctrlMapSettingLabel">Day of the Week</div>
-						<div class="ctrlMapSelectBox"><select id="ctrlHeatmapDay" class="ctrlMapSelect">
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlHeatmapDayTxt" class="ctrlSettingLabel">Day of the Week</div>
+						<div class="ctrlSelectBox"><select id="ctrlHeatmapDay" class="ctrlSelect">
 							<option value="1" selected>Monday</option>
 							<option value="2">Tuesday</option>
 							<option value="3">Wednesday</option>
@@ -155,6 +155,64 @@
 						</div>
 					</div>
 					<div id="ctrlMapFilterSection">
+							<button id="ctrlHeatmapFilterButton" class="filterButton">Filter</button>
+					</div>
+					<br />
+		</div>
+				<div id="ctrlFutureMapInfoBody" class="ctrlBody">
+						<hr class="ctrlLine" />
+						<h2 class=ctrlBodyTitle>Accidents Frequency by Time</h2>
+						<h3>Summary</h3>
+						<p>This perspective plots accident predictions on the map as a way of reflecting accident probabilities for roads in a given city. Considering the probability distribution for car crashes is random, predictions here are derived from factors such as: time of day, day of the week, and current weather. Using machine learning techniques we're able to determine which intersections have historically experienced accidents under the conditions, giving a probability based on the similarity measure between accidents historically and conditions which the user is interested in viewing. These probabilities are then mapped to the marker color and opacity as shown below, and then plotted on the map at the given intersection. 
+						</p>
+						<h3>Legend</h3>
+						<div id="ctrlMapLegend">
+							<div id="ctrlFutureMapGradient"></div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerLeft">Less Probable</div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerRight">More Probable</div>
+						</div>				
+				</div>
+				<div id="ctrlFutureMapSettBody" class="ctrlBody">
+					<hr class="ctrlLine" />
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Day of the Week</div>
+						<div class="ctrlSelectBox"><select id="ctrlFutureMapDay" class="ctrlSelect">
+							<option value="1" selected>Monday</option>
+							<option value="2">Tuesday</option>
+							<option value="3">Wednesday</option>
+							<option value="4">Thursday</option>
+							<option value="5">Friday</option>
+							<option value="6">Saturday</option>
+							<option value="7">Sunday</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Time of Day</div>
+						<div class="ctrlSelectHalfBox">
+						<select id="ctrlFutureMapHour" class="ctrlSelectHalf">
+							<option value="1" selected>1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+						</select>
+						</div>
+						<div class="ctrlSelectHalfBox">
+						<select id="ctrlFutureMapMer" class="ctrlSelectHalf">
+							<option value="am" selected>AM</option>
+							<option value="pm">PM</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlFilterSection">
 							<button id="ctrlHeatmapFilterButton" class="filterButton">Filter</button>
 					</div>
 					<br />
