@@ -174,24 +174,25 @@ d3.select("#ctrlFutureMapFilterButton").on("click", function() {
 	var meridiem = d3.select("#ctrlFutureMapMer").node();
 	var meridiemValue = meridiem.options[meridiem.selectedIndex].value;
 	
-	if (meridiemValue == "pm") {
+	if (hourValue == "12" && meridiemValue == "am") {
+		hour = "";
+	}
+	else if (meridiemValue == "pm") {
 		var hour = parseInt(hour) + 12;
-		if (hour == 24) {
-			hour = 0;
-		}
-		else {
-			// Do nothing.
-		}
 	}
 	else {
 		// Do nothing.
 	}
 		
+		
+	var weather = d3.select("#ctrlFutureMapWeather").node();
+	var weatherValue = weather.options[weather.selectedIndex].value;
+	
 	var request = {
 		"target" : "ml",
 		"day" : dayValue,
 		"time" : hourValue + "00",
-		"weather" : "A"
+		"weather" : weatherValue
 	};
 		
 	var callback = function() { 
