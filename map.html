@@ -229,6 +229,78 @@
 					</div>
 					<br />
 		</div>
+				<div id="ctrlFutureAbstractInfoBody" class="ctrlBody">
+						<hr class="ctrlLine" />
+						<h2 class=ctrlBodyTitle>Probabilities by Intersection</h2>
+						<h3>Summary</h3>
+						<p>This perspective plots accident predictions on a bar graph where the height and color of the bar graph convey the predicted probability that an accident will occur. Accidents are scaled according to the minimum and maximum probabilities, allowing the reader to infer which accidents are probabilistically more dangerous given the current conditions. These conditions include time of day, day of the week, and current weather conditions. The settings panel allows the user to forecast accident probabilities under these parameters for arbitrary days, times, and weather.
+						</p>
+						<h3>Legend</h3>
+						<div id="ctrlMapLegend">
+							<div id="ctrlFutureAbsGradient"></div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerLeft">Less Probable</div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerRight">More Probable</div>
+						</div>				
+				</div>
+				<div id="ctrlFutureAbstractSettBody" class="ctrlBody">
+					<hr class="ctrlLine" />
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Day of the Week</div>
+						<div class="ctrlSelectBox"><select id="ctrlFutureAbsDay" class="ctrlSelect">
+							<option value="1" selected>Monday</option>
+							<option value="2">Tuesday</option>
+							<option value="3">Wednesday</option>
+							<option value="4">Thursday</option>
+							<option value="5">Friday</option>
+							<option value="6">Saturday</option>
+							<option value="7">Sunday</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Time of Day</div>
+						<div class="ctrlSelectHalfBox">
+						<select id="ctrlFutureAbsHour" class="ctrlSelectHalf">
+							<option value="1" selected>1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+						</select>
+						</div>
+						<div class="ctrlSelectHalfBox">
+						<select id="ctrlFutureAbsMer" class="ctrlSelectHalf">
+							<option value="am" selected>AM</option>
+							<option value="pm">PM</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureAbsTxt" class="ctrlSettingLabel">Weather</div>
+						<div class="ctrlSelectBox"><select id="ctrlFutureAbsWeather" class="ctrlSelect">
+							<option value="A" selected>Clear</option>
+							<option value="B">Cloudy</option>
+							<option value="C">Raining</option>
+							<option value="D">Snowing</option>
+							<option value="E">Fog</option>
+							<option value="G">Wind</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlFilterSection">
+							<button id="ctrlFutureAbsFilterButton" class="filterButton">Filter</button>
+					</div>
+					<br />
+		</div>
+</div>
+		</div>
 </div>
 </body>
 <script type="text/javascript" src="script.js"></script>

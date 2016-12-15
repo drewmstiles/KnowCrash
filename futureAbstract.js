@@ -1,6 +1,13 @@
 var height = window.innerHeight;
 var width = window.innerWidth;
 
+		var fasvg = d3.select("#futureAbstract")
+			.append("svg")
+			.style('width', width + 'px')
+			.style('height', height + 'px')
+			.style('background-color', "#D9D9D9")
+			.style('stroke-width', 0);
+			
 var countToColorScale = d3.scaleLinear();
 	
 var MIN_INDEX = 25;
@@ -31,8 +38,6 @@ function showFutureBars(request, callback) {
 		});
 		
 		console.log(formattedPredictions);
-			
-		callback();
 		
 		formattedPredictions = formattedPredictions.slice(0,MIN_INDEX + 1);
 
@@ -52,12 +57,9 @@ function showFutureBars(request, callback) {
 			.range([0, width]);
 
 
-		var fasvg = d3.select("#futureAbstract")
-			.append("svg")
-			.style('width', width + 'px')
-			.style('height', height + 'px')
-			.style('background-color', "#D9D9D9")
-			.style('stroke-width', 0);
+		d3.selectAll(".bar").remove();
+		d3.selectAll(".perLabel").remove();
+		d3.selectAll(".interLabel").remove();
 
 		fad = fasvg.selectAll('rect')
 			.data(formattedPredictions)
@@ -96,6 +98,7 @@ function showFutureBars(request, callback) {
 		});
 	
 		fad.append("text")
+			.attr("class", "interLabel")
 			.attr("fill", "white")
 			.attr("y", height - 40)
 			.attr("x", function (d, i) { return xScale(i) + barWidth/2; })
@@ -106,13 +109,14 @@ function showFutureBars(request, callback) {
 			.text(function(d) { return d.INTER });
 		
 
-		
+		callback();
 	});
 }
 
 
 function appendPercentageLabels() {
 	fad.append("text")
+		.attr("class", "perLabel")
 		.attr("fill", "white")
 		.attr("y", function(d) { return height - yScale(d.PROB) - 5; })
 		.attr("x", function (d, i) { return xScale(i) + 5; })
@@ -125,3 +129,57 @@ function appendPercentageLabels() {
 		.duration(1000)
 			.attr("opacity", 1.0);
 }
+
+
+d3.select("#ctrlFutureAbsFilterButton").on("click", function() {
+
+	d3.select(this).html("Loading");
+		
+	var loadInterval = setInterval(function() {
+		var elem = d3.select("#ctrlFutureAbsFilterButton");
+		var html = elem.html();
+		if (html == "Loading...") {
+			elem.html("Loading");
+		}
+		else {
+			elem.html(html + ".");
+		}
+	}, 1000);
+
+	var day = d3.select("#ctrlFutureAbsDay").node();
+	var dayValue = day.options[day.selectedIndex].value;
+	
+	var hour = d3.select("#ctrlFutureAbsHour").node();
+	var hourValue = hour.options[hour.selectedIndex].value;
+	
+	var meridiem = d3.select("#ctrlFutureAbsMer").node();
+	var meridiemValue = meridiem.options[meridiem.selectedIndex].value;
+	
+	if (hourValue == "12" && meridiemValue == "am") {
+		hour = "";
+	}
+	else if (meridiemValue == "pm") {
+		var hour = parseInt(hour) + 12;
+	}
+	else {
+		// Do nothing.
+	}
+		
+		
+	var weather = d3.select("#ctrlFutureAbsWeather").node();
+	var weatherValue = weather.options[weather.selectedIndex].value;
+	
+	var request = {
+		"target" : "ml",
+		"day" : dayValue,
+		"time" : hourValue + "00",
+		"weather" : weatherValue
+	};
+		
+	var callback = function() { 
+		clearInterval(loadInterval); 
+		d3.select("#ctrlFutureAbsFilterButton").html("Filter");
+	};
+	
+	showFutureBars(request, callback);
+});
