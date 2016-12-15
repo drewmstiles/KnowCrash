@@ -9,26 +9,46 @@ var fad;
 var yScale;
 var xScale;
 
-function showFutureBars(callback) {
-	d3.csv("lb_inters.csv", function(faData) {
+function showFutureBars(request, callback) {
 
+	$.get("http://ec2-54-67-114-248.us-west-1.compute.amazonaws.com:8080", request, function(predictions, status) {
+
+		var formattedPredictions = [];
+		var i = 0;
+		for (property in predictions) {
+			formattedPredictions[i++] = {
+				"INTER" : property,
+				"PROB" : predictions[property]
+			}
+		}
+		
+		formattedPredictions.sort(function(x, y) {
+			return d3.descending(x.PROB, y.PROB);
+		});
+		
+		formattedPredictions.map(function(d) {
+			d.INTER = d.INTER.replace("_"," ");
+		});
+		
+		console.log(formattedPredictions);
+			
 		callback();
 		
-		faData = faData.slice(0,MIN_INDEX + 1);
+		formattedPredictions = formattedPredictions.slice(0,MIN_INDEX + 1);
 
 		var barPadding = 2;
-		var barWidth = (width / faData.length) - barPadding;
+		var barWidth = (width / formattedPredictions.length) - barPadding;
 
 		yScale = d3.scaleLinear()
-			.domain([0, faData[0].COUNT])
-			.range([height/4, height - 20]);
+			.domain([formattedPredictions[MIN_INDEX].PROB, formattedPredictions[0].PROB])
+			.range([height/3, height - 20]);
 
 		countToColorScale
-			.domain([faData[MIN_INDEX].COUNT, faData[0].COUNT])
+			.domain([formattedPredictions[MIN_INDEX].PROB, formattedPredictions[0].PROB])
 			.range(["blue","red"]);
 		
 		xScale = d3.scaleLinear()
-			.domain([0, faData.length])
+			.domain([0, formattedPredictions.length])
 			.range([0, width]);
 
 
@@ -40,7 +60,7 @@ function showFutureBars(callback) {
 			.style('stroke-width', 0);
 
 		fad = fasvg.selectAll('rect')
-			.data(faData)
+			.data(formattedPredictions)
 			.enter();
 		
 		var rects = fad.append('rect')
@@ -55,7 +75,7 @@ function showFutureBars(callback) {
 				return barWidth;
 			})
 			.attr("fill", function (d) {
-				return countToColorScale(d.COUNT);
+				return countToColorScale(d.PROB);
 			})
 			.attr("height", 0)
 		
@@ -63,13 +83,13 @@ function showFutureBars(callback) {
 		rects.transition()
 			.duration(1000)
 			.delay(function (d, i) {
-				return i * 250 + 500;
+				return i * 50;
 			})
 			.attr("y", function (d, i) {
-				return height - yScale(d.COUNT);
+				return height - yScale(d.PROB);
 			})
 			.attr("height", function (d, i) {
-				return yScale(d.COUNT);
+				return yScale(d.PROB);
 		}).each(function() { ++n; })
 		.on("end", function() {
 			if (!--n) appendPercentageLabels();
@@ -83,7 +103,7 @@ function showFutureBars(callback) {
 				return ("rotate(-90 " + (xScale(i) + barWidth/2) + " " + (height - 40) + ")");
 			})
 			.attr("font-size", "10px")
-			.text(function(d) { return d.PRIMARY_RD + " & " + d.SECONDARY_RD });
+			.text(function(d) { return d.INTER });
 		
 
 		
@@ -94,11 +114,12 @@ function showFutureBars(callback) {
 function appendPercentageLabels() {
 	fad.append("text")
 		.attr("fill", "white")
-		.attr("y", function(d) { return height - yScale(d.COUNT) - 5; })
+		.attr("y", function(d) { return height - yScale(d.PROB) - 5; })
 		.attr("x", function (d, i) { return xScale(i) + 5; })
 		.attr("font-size", "10px")
-		.attr("fill", function(d) { return countToColorScale(d.COUNT); })
-		.text(function(d) { return Number(poisson(d.COUNT)).toFixed(3) + "%"; })
+		.attr("font-weight", "bolder")
+		.attr("fill", function(d) { return countToColorScale(d.PROB); })
+		.text(function(d) { return Number(d.PROB * 100).toFixed(1) + "%"; })
 		.attr("opacity", 0)
 		.transition()
 		.duration(1000)

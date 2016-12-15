@@ -71,7 +71,21 @@ function loadScreen(know, perspective, endFunction) {
 		showFuture(request, endFunction);
 	}
 	else {
-		showFutureBars(endFunction);
+		var now = new Date();
+		var day = now.getDay();
+		if (day == 0) day = 7;
+		var hour = now.getHours();
+		var min = now.getMinutes();
+		var weather = "A";
+		
+		var request = {
+			"target" : "ml",
+			"day" : day,
+			"time" : hour + "" +  min,
+			"weather" : weather
+		};
+		
+		showFutureBars(request, endFunction);
 	}
 }
 	

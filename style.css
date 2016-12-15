@@ -8,6 +8,11 @@ body{
 #wrapper {
 }
 
+h3 {
+	width:100%;
+	text-align:center;
+}
+
 button {
 	display: block;
 	background-color: rgba(255, 0, 0, 1.0);
