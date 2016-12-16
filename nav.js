@@ -50,7 +50,7 @@ function loadScreen(know, perspective, endFunction) {
 	}
 	else if (know == 0 && perspective == 1) {
 		showHeatmap(function() {});
-		showHeatLine(endFunction);
+		showLine(endFunction);
 	}
 	else if (know == 1 && perspective == 0) {
 	

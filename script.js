@@ -176,6 +176,7 @@ d3.select("#ctrlMapFilterButton").on("click", function() {
 	var factorValue = factor.options[factor.selectedIndex].value;
 	
 	var request = {
+		"target" : "db",
 		"year" : year,
 		"severity" : severityValue,
 		"factor" : factorValue

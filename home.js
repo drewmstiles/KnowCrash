@@ -46,6 +46,7 @@ d3.select("#visButton").on("click", function() {
 	
 	var perspective = getSelectedValueForClass("homePer");
 	
+	// Call navigation module
 	setTimeout(function() {
 		loadScreen(know, perspective, homeHide)
 	}, 100);

@@ -62,18 +62,21 @@ AWS.config.credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
 
 
 app.get('/', function(req, res){
+
 	if (req.query.target == "db") {
+			console.log("DB ACCESSED");
+				console.log(req.query);
 		var query = {};
 		query['COLLISION_DATE'] = new RegExp(req.query.year + '.*');
 		if (req.query.severity != '*') query['COLLISION_SEVERITY'] = req.query.severity;
 		if (req.query.factor != '*') query['PCF_VIOL_CATEGORY'] = req.query.factor;
-		console.log(query);
 		Model.find(query, function(err, result) {
-				console.log(result);
 				res.send(result);
 			});
 	}
 	else {
+		console.log("ML ACCESSED");
+						console.log(req.query);
 		var machineLearning = new AWS.MachineLearning();
 		
 		var params = {
@@ -87,6 +90,7 @@ app.get('/', function(req, res){
 			};
 			
 		machineLearning.predict(params, function(err, data) {
+			console.log(data);
 			if (err) console.log(err, err.stack);
 			else res.send(data.Prediction.predictedScores);
 		});

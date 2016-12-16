@@ -27,6 +27,9 @@ var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 			
+			
+
+// Graphic module interface function 			
 function showFuture(request, callback) {
 	
 	var fmapboxTiles = new L.tileLayer('https://api.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token={token}', {
@@ -55,6 +58,7 @@ function showFuture(request, callback) {
 	renderf(request, callback);
 };
 
+// Graphic append functions.
 function cleanf() {
 
 	fsvg.selectAll("g").remove();
