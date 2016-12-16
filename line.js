@@ -1,5 +1,17 @@
 // Based on example at https://bl.ocks.org/mbostock/3883245
 
+var RAINBOW_COLORS = ["#FFOOOO", "FF7F00", "FFFF00", "#00FF00", "0000FF", "4B0082", "#8F00FF"];
+
+var dayNumberToNameMap = {
+	 "1" : "Mo",
+	 "2" : "Tu",
+	 "3" : "We",
+	 "4" : "Th",
+	 "5" : "Fr",
+	 "6" : "Sa",
+	 "7" : "Su" 
+}
+
 var lineSvgHeight = window.innerHeight/2;
 var lineSvgWidth = window.innerWidth;
 
@@ -14,6 +26,10 @@ var x = d3.scaleLinear()
 var y = d3.scaleLinear()
     .rangeRound([lineHeight, 0]);
 
+var lineDayToStrokeScale = d3.scaleOrdinal()
+	.domain(heatmapDays)
+	.range(RAINBOW_COLORS);
+	
 var line = d3.line()
     .x(function(d) { return x(d.hour); })
     .y(function(d) { return y(d.value); });
@@ -38,7 +54,6 @@ function showLine(callback) {
 			x.domain([1, 24]);
 			y.domain([0, Math.ceil(yMax/100) * 100 ]); // Round to nearest hundreds.
 		
-		
 			// Why do I need to return modified array?
 			// Javascript is pass by reference?
 			lineAppend(linePreprocess(lineData));
@@ -53,16 +68,38 @@ function linePreprocess(data) {
 	
 	var day = d3.select("#ctrlHeatmapDay").node();
 	var dayValue = day.options[day.selectedIndex].value;
-	
-	data = data.filter(function(d) {
-		return d.day == dayValue;
-	});
 
-	data.sort(function(x, y) {
-		return d3.ascending(x.hour, y.hour);
-	});
+// TODO implement day filters	
+// 	data = data.filter(function(d) {
+// 		return d.day == dayValue;
+// 	});
+
+	var dayToSamplesMap = parseDaysFromData(data);
+	for (day in dayToSamplesMap) {
+		var samples = dayToSamplesMap[day];
+		samples.sort(function(x, y) {
+			return d3.ascending(x.hour, y.hour);
+		});
+		dayToSamplesMap[day] = samples;
+	}
 	
-	return data;
+	return dayToSamplesMap;
+}
+
+function parseDaysFromData(data) {
+	var map = {};
+	for (var i = 0; i < data.length; i++) {
+		var sample = data[i];
+		var day = dayNumberToNameMap[sample.day];
+		var list = map[day];
+		if (list == undefined) {
+			map[day] = [sample];
+		}
+		else {
+			map[day].push(sample);	
+		}
+	}
+	return map;
 }
 
 function lineClean() {
@@ -74,10 +111,11 @@ function lineClean() {
 	}
 }
 
-function lineAppend(data) {
+function lineAppend(dayToSamplesMap) {
 
 
-		console.log(data);
+		console.log(dayToSamplesMap);
+		
 		lineClean();
 
 		lineG = lineSvg.append("g")
@@ -110,10 +148,15 @@ function lineAppend(data) {
 		  .style("text-anchor", "middle")
 		  .text("Accident Count");
 
-	  lineG.append("path")
-		  .datum(data)
-		  .attr("class", "line")
-		  .attr("d", line);
+	for (day in dayToSamplesMap) {	
+		var samples = dayToSamplesMap[day];
+		lineG.append("path")
+			.datum(samples)
+			.attr("id", "line" + day)
+			.attr("class", "line")
+			.attr("d", line)
+			.style("stroke", lineDayToStrokeScale(day))
+	}
 }
 
 
