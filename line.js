@@ -26,7 +26,8 @@ var y = d3.scaleLinear()
 	
 var line = d3.line()
     .x(function(d) { return x(d.hour); })
-    .y(function(d) { return y(d.value); });
+    .y(function(d) { return y(d.value); })
+    .curve(d3.curveBasis);
 
 
 var lineG;
@@ -121,23 +122,11 @@ function lineAppend(dayToSamplesMap) {
 	  lineG.append("g")
 		  .attr("class", "lineAxis lineAxis--x")
 		  .attr("transform", "translate(0," + lineHeight + ")")
-		  .call(d3.axisBottom(x))
-		.append("text")
-		  .attr("fill", "#fff")
-		  .attr("transform", "translate(" + (lineWidth - 28)+ ",0)")
-		  .attr("y", -12)
-		  .attr("dy", "0.71em")
-		  .text("Time of Day");
+		  .call(d3.axisBottom(x));
 
 	  lineG.append("g")
 		  .attr("class", "lineAxis lineAxis--y")
-		  .call(d3.axisLeft(y).tickSize(-lineWidth))
-		.append("text")
-		  .attr("fill", "#fff")
-		  .attr("transform", "translate(-40," + lineHeight/2 + ")rotate(-90)")
-		  .attr("dy", "0.71em")
-		  .style("text-anchor", "middle")
-		  .text("Accident Count");
+		  .call(d3.axisLeft(y));
 
 	for (day in dayToSamplesMap) {	
 		var samples = dayToSamplesMap[day];
@@ -147,7 +136,8 @@ function lineAppend(dayToSamplesMap) {
 			.attr("class", "line")
 			.attr("d", line)
 			.style("stroke", lineDayToColorScale(day))
-			.style("opacity", 0.8);
+			.style("stroke-width", "3px")
+			.style("opacity", 0.80);
 	}
 }
 

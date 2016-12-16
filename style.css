@@ -414,8 +414,17 @@ rect.bordered {
 	stroke-width:2px;
 }
 
-.heatmapDayLabel, .heatmapTimeLabel {
+.heatmapDayLabel, .heatmapTimeLabel, .lineAxis--x text {
+	font-family:Helvetica;
+	font-size: 13px;
+	font-weight:bold;
+	fill:white;
+}
+
+.lineAxis--y text {
+	font-family:Helvetica;
 	font-size: 12px;
 	font-weight:bold;
+	fill:white;
 }
 

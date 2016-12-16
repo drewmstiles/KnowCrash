@@ -1,4 +1,4 @@
-var RAINBOW_COLORS = ["#FF0000", "FF7F00", "FFFF00", "#00FF00", "0000FF", "#F5A3C8", "#8F00FF"];
+var RAINBOW_COLORS = ["#FF0000", "FF7F00", "FFFF00", "#00FF00", "#31FFFF", "#F5A3C8", "#8F00FF"];
 	
 var heatMapMargin = { top: 80, right: 50, bottom: 0, left: 50 },
 	heatMapGridSize = Math.min(	Math.floor((window.innerWidth - heatMapMargin.left - heatMapMargin.right) / 24),
