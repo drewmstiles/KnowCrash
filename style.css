@@ -414,8 +414,8 @@ rect.bordered {
 	stroke-width:2px;
 }
 
-text.mono {
-	font-size:9pt;
-	font-family:Consolas, courier;
-	fill: #fff;
+.heatmapDayLabel, .heatmapTimeLabel {
+	font-size: 12px;
+	font-weight:bold;
 }
+
