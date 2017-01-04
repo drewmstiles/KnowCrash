@@ -1,0 +1,21 @@
+.lineAxis path {
+fill:none;
+stroke:#fff;
+stroke-width:1px;
+}
+
+.lineAxis line {
+	stroke:#fff;
+}
+
+.line {
+  fill: none;
+  stroke:red;
+  stroke-width: 2.5px;
+}
+
+.lineAxis {
+	fill:white;
+	stroke:white;
+	stroke-width:1px;
+}

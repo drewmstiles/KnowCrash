@@ -1,30 +1,335 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>knowcrash.net</h1>
-    <h3>CECS 492 Group 5</h3>
-    <ol>
-    	<li><a href="ProgressReports/pr01.xlsx">Progress Report 1</a></li>
-    	<li><a href="ProgressReports/pr02.xlsx">Progress Report 2</a></li>
-    	<li><a href="ProgressReports/pr03.xlsx">Progress Report 3</a></li>
-    	<li><a href="ProgressReports/pr04.xlsx">Progress Report 4</a></li>
-    	<li><a href="ProgressReports/pr05.xlsx">Progress Report 5</a></li>
-    	<li><a href="ProgressReports/pr06.xlsx">Progress Report 6</a></li>
-    	<li><a href="ProgressReports/pr07.xlsx">Progress Report 7</a></li>
-    	<li><a href="ProgressReports/pr08.xlsx">Progress Report 8</a></li>
-    	<li><a href="ProgressReports/pr09.xlsx">Progress Report 9</a></li>
-    	<li><a href="ProgressReports/pr10.xlsx">Progress Report 10</a></li>
-		<li>Thanksgiving Break</li>
-		<li><a href="ProgressReports/pr12.xlsx">Progress Report 12</a></li>
-		<li><a href="ProgressReports/pr13.xlsx">Progress Report 13</a></li>
-		<li>Finals</li>
-    </ol>
-    <ol>
-    	<li><a href="Labs/proposal.pdf">Lab 1</a></li>
-    	<li><a href="Labs/architecture.pdf">Lab 2</a></li>
-    	<li><a href="Labs/tests2.xlsx">Lab 3</a></li>
-    </ol>    
-    <br/>
-    <p><a href="map.html">Beta</a></p>
-  </body>
+<html lang="en" ng-app="calendar">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+    <script src="http://d3js.org/d3.v4.min.js" type="text/javascript"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/line.css">
+</head>
+<body>
+<div id="wrapper">
+		<div id="home">
+			<div id="homeContainer">
+				<p id="homeTitle" class="homeFull">Know Crash</p>
+				<section class="homeSec">
+					<p class="homeLabel">What city are you interested in?</p>
+					<div class="homeFieldContainer">
+						<p class="homeText homeArrow homeLeftArrow"></p>
+						<input id="homeCity" class="homeText homeField" value="Long Beach">
+						<p class="homeText homeArrow homeRightArrow"></p>
+					</div>
+				</section>
+				<section class="homeSec">
+					<p class="homeLabel">What do you want to know about?</p>
+					<div class="homeFieldContainer">
+						<p id="homeHistView" class="homeText homeHalfPara homeKnow" x-data-selected="yes" x-data-value="0">Historical Trends</p>
+						<p id="homeFutuView" class="homeText homeHalfPara homeKnow" x-data-selected="no" x-data-value="1">Future Predictions</p>
+					</div>
+				</section>
+				<section class="homeSec">
+					<p class="homeLabel">Which perspective would you like to see?</p>
+					<div class="homeFieldContainer">
+						<p id="histMapToggle" class="homeText homeFullPara homePer" x-data-selected="yes" x-data-value="0">Accidents Mapped by Year</p>
+						<p id="histAbsToggle" class="homeText homeFullPara homePer" x-data-selected="no" x-data-value="1">Accident Frequency by Time</p>
+					</div>
+				</section>
+				<section class="homeSec">
+					<button id="visButton">Visualize</button>
+				</section>
+			</div>
+		</div>
+		<div id="map" class="screen"></div>
+		<div id="heatmap" class="screen">
+		</div>
+		<div id="futureMap" class="screen">
+			<h1 id="heatmapTitle">Today's Intersection Accident Probabilities</h1>
+		</div>
+		<div id="futureAbstract" class="screen"></div>
+		<div id="ctrl">
+			<div id="ctrlHead">
+				<div id="ctrlHome" class="ctrlIcon"></div>
+				<div id="ctrlInfo" class="ctrlIcon"></div>
+				<div id="ctrlSett" class="ctrlIcon"></div>
+			</div>
+			<div id="ctrlBody">
+				<div id="ctrlMapInfoBody" class="ctrlBody">
+						<hr class="ctrlLine" />
+						<h2 class=ctrlBodyTitle>Accidents Mapped by Year</h2>
+						<h3>Summary</h3>
+						<p>This perspective shows accidents that occurred in Long Beach over the given year. Accidents are presented as a circular marker at the location where the accident occurred. Accident severity is encoded in both the size and color of the marker as shown in the legend given below.
+						</p>
+						<h3>Legend</h3>
+						<div id="ctrlMapLegend">
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleRed"></div>
+								<div class="ctrlMapCircleLabel">Fatal</div>	
+							</div>
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleOrange"></div>
+								<div class="ctrlMapCircleLabel">Severe</div>	
+							</div>
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleMustard"></div>
+								<div class="ctrlMapCircleLabel">Mild</div>	
+							</div>
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleYellow"></div>
+								<div class="ctrlMapCircleLabel">Minor</div>	
+							</div>
+							<div class="ctrlMapLegendEntry">
+								<div class="ctrlMapCircle" id="ctrlMapCircleWhite"></div>
+								<div class="ctrlMapCircleLabel">No Injury</div>	
+							</div> 		
+						</div>				
+				</div>
+				<div id="ctrlMapSettBody" class="ctrlBody">
+					<hr class="ctrlLine" />
+					<div id="ctrlMapYearSection" class="ctrlSettingSection">
+						<p id="ctrlMapLastYear" class="ctrlMapYear ctrlMapYearArrow">&#x2190;</p>
+						<p id="ctrlMapYear" class="ctrlMapYear">2001</p>
+						<p id="ctrlMapNextYear" class="ctrlMapYear ctrlMapYearArrow">&#x2192;</p>
+					</div>
+					
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="sevTxt" class="ctrlSettingLabel">Severity</div>
+						<div class="ctrlSelectBox"><select id="ctrlMapSeverity" class="ctrlSelect">
+							<option value="*" selected>All</option>
+							<option value="1">Fatal</option>
+							<option value="2">Severe</option>
+							<option value="3">Mild</option>
+							<option value="4">Minor</option>
+							<option value="0">No Injury</option>
+						</select></div>
+					</div>
+					<div id="ctrlMapFactorSetting" class="ctrlMapSettingSection">
+						<div id="facTxt" class="ctrlSettingLabel">Factor</div>
+						<div class="ctrlSelectBox"><select id="ctrlMapFactor" class="ctrlSelect">
+							<option value="*" selected>All</option>
+							<option value="01">Driving Under theInfluence</option>
+							<option value="03">Speeding</option>
+							<option value="04">Tailgating</option> 
+							<option value="05">Wrong Side of Road</option> 								
+							<option value="06">Improper Passing</option>
+							<option value="11">Pedestrian Violation</option>
+							<option value="12">Traffic Signal Malfunction</option> 		
+							<option value="24">Driver Fell Asleep</option> 		
+						</select></div>
+					</div>	
+					<div id="ctrlMapFilterSection">
+							<button id="ctrlMapFilterButton" class="filterButton">Filter</button>
+					</div>
+					<br />
+			</div>
+				<div id="ctrlHeatmapInfoBody" class="ctrlBody">
+						<hr class="ctrlLine" />
+						<h2 class=ctrlBodyTitle>Accidents Frequency by Time</h2>
+						<h3>Summary</h3>
+						<p>This perspective shows the distribution of accidents across day of the week and time over the years 2001-2009. In the <b>Accident Frequency Heatmap</b> perspective, accidents are represented by a color gradient that increases from yellow to red depending on how many accidents occurred in that time range. This scale can be seen in the legend below. In the <b>Accident Frequency Chart</b> the number of accidents for a given day are plotted against a discrete time scale. These two visualization give different perspectives on the same underlying dataset, accident frequencies at a date and time.
+						</p>
+						<h3>Legend</h3>
+						<div id="ctrlMapLegend">
+							<div id="ctrlHeatmapGradient"></div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerLeft">Less Accidents</div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerRight">More Accidents</div>
+						</div>				
+				</div>
+				<div id="ctrlHeatmapSettBody" class="ctrlBody">
+					<hr class="ctrlLine" />
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlHeatmapDayTxt" class="ctrlSettingLabel">Day of the Week</div>
+						<div class="ctrlSelectBox"><select id="ctrlHeatmapDay" class="ctrlSelect">
+							<option value="1" selected>Monday</option>
+							<option value="2">Tuesday</option>
+							<option value="3">Wednesday</option>
+							<option value="4">Thursday</option>
+							<option value="5">Friday</option>
+							<option value="6">Saturday</option>
+							<option value="7">Sunday</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapFilterSection">
+							<button id="ctrlHeatmapFilterButton" class="filterButton">Filter</button>
+					</div>
+					<br />
+		</div>
+				<div id="ctrlFutureMapInfoBody" class="ctrlBody">
+						<hr class="ctrlLine" />
+						<h2 class=ctrlBodyTitle>Accidents Frequency by Time</h2>
+						<h3>Summary</h3>
+						<p>This perspective plots accident predictions on the map as a way of reflecting accident probabilities for roads in a given city. Considering the probability distribution for car crashes is random, predictions here are derived from factors such as: time of day, day of the week, and current weather. Using machine learning techniques we're able to determine which intersections have historically experienced accidents under the conditions, giving a probability based on the similarity measure between accidents historically and conditions which the user is interested in viewing. These probabilities are then mapped to the marker color and opacity as shown below, and then plotted on the map at the given intersection. 
+						</p>
+						<h3>Legend</h3>
+						<div id="ctrlMapLegend">
+							<div id="ctrlFutureMapGradient"></div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerLeft">Less Probable</div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerRight">More Probable</div>
+						</div>				
+				</div>
+				<div id="ctrlFutureMapSettBody" class="ctrlBody">
+					<hr class="ctrlLine" />
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Day of the Week</div>
+						<div class="ctrlSelectBox"><select id="ctrlFutureMapDay" class="ctrlSelect">
+							<option value="1" selected>Monday</option>
+							<option value="2">Tuesday</option>
+							<option value="3">Wednesday</option>
+							<option value="4">Thursday</option>
+							<option value="5">Friday</option>
+							<option value="6">Saturday</option>
+							<option value="7">Sunday</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Time of Day</div>
+						<div class="ctrlSelectHalfBox">
+						<select id="ctrlFutureMapHour" class="ctrlSelectHalf">
+							<option value="1" selected>1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+						</select>
+						</div>
+						<div class="ctrlSelectHalfBox">
+						<select id="ctrlFutureMapMer" class="ctrlSelectHalf">
+							<option value="am" selected>AM</option>
+							<option value="pm">PM</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Weather</div>
+						<div class="ctrlSelectBox"><select id="ctrlFutureMapWeather" class="ctrlSelect">
+							<option value="A" selected>Clear</option>
+							<option value="B">Cloudy</option>
+							<option value="C">Raining</option>
+							<option value="D">Snowing</option>
+							<option value="E">Fog</option>
+							<option value="G">Wind</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlFilterSection">
+							<button id="ctrlFutureMapFilterButton" class="filterButton">Filter</button>
+					</div>
+					<br />
+		</div>
+				<div id="ctrlFutureAbstractInfoBody" class="ctrlBody">
+						<hr class="ctrlLine" />
+						<h2 class=ctrlBodyTitle>Probabilities by Intersection</h2>
+						<h3>Summary</h3>
+						<p>This perspective plots accident predictions on a bar graph where the height and color of the bar graph convey the predicted probability that an accident will occur. Accidents are scaled according to the minimum and maximum probabilities, allowing the reader to infer which accidents are probabilistically more dangerous given the current conditions. These conditions include time of day, day of the week, and current weather conditions. The settings panel allows the user to forecast accident probabilities under these parameters for arbitrary days, times, and weather.
+						</p>
+						<h3>Legend</h3>
+						<div id="ctrlMapLegend">
+							<div id="ctrlFutureAbsGradient"></div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerLeft">Less Probable</div>
+							<div class="ctrlHeatmapGradientMarker" id="ctrlHeatmapGradientMarkerRight">More Probable</div>
+						</div>				
+				</div>
+				<div id="ctrlFutureAbstractSettBody" class="ctrlBody">
+					<hr class="ctrlLine" />
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Day of the Week</div>
+						<div class="ctrlSelectBox"><select id="ctrlFutureAbsDay" class="ctrlSelect">
+							<option value="1" selected>Monday</option>
+							<option value="2">Tuesday</option>
+							<option value="3">Wednesday</option>
+							<option value="4">Thursday</option>
+							<option value="5">Friday</option>
+							<option value="6">Saturday</option>
+							<option value="7">Sunday</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureMapTxt" class="ctrlSettingLabel">Time of Day</div>
+						<div class="ctrlSelectHalfBox">
+						<select id="ctrlFutureAbsHour" class="ctrlSelectHalf">
+							<option value="1" selected>1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+						</select>
+						</div>
+						<div class="ctrlSelectHalfBox">
+						<select id="ctrlFutureAbsMer" class="ctrlSelectHalf">
+							<option value="am" selected>AM</option>
+							<option value="pm">PM</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
+						<div id="ctrlFutureAbsTxt" class="ctrlSettingLabel">Weather</div>
+						<div class="ctrlSelectBox"><select id="ctrlFutureAbsWeather" class="ctrlSelect">
+							<option value="A" selected>Clear</option>
+							<option value="B">Cloudy</option>
+							<option value="C">Raining</option>
+							<option value="D">Snowing</option>
+							<option value="E">Fog</option>
+							<option value="G">Wind</option>
+						</select>
+						</div>
+					</div>
+					<div id="ctrlFilterSection">
+							<button id="ctrlFutureAbsFilterButton" class="filterButton">Filter</button>
+					</div>
+					<br />
+		</div>
+</div>
+		</div>
+</div>
+</body>
+<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" src="js/heatmap.js"></script>
+<script type="text/javascript" src="js/line.js"></script>
+<script type="text/javascript" src="js/nav.js"></script>
+<script type="text/javascript" src="js/futureMap.js"></script>
+<script type="text/javascript" src="js/home.js"></script>
+<script type="text/javascript" src="js/ctrl.js"></script>
+<script type="text/javascript" src="js/futureAbstract.js"></script>
+<script>
+
+	window.onload = function() {
+		showIntro();
+	};
+
+	function showIntro() {
+		d3.select("#home")
+			.style("width",window.innerWidth + "px")
+			.style("height",window.innerHeight + "px")
+	}
+		
+	function fadeIntro() {
+		d3.select("#home")
+			.transition()
+			.duration(2000)
+			.style("opacity", 0.0);
+	}
+	
+	
+</script>
 </html>
