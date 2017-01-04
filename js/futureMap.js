@@ -106,7 +106,7 @@ function drawf(callback) {
 		
 function renderf(request, callback) {
 	
-	d3.csv("lb_map.csv", function(dd) {
+	d3.csv("data/lb_map.csv", function(dd) {
 		$.get("http://ec2-54-67-114-248.us-west-1.compute.amazonaws.com:8080", request, function(predictions, status) {
 	
 			var latLongMap = {};

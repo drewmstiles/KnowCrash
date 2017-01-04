@@ -180,17 +180,17 @@ button {
 }
 
 #ctrlHome {
-	background:url("img/home_off.png") no-repeat center;
+	background:url("../img/home_off.png") no-repeat center;
 	background-size: 32px 32px;
 }
 
 #ctrlInfo {
-	background:url("img/info_off.png") no-repeat center;
+	background:url("../img/info_off.png") no-repeat center;
 	background-size: 32px 32px;
 }
 
 #ctrlSett {
-	background:url("img/sett_off.png") no-repeat center;
+	background:url("../img/sett_off.png") no-repeat center;
 	background-size: 32px 32px;
 }
 
@@ -239,27 +239,27 @@ button {
 }
 
 #ctrlMapCircleRed {
-	background:url("img/red.png") no-repeat center;
+	background:url("../img/red.png") no-repeat center;
 	background-size: 28px 28px;
 }
 
 #ctrlMapCircleOrange {
-	background:url("img/orange.png") no-repeat center;
+	background:url("../img/orange.png") no-repeat center;
 	background-size: 24px 24px;
 }
 
 #ctrlMapCircleMustard {
-	background:url("img/mustard.png") no-repeat center;
+	background:url("../img/mustard.png") no-repeat center;
 	background-size: 20px 20px;
 }
 
 #ctrlMapCircleYellow {
-	background:url("img/yellow.png") no-repeat center;
+	background:url("../img/yellow.png") no-repeat center;
 	background-size: 16px 16px;
 }
 
 #ctrlMapCircleWhite {
-	background:url("img/white.png") no-repeat center;
+	background:url("../img/white.png") no-repeat center;
 	background-size: 12px 12px;
 }
 
@@ -347,7 +347,7 @@ button {
 	height:30px;
 	margin:auto;
 	display:block;
-	background:url("img/heatmap_gradient.png") no-repeat center;
+	background:url("../img/heatmap_gradient.png") no-repeat center;
 	background-size: 100% 100%;
 }
 
@@ -370,7 +370,7 @@ button {
 	height:30px;
 	margin:auto;
 	display:block;
-	background:url("img/futureMapRect.png") no-repeat center;
+	background:url("../img/futureMapRect.png") no-repeat center;
 	background-size: 100% 100%;
 }
 
@@ -379,7 +379,7 @@ button {
 	height:30px;
 	margin:auto;
 	display:block;
-	background:url("img/acc_prob_inter.png") no-repeat center;
+	background:url("../img/acc_prob_inter.png") no-repeat center;
 	background-size: 100% 100%;
 }
 

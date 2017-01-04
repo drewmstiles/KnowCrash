@@ -33,7 +33,7 @@ var line = d3.line()
 var lineG;
 
 function showLine(callback) {
-	d3.csv("lb_agg.csv",function(d) {
+	d3.csv("data/lb_agg.csv",function(d) {
 			d.hour = +d.hour;
 			d.value = +d.value;
 			return d;
