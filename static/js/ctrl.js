@@ -87,11 +87,11 @@ function ctrlSwapIcons(elem, name) {
 	
 	var background = "";
 	if (elem.style("background").includes("off")) { 		
-		background = "url('img/" + name + "_on.png') no-repeat center";
+		background = "url('static/img/" + name + "_on.png') no-repeat center";
 		state = "on";
 	}
 	else {
-		background = "url('img/" + name + "_off.png') no-repeat center";
+		background = "urls('static/img/" + name + "_off.png') no-repeat center";
 		state = "off";
 	}
 	

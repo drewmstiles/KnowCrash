@@ -1,6 +1,5 @@
-/*
- * drew's script
- */ 
+
+var API_URL = "http://ec2-35-165-254-20.us-west-2.compute.amazonaws.com:5000/api/";		
 
 var MAP_MIN_YEAR = 2001;
 var MAP_MAX_YEAR = 2009;
@@ -71,11 +70,59 @@ function showHistoricalMap(endFunction, conditions) {
 	render(endFunction, conditions);
 };
 
-function clean() {
 
-	svg.selectAll("circle").remove();
 
+function render(endFunction, query) {
+
+	d3.json(API_URL + query, function(error, data) {
+	
+		if (error) {
+		 console.warn(error);
+		}
+		else {
+			console.log(data);
+			mapData = data['_items'];
+			draw(endFunction);
+		}			
+	});
 }
+
+
+function draw(endFunction) {
+
+	clean();
+	
+	mapCoordinatesToPixels(mapData);
+	
+	append(endFunction);
+	
+	d3.select("#year")
+		.transition()
+		.duration(1000)
+		.style("color", "white");
+}
+
+
+function clean() {
+	svg.selectAll("circle").remove();
+}
+
+
+function mapCoordinatesToPixels(dd) {
+	for (var i = 0; i < dd.length; i++) {
+		var coordinates = applyLatLngToLayer(mapData[i]);
+		mapData[i]['pixel_x'] = coordinates.x;
+		mapData[i]['pixel_y'] = coordinates.y;
+	}
+}
+
+
+function applyLatLngToLayer(d) {
+	var y = d['latitude'];
+	var x = d['longitude'];
+	return map.latLngToLayerPoint(new L.LatLng(y, x))
+}
+
 
 function append(endFunction) {
 
@@ -83,10 +130,10 @@ function append(endFunction) {
 		.data(mapData)
 		.enter()
 		.append("circle")
-		.attr("cy", function(d) { return d.PIXEL_Y; })
-		.attr("cx",	 function(d) { return d.PIXEL_X; })
+		.attr("cy", function(d) { return d['pixel_y']; })
+		.attr("cx",	 function(d) { return d['pixel_x']; })
 		.style("opacity", function(d) { 
-			var cs = d.COLLISION_SEVERITY;
+			var cs = d['collision_severity'];
 		
 			if (cs == 0) {
 				return MIN_OPACITY;
@@ -96,7 +143,7 @@ function append(endFunction) {
 			}
 		})
 		.style("fill", function(d) { 				
-			var cs = d.COLLISION_SEVERITY;
+			var cs = d['collision_severity'];
 			if (cs == 0) {
 				return "white";
 			}
@@ -105,7 +152,7 @@ function append(endFunction) {
 			}
 		})
 		.attr("r",  function(d) { 
-			var cs = d.COLLISION_SEVERITY;
+			var cs = d['collision_severity'];
 		
 			if (cs == 0) {
 				return MIN_RADIUS * zoomToRadiusMultiplierScale(map._zoom);
@@ -116,41 +163,11 @@ function append(endFunction) {
 		})
 		.call(endFunction);
 }
-
-function draw(endFunction) {
-
-	mapCoordinatesToPixels(mapData);
-						
-	clean();
 	
-	append(endFunction);
-	
-	d3.select("#year")
-		.transition()
-		.duration(1000)
-		.style("color", "white");
-}
-		
-function render(endFunction, conditions) {
-	$.get("http://ec2-54-67-114-248.us-west-1.compute.amazonaws.com:8080", conditions, function(data, status) {
-		mapData = data;
-		draw(endFunction);
-	});
-}
-			
-function applyLatLngToLayer(d) {
-	var y = d.LATITUDE;
-	var x = d.LONGITUDE;
-	return map.latLngToLayerPoint(new L.LatLng(y, x))
-}
 
-function mapCoordinatesToPixels(dd) {
-	for (var i = 0; i < dd.length; i++) {
-		var coordinates = applyLatLngToLayer(mapData[i]);
-		mapData[i].PIXEL_X = coordinates.x;
-		mapData[i].PIXEL_Y = coordinates.y;
-	}
-}
+/*
+ * Event Handling
+ */	
 
 d3.select("#ctrlMapFilterButton").on("click", function() {
 
@@ -167,27 +184,12 @@ d3.select("#ctrlMapFilterButton").on("click", function() {
 		}
 	}, 1000);
 			
-	var year = d3.select("#ctrlMapYear").html();
-	
-	var severity = d3.select("#ctrlMapSeverity").node();
-	var severityValue = severity.options[severity.selectedIndex].value;
-	
-	var factor = d3.select("#ctrlMapFactor").node();
-	var factorValue = factor.options[factor.selectedIndex].value;
-	
-	var request = {
-		"target" : "db",
-		"year" : year,
-		"severity" : severityValue,
-		"factor" : factorValue
-	};
-		
 	var callback = function() { 
 		clearInterval(loadInterval); 
 		d3.select("#ctrlMapFilterButton").html("Filter");
 	};
 	
-	render(callback, request);
+	render(callback, histMapGetQuery('long_beach'));
 });
 
 d3.select("#ctrlMapNextYear").on("click", function() {
@@ -232,3 +234,71 @@ d3.select("#ctrlMapLastYear").on("click", function() {
 });
 
 
+/*
+ * Query Building
+ */
+function getCollisionSeverityQuery() {
+	
+	var node = d3.select("#ctrlMapSeverity").node();
+	var severity = node.options[node.selectedIndex].value;
+	
+	return severity == '*' ? null : severity;
+}
+
+
+function getPrimaryCollisionFactorQuery() {
+	
+	var node = d3.select("#ctrlMapFactor").node();
+	var factor = node.options[node.selectedIndex].value;
+	
+	return factor == '*' ? null : factor;
+}
+
+
+function getCollisionDateQuery() {
+	var year = d3.select("#ctrlMapYear").html();
+	return { '$regex' : '^' + year };
+}
+
+
+function histMapGetQuery(city) {
+	var where = {};
+	
+	var date =  getCollisionDateQuery();
+	var severity = getCollisionSeverityQuery();
+	var factor = getPrimaryCollisionFactorQuery();
+	
+	// Date will always be used in query.
+	where['collision_date'] = date;
+	
+	if (severity != null) {
+		where['collision_severity'] = severity;
+	}
+	else {
+		// nada
+	}
+	
+	if (factor != null) {
+		where['pcf_viol_category'] = factor;
+	}
+	else {
+		// nada
+	}
+	
+	project = {
+		'collision_severity' : 1,
+		'collision_date' : 1,
+		'primary_coll_factor' : 1,
+		'latitude' : 1,
+		'longitude' : 1
+	};
+	
+	return buildQuery(city, where, project)
+}
+
+
+function buildQuery(city, where, project) {
+	return city 
+	+ '?where=' + JSON.stringify(where) 
+	+ '&projection=' + JSON.stringify(project);
+}

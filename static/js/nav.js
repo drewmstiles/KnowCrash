@@ -37,16 +37,9 @@ function loadScreen(know, perspective, endFunction) {
 	d3.select(screenId).style("display","block");
 	
 	if (know == 0 && perspective == 0) {
-		var year = d3.select("#ctrlMapYear").html();
-		
-		var request = { 
-			"target" : "db",
-			"year" : year,
-			"severity" : "*",
-			"factor" : "*"
-		};
-		
-		showHistoricalMap(endFunction, request);
+		var city = 'long_beach';
+		var query = histMapGetQuery(city);
+		showHistoricalMap(endFunction, query);
 	}
 	else if (know == 0 && perspective == 1) {
 		showHeatmap(function() {});
@@ -107,3 +100,5 @@ function navGetCurrentScreenName() {
 	return name[0].toUpperCase() + name.substring(1);
 }
 	
+
+		

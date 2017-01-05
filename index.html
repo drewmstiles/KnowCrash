@@ -9,8 +9,8 @@
     <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/line.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="static/css/line.css">
 </head>
 <body>
 <div id="wrapper">
@@ -111,11 +111,11 @@
 						<div id="facTxt" class="ctrlSettingLabel">Factor</div>
 						<div class="ctrlSelectBox"><select id="ctrlMapFactor" class="ctrlSelect">
 							<option value="*" selected>All</option>
-							<option value="01">Driving Under theInfluence</option>
-							<option value="03">Speeding</option>
-							<option value="04">Tailgating</option> 
-							<option value="05">Wrong Side of Road</option> 								
-							<option value="06">Improper Passing</option>
+							<option value="1">Driving Under the Influence</option>
+							<option value="3">Speeding</option>
+							<option value="4">Tailgating</option> 
+							<option value="5">Wrong Side of Road</option> 								
+							<option value="6">Improper Passing</option>
 							<option value="11">Pedestrian Violation</option>
 							<option value="12">Traffic Signal Malfunction</option> 		
 							<option value="24">Driver Fell Asleep</option> 		
@@ -303,16 +303,15 @@
 		</div>
 </div>
 </body>
-<script type="text/javascript" src="js/script.js"></script>
-<script type="text/javascript" src="js/heatmap.js"></script>
-<script type="text/javascript" src="js/line.js"></script>
-<script type="text/javascript" src="js/nav.js"></script>
-<script type="text/javascript" src="js/futureMap.js"></script>
-<script type="text/javascript" src="js/home.js"></script>
-<script type="text/javascript" src="js/ctrl.js"></script>
-<script type="text/javascript" src="js/futureAbstract.js"></script>
+<script type="text/javascript" src="static/js/script.js"></script>
+<script type="text/javascript" src="static/js/heatmap.js"></script>
+<script type="text/javascript" src="static/js/line.js"></script>
+<script type="text/javascript" src="static/js/nav.js"></script>
+<script type="text/javascript" src="static/js/futureMap.js"></script>
+<script type="text/javascript" src="static/js/home.js"></script>
+<script type="text/javascript" src="static/js/ctrl.js"></script>
+<script type="text/javascript" src="static/js/futureAbstract.js"></script>
 <script>
-
 	window.onload = function() {
 		showIntro();
 	};
