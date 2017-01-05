@@ -1,3 +1,7 @@
+
+MONGO_QUERY_BLACKLIST = ['$where'] # '$regex' blacklisted by default
+HATEOAS = False
+PAGINATION = False
 URL_PREFIX = 'api'
 MONGO_DBNAME = 'cities'
 DOMAIN = { 'long_beach':{
