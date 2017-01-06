@@ -1,6 +1,6 @@
 
 var API_URL = "http://ec2-35-165-254-20.us-west-2.compute.amazonaws.com:5000/api/";		
-
+var MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZHJld3N0aWxlcyIsImEiOiJjaWw2YXR4eXgwMWl6dWhsdjhrZGxuMXBqIn0.4rYaU8tPJ9Mw2bniPfAKdQ';
 var MAP_MIN_YEAR = 2001;
 var MAP_MAX_YEAR = 2009;
 var CIRCLE_RADIUS = 2.5;
@@ -33,43 +33,39 @@ var deathsToRadiusScale = d3.scaleLinear()
 var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
+	
 			
 function showHistoricalMap(endFunction, conditions) {
 	
-	var mapboxTiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?access_token={token}', {
-       			attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
-       			token: 'pk.eyJ1IjoiZHJld3N0aWxlcyIsImEiOiJjaWw2YXR4eXgwMWl6dWhsdjhrZGxuMXBqIn0.4rYaU8tPJ9Mw2bniPfAKdQ'
-	});
-
+	mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 	
-	if (map._container == undefined) {
-		// Initialize map.
-		map = L.map('map', {
+	map = new mapboxgl.Map({
+		container: 'map',
+		style: 	'mapbox://styles/mapbox/dark-v9',
+		center: [-118.135071, 33.810335],
+		zoom: 12,
 		minZoom: 12,
 		maxZoom: 15,
-		attributionControl: false,
-		zoomControl: false
-		})
-		.addLayer(mapboxTiles)
-		.setView([33.810335, -118.135071], INIT_MAP_ZOOM);
-	}
-	else {
-		// Map already initialized.
-	}
+	})
+	
+	var mapContainer = map.getCanvasContainer();
+	
 	
 	map.on("zoomstart", clean);
 	
 	map.on("zoomend", draw);
 	
-	svg = d3.select(map.getPanes().overlayPane).append("svg")
-		.attr("height", window.innerHeight)
-		.attr("width", window.innerWidth);
+	svg = d3.select(mapContainer).append("svg")
+		.attr("height", window.innerHeight + "px")
+		.attr("width", window.innerWidth + "px");
+		
+	// Prevent absolutely positioned `mapContainer` from covering.
+	svg.style("position", "absolute"); 
+
 	
-	var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
 	render(endFunction, conditions);
 };
-
 
 
 function render(endFunction, query) {
@@ -80,7 +76,6 @@ function render(endFunction, query) {
 		 console.warn(error);
 		}
 		else {
-			console.log(data);
 			mapData = data['_items'];
 			draw(endFunction);
 		}			
@@ -116,23 +111,17 @@ function mapCoordinatesToPixels(dd) {
 	}
 }
 
-
-function applyLatLngToLayer(d) {
-	var y = d['latitude'];
-	var x = d['longitude'];
-	return map.latLngToLayerPoint(new L.LatLng(y, x))
-}
-
-
 function append(endFunction) {
 
+	console.log(map);
+	
 	svg.selectAll("circle")
 		.data(mapData)
 		.enter()
 		.append("circle")
 		.attr("cy", function(d) { return d['pixel_y']; })
 		.attr("cx",	 function(d) { return d['pixel_x']; })
-		.style("opacity", function(d) { 
+		.style("fill-opacity", function(d) { 
 			var cs = d['collision_severity'];
 		
 			if (cs == 0) {
@@ -155,14 +144,26 @@ function append(endFunction) {
 			var cs = d['collision_severity'];
 		
 			if (cs == 0) {
-				return MIN_RADIUS * zoomToRadiusMultiplierScale(map._zoom);
+				return MIN_RADIUS * zoomToRadiusMultiplierScale(map.getZoom());
 			}
 			else {
-				return deathsToRadiusScale(cs) * zoomToRadiusMultiplierScale(map._zoom);
+				return deathsToRadiusScale(cs) * zoomToRadiusMultiplierScale(map.getZoom());
 			}
 		})
 		.call(endFunction);
 }
+
+function applyLatLngToLayer(d) {
+	var y = d['latitude'];
+	var x = d['longitude'];
+	return map.project(getLngLat(x, y))
+}
+
+
+function getLngLat(x, y) {
+	return new mapboxgl.LngLat(x, y);
+}
+
 	
 
 /*
@@ -242,7 +243,8 @@ function getCollisionSeverityQuery() {
 	var node = d3.select("#ctrlMapSeverity").node();
 	var severity = node.options[node.selectedIndex].value;
 	
-	return severity == '*' ? null : severity;
+// 	return severity == '*' ? null : severity;
+	return "1";
 }
 
 
