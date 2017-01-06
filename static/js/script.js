@@ -44,7 +44,7 @@ function showHistoricalMap(endFunction, conditions) {
 		style: 	'mapbox://styles/mapbox/dark-v9',
 		center: [-118.135071, 33.810335],
 		zoom: 12,
-		minZoom: 12,
+		minZoom: 10,
 		maxZoom: 15,
 	})
 	
@@ -52,8 +52,10 @@ function showHistoricalMap(endFunction, conditions) {
 	
 	
 	map.on("zoomstart", clean);
-	
 	map.on("zoomend", draw);
+	
+	map.on("movestart", clean);
+	map.on("moveend", draw);
 	
 	svg = d3.select(mapContainer).append("svg")
 		.attr("height", window.innerHeight + "px")
@@ -150,7 +152,14 @@ function append(endFunction) {
 				return deathsToRadiusScale(cs) * zoomToRadiusMultiplierScale(map.getZoom());
 			}
 		})
-		.call(endFunction);
+		.call(function() {
+			if ((typeof endFunction) === "function") {
+				endFunction();
+			}
+			else {
+				// Can't evaluate a non-function type.
+			}
+		});
 }
 
 function applyLatLngToLayer(d) {
@@ -243,8 +252,7 @@ function getCollisionSeverityQuery() {
 	var node = d3.select("#ctrlMapSeverity").node();
 	var severity = node.options[node.selectedIndex].value;
 	
-// 	return severity == '*' ? null : severity;
-	return "1";
+	return severity == '*' ? null : severity;
 }
 
 
