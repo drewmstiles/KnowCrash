@@ -137,24 +137,15 @@ var PANEL_MAX_LEFT = 0;
 var PANEL_EXPOSURE = 5;
 var CONTENT_MAX_WIDTH = 100 - PANEL_EXPOSURE;
 var CONTENT_MIN_WIDTH = 100 - Math.abs(PANEL_MIN_LEFT) - PANEL_EXPOSURE;
+
 d3.select("#panelControl").on("click", function() {
-
-	
-	var isMin;
-	var isMax;
-	var panelStartLeft;
-	var panelEndLeft;
-	var arrowHtml;
-	
-	if (d3.select("#panel").classed("min")) {
-		showPanel();
-	}
-	else {
-		hidePanel();
-	}
-	
-
+	showPanel();
 });
+
+d3.select(".panelBackArrow").on("click", function() {
+	hidePanel();
+});
+
 
 	
 function showPanel() {
@@ -191,9 +182,7 @@ function showPanel() {
 		.duration(750)
 		.delay(250)
 		.styleTween('width', function() {
-			var w = getElementWidthAsPercent(this)
-			console.log(w);
-			return d3.interpolateString(w, '80%');
+			return d3.interpolateString(getElementWidthAsPercent(this), '80%');
 		})
 	
 	d3.select("#panelControl")
@@ -209,24 +198,29 @@ function showPanel() {
 function hidePanel() {
 
 	var panel = d3.select("#panel");
-	
+
+	d3.select("#panelArrow")
+		.style("opacity", 0.0)	
+		.html("&#9654;")
+		.transition()
+		.duration(1000)
+		.style("opacity", 1.0);
+		
 	panel
 		.classed("max", false)
 		.classed("min", true)
 		.transition()
-		.duration(1000)
+		.duration(750)
+		.delay(250)
 		.styleTween('left', function() {
 			return d3.interpolateString(PANEL_MAX_LEFT + "%", PANEL_MIN_LEFT + "%");
-		})
-		.on("end", function() {
-			d3.select("#panelArrow")
-				.html("&gt;");
 		});
 		
 	var view = d3.select(".showing");
 	
 	view.transition()
-		.duration(1000)
+		.duration(750)
+		.delay(250)
 		.styleTween('width', function() {
 			return d3.interpolateString(CONTENT_MIN_WIDTH + '%', CONTENT_MAX_WIDTH + '%');
 		})
@@ -240,15 +234,14 @@ function hidePanel() {
 		.transition()
 		.duration(1000)
 		.styleTween('width', function() {
-			return d3.interpolateString(getElementWidthAsPercent(this), '80%');
+			return d3.interpolateString(getElementWidthAsPercent(this), '64%');
 		})
 	
 	d3.select("#panelControl")
 		.transition()
 		.duration(1000)
 		.styleTween('width', function() {
-			var base = CONTENT_MAX + PANEL_MIN_LEFT;
-			return d3.interpolateString(getElementWidthAsPercent(this), '20%');
+			return d3.interpolateString(getElementWidthAsPercent(this), '16%');
 		})
 }
 	
@@ -258,5 +251,6 @@ function getElementWidthAsPercent(e) {
 	var parentWidth = e.parentNode.getBoundingClientRect().width;
 	var childWidth = e.getBoundingClientRect().width;
 	var percent = 100 * (childWidth / parentWidth);
+	console.log(percent);
 	return percent + '%';
 }
