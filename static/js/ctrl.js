@@ -130,7 +130,50 @@ function ctrlHide(callback) {
 
 		
 	
+/* pANEL */
+
+var PANEL_MIN_WIDTH = 5;
+var PANEL_MAX_WIDTH = 25;
+d3.select("#panel").on("click", function() {
+
+	var isMin;
+	var isMax;
+	var panelStartWidth;
+	var panelEndWidth;
 	
+	if (d3.select(this).classed("min")) {
+		isMin = false;
+		isMax = true;
+		panelStartWidth = PANEL_MIN_WIDTH;
+		panelEndWidth = PANEL_MAX_WIDTH;
+	}
+	else {
+		isMin = true;
+		isMax = false;
+		panelStartWidth = PANEL_MAX_WIDTH;
+		panelEndWidth = PANEL_MIN_WIDTH;
+	}
+	
+	d3.select(this)
+		.classed("min", isMin)
+		.classed("max", isMax)
+		.transition()
+		.duration(1000)
+		.styleTween('width', function() {
+			return d3.interpolateString(panelStartWidth + "%", panelEndWidth + "%");
+		});
+	
+	d3.select(".showing")
+		.transition()
+		.duration(1000)
+		.styleTween('width', function() {
+			return d3.interpolateString((100 - panelStartWidth) + '%', (100 - panelEndWidth) + '%');
+		})
+		.styleTween('left', function() {
+			return d3.interpolateString(panelStartWidth + "%", panelEndWidth + "%");
+		});
+});
+
 	
 	
 	

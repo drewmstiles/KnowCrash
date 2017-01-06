@@ -78,6 +78,7 @@ function render(endFunction, query) {
 		 console.warn(error);
 		}
 		else {
+			console.log(data);
 			mapData = data['_items'];
 			draw(endFunction);
 		}			
@@ -114,8 +115,6 @@ function mapCoordinatesToPixels(dd) {
 }
 
 function append(endFunction) {
-
-	console.log(map);
 	
 	svg.selectAll("circle")
 		.data(mapData)
@@ -252,7 +251,8 @@ function getCollisionSeverityQuery() {
 	var node = d3.select("#ctrlMapSeverity").node();
 	var severity = node.options[node.selectedIndex].value;
 	
-	return severity == '*' ? null : severity;
+// 	return severity == '*' ? null : severity;
+return "1";
 }
 
 

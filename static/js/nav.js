@@ -32,9 +32,11 @@ function loadScreen(know, perspective, endFunction) {
 	var screenId = "#" + screens[know][perspective];
 
 	d3.selectAll(".screen")
-		.style("display", "none");
+		.style("display", "none")
+		.classed("showing", false);
 		
-	d3.select(screenId).style("display","block");
+	d3.select(screenId).style("display","inline-block")
+		.classed("showing", true);
 	
 	if (know == 0 && perspective == 0) {
 		var city = 'long_beach';
