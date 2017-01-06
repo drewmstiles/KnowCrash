@@ -132,11 +132,13 @@ function ctrlHide(callback) {
 	
 /* pANEL */
 
-var PANEL_MIN_LEFT = -20;
+var PANEL_MIN_LEFT = -25;
 var PANEL_MAX_LEFT = 0;
+var PANEL_EXPOSURE = 5;
+var CONTENT_MAX_WIDTH = 100 - PANEL_EXPOSURE;
+var CONTENT_MIN_WIDTH = 100 - Math.abs(PANEL_MIN_LEFT) - PANEL_EXPOSURE;
 d3.select("#panelControl").on("click", function() {
 
-	var panel = d3.select("#panel");
 	
 	var isMin;
 	var isMax;
@@ -144,49 +146,117 @@ d3.select("#panelControl").on("click", function() {
 	var panelEndLeft;
 	var arrowHtml;
 	
-	if (panel.classed("min")) {
-		isMin = false;
-		isMax = true;
-		panelStartLeft = PANEL_MIN_LEFT;
-		panelEndLeft = PANEL_MAX_LEFT;
-		arrowHtml = "&lt;"
+	if (d3.select("#panel").classed("min")) {
+		showPanel();
 	}
 	else {
-		isMin = true;
-		isMax = false;
-		panelStartLeft = PANEL_MAX_LEFT;
-		panelEndLeft = PANEL_MIN_LEFT;
-		arrowHtml = "&gt;"
+		hidePanel();
 	}
 	
-	panel
-		.classed("min", isMin)
-		.classed("max", isMax)
-		.transition()
-		.duration(1000)
-		.styleTween('left', function() {
-			return d3.interpolateString(panelStartLeft + "%", panelEndLeft + "%");
-		})
-		.on("end", function() {
-			d3.select("#panelArrow")
-				.html(arrowHtml);
-		});
-		
-	d3.select(".showing")
-		.transition()
-		.duration(1000)
-		.styleTween('width', function() {
-			return d3.interpolateString((75 - panelStartLeft) + '%', (75 - panelEndLeft) + '%');
-		})
-		.styleTween('left', function() {
-			return d3.interpolateString((panelStartLeft + 25) + "%", (panelEndLeft + 25) + "%");
-		});
+
 });
 
 	
+function showPanel() {
+
+	var panel = d3.select("#panel");
+	
+	d3.select("#panelArrow")
+		.html("&nbsp;");
+		
+	panel
+		.classed("min", false)
+		.classed("max", true)
+		.transition()
+		.duration(1000)
+		.styleTween('left', function() {
+			return d3.interpolateString(PANEL_MIN_LEFT + "%", PANEL_MAX_LEFT + "%");
+		});
+		
+	var view = d3.select(".showing");
+	
+	view.transition()
+		.duration(1000)
+		.styleTween('width', function() {
+			return d3.interpolateString(CONTENT_MAX_WIDTH + '%', CONTENT_MIN_WIDTH + '%');
+		})
+		.styleTween('left', function() {
+			return d3.interpolateString(100 - CONTENT_MAX_WIDTH + "%", 100 - CONTENT_MIN_WIDTH + "%");
+		});
+		
+	var id = view.attr("id");
+	
+	d3.select('#' + id + 'Panel')
+		.transition()
+		.duration(750)
+		.delay(250)
+		.styleTween('width', function() {
+			var w = getElementWidthAsPercent(this)
+			console.log(w);
+			return d3.interpolateString(w, '80%');
+		})
+	
+	d3.select("#panelControl")
+		.transition()
+		.duration(750)
+		.delay(250)
+		.styleTween('width', function() {
+			return d3.interpolateString(getElementWidthAsPercent(this), '0%');
+		})
+}
+	
+	
+function hidePanel() {
+
+	var panel = d3.select("#panel");
+	
+	panel
+		.classed("max", false)
+		.classed("min", true)
+		.transition()
+		.duration(1000)
+		.styleTween('left', function() {
+			return d3.interpolateString(PANEL_MAX_LEFT + "%", PANEL_MIN_LEFT + "%");
+		})
+		.on("end", function() {
+			d3.select("#panelArrow")
+				.html("&gt;");
+		});
+		
+	var view = d3.select(".showing");
+	
+	view.transition()
+		.duration(1000)
+		.styleTween('width', function() {
+			return d3.interpolateString(CONTENT_MIN_WIDTH + '%', CONTENT_MAX_WIDTH + '%');
+		})
+		.styleTween('left', function() {
+			return d3.interpolateString(100 - CONTENT_MIN_WIDTH + "%", 100 - CONTENT_MAX_WIDTH + "%");
+		});
+		
+	var id = view.attr("id");
+	
+	d3.select('#' + id + 'Panel')
+		.transition()
+		.duration(1000)
+		.styleTween('width', function() {
+			return d3.interpolateString(getElementWidthAsPercent(this), '80%');
+		})
+	
+	d3.select("#panelControl")
+		.transition()
+		.duration(1000)
+		.styleTween('width', function() {
+			var base = CONTENT_MAX + PANEL_MIN_LEFT;
+			return d3.interpolateString(getElementWidthAsPercent(this), '20%');
+		})
+}
 	
 	
 	
-	
-	
-	
+function getElementWidthAsPercent(e) {
+	var parentWidth = e.parentNode.getBoundingClientRect().width;
+	var childWidth = e.getBoundingClientRect().width;
+	var percent = 100 * (childWidth / parentWidth);
+	return percent + '%';
+}
