@@ -340,8 +340,6 @@ button {
 	border:none;
 }
 
-
-
 #ctrlHeatmapGradient {
 	width:80%;
 	height:30px;
@@ -433,12 +431,31 @@ rect.bordered {
 
 #panel {
 	position:absolute;
-	display:inline-block;
 	top:0;
 	left:0;
 	height:100%;
 	width:5%;
 	background-color:black;
-/* 	background-color:rgba(208, 208, 208, 0.88); */
 }
-	
+
+#panelControl {
+	position:absolute;
+	top:0;
+	right:0;
+	height: 100%;
+	/* width set in load.js */
+	font-size:30px;
+	color:white;
+}
+
+#panelArrow {
+	position: absolute;
+	height:50px;
+	width:100%;
+	text-align:center;
+	top:50%;
+	margin-top:-25px;
+}
+
+
+

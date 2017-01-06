@@ -134,35 +134,44 @@ function ctrlHide(callback) {
 
 var PANEL_MIN_WIDTH = 5;
 var PANEL_MAX_WIDTH = 25;
-d3.select("#panel").on("click", function() {
+d3.select("#panelControl").on("click", function() {
 
+	var panel = d3.select("#panel");
+	
 	var isMin;
 	var isMax;
 	var panelStartWidth;
 	var panelEndWidth;
+	var arrowHtml;
 	
-	if (d3.select(this).classed("min")) {
+	if (panel.classed("min")) {
 		isMin = false;
 		isMax = true;
 		panelStartWidth = PANEL_MIN_WIDTH;
 		panelEndWidth = PANEL_MAX_WIDTH;
+		arrowHtml = "&lt;"
 	}
 	else {
 		isMin = true;
 		isMax = false;
 		panelStartWidth = PANEL_MAX_WIDTH;
 		panelEndWidth = PANEL_MIN_WIDTH;
+		arrowHtml = "&gt;"
 	}
 	
-	d3.select(this)
+	panel
 		.classed("min", isMin)
 		.classed("max", isMax)
 		.transition()
 		.duration(1000)
 		.styleTween('width', function() {
 			return d3.interpolateString(panelStartWidth + "%", panelEndWidth + "%");
+		})
+		.on("end", function() {
+			d3.select("#panelArrow")
+				.html(arrowHtml);
 		});
-	
+		
 	d3.select(".showing")
 		.transition()
 		.duration(1000)
