@@ -432,9 +432,9 @@ rect.bordered {
 #panel {
 	position:absolute;
 	top:0;
-	left:0;
+	left:-20%;
 	height:100%;
-	width:5%;
+	width:25%;
 	background-color:black;
 }
 
@@ -443,7 +443,7 @@ rect.bordered {
 	top:0;
 	right:0;
 	height: 100%;
-	/* width set in load.js */
+	width:20%;
 	font-size:30px;
 	color:white;
 }

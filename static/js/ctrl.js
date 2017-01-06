@@ -132,30 +132,30 @@ function ctrlHide(callback) {
 	
 /* pANEL */
 
-var PANEL_MIN_WIDTH = 5;
-var PANEL_MAX_WIDTH = 25;
+var PANEL_MIN_LEFT = -20;
+var PANEL_MAX_LEFT = 0;
 d3.select("#panelControl").on("click", function() {
 
 	var panel = d3.select("#panel");
 	
 	var isMin;
 	var isMax;
-	var panelStartWidth;
-	var panelEndWidth;
+	var panelStartLeft;
+	var panelEndLeft;
 	var arrowHtml;
 	
 	if (panel.classed("min")) {
 		isMin = false;
 		isMax = true;
-		panelStartWidth = PANEL_MIN_WIDTH;
-		panelEndWidth = PANEL_MAX_WIDTH;
+		panelStartLeft = PANEL_MIN_LEFT;
+		panelEndLeft = PANEL_MAX_LEFT;
 		arrowHtml = "&lt;"
 	}
 	else {
 		isMin = true;
 		isMax = false;
-		panelStartWidth = PANEL_MAX_WIDTH;
-		panelEndWidth = PANEL_MIN_WIDTH;
+		panelStartLeft = PANEL_MAX_LEFT;
+		panelEndLeft = PANEL_MIN_LEFT;
 		arrowHtml = "&gt;"
 	}
 	
@@ -164,8 +164,8 @@ d3.select("#panelControl").on("click", function() {
 		.classed("max", isMax)
 		.transition()
 		.duration(1000)
-		.styleTween('width', function() {
-			return d3.interpolateString(panelStartWidth + "%", panelEndWidth + "%");
+		.styleTween('left', function() {
+			return d3.interpolateString(panelStartLeft + "%", panelEndLeft + "%");
 		})
 		.on("end", function() {
 			d3.select("#panelArrow")
@@ -176,10 +176,10 @@ d3.select("#panelControl").on("click", function() {
 		.transition()
 		.duration(1000)
 		.styleTween('width', function() {
-			return d3.interpolateString((100 - panelStartWidth) + '%', (100 - panelEndWidth) + '%');
+			return d3.interpolateString((75 - panelStartLeft) + '%', (75 - panelEndLeft) + '%');
 		})
 		.styleTween('left', function() {
-			return d3.interpolateString(panelStartWidth + "%", panelEndWidth + "%");
+			return d3.interpolateString((panelStartLeft + 25) + "%", (panelEndLeft + 25) + "%");
 		});
 });
 
