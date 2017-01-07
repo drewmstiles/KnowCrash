@@ -251,8 +251,8 @@ function getCollisionSeverityQuery() {
 	var node = d3.select("#ctrlMapSeverity").node();
 	var severity = node.options[node.selectedIndex].value;
 	
-// 	return severity == '*' ? null : severity;
-return "1";
+	return severity == '*' ? null : severity;
+// return "1";
 }
 
 
