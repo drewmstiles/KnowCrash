@@ -311,41 +311,14 @@ button {
 	margin:auto;
 }
 
-.ctrlMapYearArrow {
-	width:30%;
-	height:30px;
-	line-height: 30px;
-	display:inline-block;
-	font-weight:bold;
-	margin: 0;
-	padding:0;
-	border:none;
-}
-
-#ctrlMapLastYear {
-	opacity: 0.2; /* Site loads at min year */
-	text-align:right;
-}
-
-#ctrlMapNextYear {
-	text-align:left;
-}
-
-.ctrlMapYear {
-	font-size: 22px;
-	font-weight: bold;
-}
 
 #ctrlMapYear {
+	-webkit-appearance: none;
+    -moz-apperance: none;
 	display:inline-block;
-	width: 37%;
-	line-height: 30px;
-	height:30px;
-	font-weight:bold;
-	text-align:center;
-	margin: 0;
-	padding:0;
-	border:none;
+	width: 100%;
+	height:6px;
+	border-radius:6px;
 }
 
 #ctrlHeatmapGradient {

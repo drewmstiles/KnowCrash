@@ -267,7 +267,8 @@ function getPrimaryCollisionFactorQuery() {
 
 function getCollisionDateQuery() {
 	var year = d3.select("#ctrlMapYear").html();
-	return { '$regex' : '^' + year };
+// 	return { '$regex' : '^' + year };
+	return { '$regex' : '^2001' };
 }
 
 

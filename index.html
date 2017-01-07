@@ -81,20 +81,23 @@
 				</div>				
 				<h3>Controls</h3>
 				<div id="ctrlMapYearSection" class="ctrlSettingSection">
-					<p id="ctrlMapLastYear" class="ctrlMapYear ctrlMapYearArrow">&#x2190;</p>
-					<p id="ctrlMapYear" class="ctrlMapYear">2001</p>
-					<p id="ctrlMapNextYear" class="ctrlMapYear ctrlMapYearArrow">&#x2192;</p>
+					<div id="sevTxt" class="ctrlSettingLabel">Year</div>
+					<div class="ctrlSelectBox">
+						<input type="range" id="ctrlMapYear" min="2001" max="2010" step="1" />
+					</div>
 				</div>
 				<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
 					<div id="sevTxt" class="ctrlSettingLabel">Severity</div>
-					<div class="ctrlSelectBox"><select id="ctrlMapSeverity" class="ctrlSelect">
+					<div class="ctrlSelectBox">
+						<select id="ctrlMapSeverity" class="ctrlSelect">
 						<option value="*" selected>All</option>
 						<option value="1">Fatal</option>
 						<option value="2">Severe</option>
 						<option value="3">Mild</option>
 						<option value="4">Minor</option>
 						<option value="0">No Injury</option>
-					</select></div>
+						</select>
+					</div>
 				</div>
 				<div id="ctrlMapFactorSetting" class="ctrlMapSettingSection">
 					<div id="facTxt" class="ctrlSettingLabel">Factor</div>
