@@ -156,20 +156,16 @@ function showPanel() {
 		.classed("max", true)
 		.transition()
 		.duration(1000)
-		.styleTween('left', function() {
-			return d3.interpolateString(PANEL_MIN_LEFT + "%", PANEL_MAX_LEFT + "%");
-		});
+		.style('left', '0px');
 		
 	var view = d3.select(".showing");
 	
+	var panelWidth = panel.node().getBoundingClientRect().width;
+	var viewWidth = window.innerWidth - panelWidth;
 	view.transition()
 		.duration(1000)
-		.styleTween('width', function() {
-			return d3.interpolateString(CONTENT_MAX_WIDTH + '%', CONTENT_MIN_WIDTH + '%');
-		})
-		.styleTween('left', function() {
-			return d3.interpolateString("0%", (CONTENT_MAX_WIDTH - CONTENT_MIN_WIDTH) + "%");
-		});
+		.style('width', viewWidth + 'px')
+		.style('left', panelWidth + 'px');
 		
 	var targetPanelBodyId = view.attr("id") + 'Panel';
 	
@@ -198,27 +194,22 @@ function hidePanel() {
 
 	var panel = d3.select("#panel");
 		
+	var panelWidth = panel.node().getBoundingClientRect().width;
+	var viewWidth = window.innerWidth;
 	panel
 		.classed("max", false)
 		.classed("min", true)
 		.transition()
 		.duration(1000)
-		.styleTween('left', function() {
-			return d3.interpolateString(PANEL_MAX_LEFT + "%", PANEL_MIN_LEFT + "%");
-		});
+		.style('left', panelWidth + 'px');
 		
 	var view = d3.select(".showing");
 	
 	view.transition()
 		.duration(1000)
-		.styleTween('width', function() {
-			return d3.interpolateString(CONTENT_MIN_WIDTH + '%', CONTENT_MAX_WIDTH + '%');
-		})
-		.styleTween('left', function() {
-			return d3.interpolateString(100 - CONTENT_MIN_WIDTH + "%", 100 - CONTENT_MAX_WIDTH + "%");
-		})
+		.style('width', viewWidth + 'px')
+		.style('left', '0px')
 		.on('end', function() {
-			
 			d3.selectAll('.panelBody')
 				.style('display', 'none');
 		});

@@ -458,9 +458,10 @@ rect.bordered {
 	position:absolute;
 	overflow-y:scroll;
 	top:0;
-	left:-30%;
+	/* left: set in load.js */
 	height:100%;
 	width:30%;
+	min-width:350px;
 	background-color:black;
 }
 
