@@ -1,4 +1,6 @@
 
+PUBLIC_METHODS = ['GET']
+PUBLIC_ITEM_METHODS = ['GET']
 MONGO_QUERY_BLACKLIST = ['$where'] # '$regex' blacklisted by default
 HATEOAS = False
 PAGINATION = False
