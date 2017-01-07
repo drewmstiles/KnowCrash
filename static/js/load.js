@@ -1,8 +1,10 @@
 
 var DEBUG = true;
 
-// d3.select("#panelControl").style("width", function() {
-// 	var w =	d3.select("#panel").node().getBoundingClientRect().width + 'px';
-// 	console.log(w);
-// 	return w;
-// });
+var panelWidth = d3.select("#panel").node().getBoundingClientRect().width;
+console.log(panelWidth);
+if (panelWidth < 300) {
+	d3.selectAll(".ctrlMapLegendEntry")
+		.style("display", 'block')
+		.style('margin', 'auto');
+}
