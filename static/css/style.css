@@ -312,11 +312,27 @@ button {
 }
 
 
+.yearLabel {
+	display:inline-block;
+	width:20%;
+	height:auto;
+	margin:0;
+	text-align: center;
+}
+
+#selectedYear {
+	width:100%;
+	height:auto;
+	margin:10px auto;
+	text-align: center;
+	font-weight:bold;
+}
+
 #ctrlMapYear {
 	-webkit-appearance: none;
     -moz-apperance: none;
 	display:inline-block;
-	width: 100%;
+	width: 58%;
 	height:6px;
 	border-radius:6px;
 }

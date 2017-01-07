@@ -201,45 +201,8 @@ d3.select("#ctrlMapFilterButton").on("click", function() {
 	render(callback, histMapGetQuery('long_beach'));
 });
 
-d3.select("#ctrlMapNextYear").on("click", function() {
-	var year = parseInt(d3.select("#ctrlMapYear").html());
-	
-	d3.select("#ctrlMapLastYear").style("opacity", 1.0);
-	
-	if (year < MAP_MAX_YEAR) {	
-		year += 1;
-		d3.select("#ctrlMapYear").html(year);
-		if (year == MAP_MAX_YEAR) {
-			d3.select(this).style("opacity", 0.2);
-		}
-		else {
-			d3.select(this).style("opacity", 1.0);
-		}
-	}
-	else {
-		// Already at max year.
-	}
-});
-
-d3.select("#ctrlMapLastYear").on("click", function() {
-	var year = parseInt(d3.select("#ctrlMapYear").html());
-
-	d3.select("#ctrlMapNextYear").style("opacity", 1.0);
-	
-	if (year > MAP_MIN_YEAR) {	
-		year -= 1;
-		d3.select("#ctrlMapYear").html(year);
-		if (year == MAP_MIN_YEAR) {
-			d3.select(this).style("opacity", 0.2);
-		
-		}
-		else {
-			d3.select(this).style("opacity", 1.0);
-		}
-	}
-	else {
-		// Already at max year.
-	}
+d3.select("#ctrlMapYear").on("input", function() {
+	d3.select("#selectedYear").html(this.value);
 });
 
 
@@ -252,7 +215,6 @@ function getCollisionSeverityQuery() {
 	var severity = node.options[node.selectedIndex].value;
 	
 	return severity == '*' ? null : severity;
-// return "1";
 }
 
 
@@ -266,9 +228,8 @@ function getPrimaryCollisionFactorQuery() {
 
 
 function getCollisionDateQuery() {
-	var year = d3.select("#ctrlMapYear").html();
-// 	return { '$regex' : '^' + year };
-	return { '$regex' : '^2001' };
+	var year = d3.select("#selectedYear").html();
+	return { '$regex' : '^' + year };
 }
 
 
