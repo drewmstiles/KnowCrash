@@ -30,10 +30,10 @@ button {
 .screen {
 	display:none;
 	position:absolute;
-	width: 95%;
+	width: 100%;
 	height: 100%;
 	top:0;
-	left:5%;
+	left:0;
 }
 
 #home {
@@ -433,10 +433,28 @@ rect.bordered {
 
 /* PANEL STYLING */
 
-#panel {
+#panelSwitch {
+	display:block;
 	position:absolute;
 	top:0;
-	left:-25%;
+	left:0;
+	height:100%;
+	width:5%;
+	margin:0;
+	padding:0;
+	border:0;
+	font-size:30px;
+	color:#fff;
+	background-color:rgba(0, 0, 0, 0.5);
+	z-index:500;
+}
+
+
+#panel {
+	position:absolute;
+	overflow:hidden;
+	top:0;
+	left:-30%;
 	height:100%;
 	width:30%;
 	background-color:black;
@@ -451,24 +469,11 @@ rect.bordered {
 	top:0;
 	left:0;
 	height: 90%;
-	width:63%;
+	width:80%;
 	font-size:12px;
 	color:white;
 }
 
-#panelControl {
-	display:inline-block;
-	margin:0;
-	padding:0;
-	border:0;
-	position:absolute;
-	top:0;
-	right:0;
-	height: 100%;
-	width:16%;
-	font-size:30px;
-	color:white;
-}
 
 #panelArrow {
 	position: absolute;

@@ -1,5 +1,5 @@
 
-var API_URL = "http://ec2-35-165-254-20.us-west-2.compute.amazonaws.com:5000/api/";		
+var API_URL =  DEBUG ? "http://localhost:5000/api/" : "http://ec2-35-165-254-20.us-west-2.compute.amazonaws.com:5000/api/";	
 var MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZHJld3N0aWxlcyIsImEiOiJjaWw2YXR4eXgwMWl6dWhsdjhrZGxuMXBqIn0.4rYaU8tPJ9Mw2bniPfAKdQ';
 var MAP_MIN_YEAR = 2001;
 var MAP_MAX_YEAR = 2009;
