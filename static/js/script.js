@@ -229,7 +229,10 @@ function getPrimaryCollisionFactorQuery() {
 
 function getCollisionDateQuery() {
 	var year = d3.select("#selectedYear").html();
-	return { '$regex' : '^' + year };
+	var lowerBound = new Date(year, 0, 1);
+	var upperBound = new Date(year, 12, 31);
+	
+	return { '$gte' :lowerBound.toUTCString(), '$lte' : upperBound.toUTCString() };
 }
 
 
@@ -241,7 +244,7 @@ function histMapGetQuery(city) {
 	var factor = getPrimaryCollisionFactorQuery();
 	
 	// Date will always be used in query.
-	where['collision_date'] = date;
+	where['datetime'] = date;
 	
 	if (severity != null) {
 		where['collision_severity'] = severity;
@@ -259,7 +262,7 @@ function histMapGetQuery(city) {
 	
 	project = {
 		'collision_severity' : 1,
-		'collision_date' : 1,
+		'datetime' : 1,
 		'primary_coll_factor' : 1,
 		'latitude' : 1,
 		'longitude' : 1

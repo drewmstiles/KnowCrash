@@ -8,18 +8,19 @@ URL_PREFIX = 'api'
 MONGO_DBNAME = 'cities'
 DOMAIN = { 'long_beach':{
     'schema':{
+        'datetime':{'type':'datetime'},
         'pcf_code_of_viol':{'type':'string'},
         'hit_and_run':{'type':'string'},
         'primary_coll_factor':{'type':'string'},
         'pcf_viol_category':{'type':'string'},
         'party_count':{'type':'string'},
-        'longitude':{'type':'string'},
+        'longitude':{'type':'float'},
         'number_killed':{'type':'string'},
         'mviw':{'type':'string'},
         'collision_time':{'type':'string'},
         'road_surface':{'type':'string'},
         'collision_severity':{'type':'string'},
-        'latitude':{'type':'string'},
+        'latitude':{'type':'float'},
         'type_of_collision':{'type':'string'},
         'collision_date':{'type':'string'},
         'secondary_rd':{'type':'string'},
