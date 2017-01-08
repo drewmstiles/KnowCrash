@@ -128,7 +128,6 @@ function ctrlHide(callback) {
 		});
 }
 
-		
 	
 /* pANEL */
 
@@ -201,7 +200,7 @@ function hidePanel() {
 		.classed("min", true)
 		.transition()
 		.duration(1000)
-		.style('left', panelWidth + 'px');
+		.style('left', (-1 * panelWidth) + 'px');
 		
 	var view = d3.select(".showing");
 	
@@ -222,8 +221,7 @@ function hidePanel() {
 		.style("opacity", 1.0);
 }
 	
-	
-	
+
 function getElementWidthAsPercent(e) {
 	var parentWidth = e.parentNode.getBoundingClientRect().width;
 	var childWidth = e.getBoundingClientRect().width;
