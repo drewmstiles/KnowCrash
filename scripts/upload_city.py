@@ -1,17 +1,7 @@
 import sys
 import csv
 import json
-from pymongo import MongoClient
-
-def get_mongo_database(db_name, host='localhost', port=27017,\
-                       username=None,password=None):
-    if username and password:
-        mongo_uri = 'mongodb://%s:%s@%s/%s'%\
-                    (username, password, host, db_name)
-        conn = MongoClient(mongo_url)
-    else:
-        conn = MongoClient(host, port)
-    return conn[db_name]
+from mongo_utils import *
 
 city = sys.argv[1]
 
