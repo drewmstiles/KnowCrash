@@ -229,3 +229,42 @@ function getElementWidthAsPercent(e) {
 	console.log(percent);
 	return percent + '%';
 }
+
+
+$("#ctrlMapYear").slider({
+	range: true,
+	min: 2001,
+	max: 2009,
+	values: [2001,  2001],
+	slide: function(event, ui) {
+		if (ui.values[0] == ui.values[1]) {
+			$("#selectedYear").html(ui.values[0]);
+		}
+		else {
+			$("#selectedYear").html(ui.values[0] + " - " + ui.values[1]);
+		}
+	}
+});
+
+
+$("#ctrlMapTimeRange").slider({
+	range: true,
+	min: 0000,
+	max: 2400,
+	step: 1,
+	values: [0000, 2400],
+	slide: function(event, ui) {
+		var format = d3.format("0>4");
+		var bgn0 = format("" + ui.values[0]).substring(0,2);
+		var end0 = format("" + ui.values[0]).substring(2,4);
+		if (ui.values[0] == ui.values[1]) {
+			$("#selectedTime").html(bgn0 + ":" + end0);
+		}
+		else {
+			var bgn1 = format("" + ui.values[1]).substring(0,2);
+			var end1 = format("" + ui.values[1]).substring(2,4);
+			$("#selectedTime").html(bgn0 + ":" + end0 + " - " + bgn1 + ":" + end1);
+		}
+	}
+});
+		

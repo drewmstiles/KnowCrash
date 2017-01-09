@@ -311,30 +311,12 @@ button {
 	margin:auto;
 }
 
-
-.yearLabel {
-	display:inline-block;
-	width:20%;
-	height:auto;
-	margin:0;
-	text-align: center;
-}
-
-#selectedYear {
+.selectedTemporal {
 	width:100%;
 	height:auto;
 	margin:10px auto;
 	text-align: center;
 	font-weight:normal;
-}
-
-#ctrlMapYear {
-	-webkit-appearance: none;
-    -moz-apperance: none;
-	display:inline-block;
-	width: 58%;
-	height:6px;
-	border-radius:6px;
 }
 
 #ctrlHeatmapGradient {
