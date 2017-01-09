@@ -91,28 +91,21 @@
 					<div id="sevTxt" class="ctrlSettingLabel">Severity</div>
 					<div class="ctrlSelectBox">
 						<select id="ctrlMapSeverity" class="ctrlSelect">
-						<option value="*" selected>All</option>
-						<option value="1">Fatal</option>
-						<option value="2">Severe</option>
-						<option value="3">Mild</option>
-						<option value="4">Minor</option>
-						<option value="0">No Injury</option>
+							{% for key, value in severity_opts.items() %}
+							<option value='{{ key }}'>{{ value }}</option>
+							{% endfor %}
 						</select>
 					</div>
 				</div>
 				<div id="ctrlMapFactorSetting" class="ctrlMapSettingSection">
 					<div id="facTxt" class="ctrlSettingLabel">Factor</div>
-					<div class="ctrlSelectBox"><select id="ctrlMapFactor" class="ctrlSelect">
-						<option value="*" selected>All</option>
-						<option value="1">Driving Under the Influence</option>
-						<option value="3">Speeding</option>
-						<option value="4">Tailgating</option> 
-						<option value="5">Wrong Side of Road</option> 								
-						<option value="6">Improper Passing</option>
-						<option value="11">Pedestrian Violation</option>
-						<option value="12">Traffic Signal Malfunction</option> 		
-						<option value="24">Driver Fell Asleep</option> 		
-					</select></div>
+					<div class="ctrlSelectBox">
+						<select id="ctrlMapFactor" class="ctrlSelect">
+							{% for key, value in factor_opts.items() %}
+							<option value='{{ key }}'>{{ value }}</option>
+							{% endfor %}
+						</select>
+					</div>
 				</div>	
 				<div id="ctrlMapFilterSection">
 					<button id="ctrlMapFilterButton" class="filterButton">Filter</button>

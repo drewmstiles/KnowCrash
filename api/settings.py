@@ -1,4 +1,5 @@
 
+X_DOMAINS = 'http://localhost:8000'
 PUBLIC_METHODS = ['GET']
 PUBLIC_ITEM_METHODS = ['GET']
 MONGO_QUERY_BLACKLIST = ['$where'] # '$regex' blacklisted by default

@@ -51,8 +51,8 @@ df['datetime'] = df.datetime.str[:7] + "/" + df.datetime.str[7:]
 df = df[df.datetime.str[-5:] < "24:00"]
 df['datetime'] = pd.to_datetime(df.datetime)
 
-# Zero pad the 'pcf_violation_category' columns
-df['pcf_violation_category'] = df.collision_time.str.zfill(2)
+# Zero pad the 'pcf_viol_category' columns
+df['pcf_viol_category'] = df['pcf_viol_category'].str.zfill(2)
 
 # Delete dirty data.
 db = get_mongo_database(db_name)
