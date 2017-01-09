@@ -1,5 +1,6 @@
 import sys
 import time
+from pandas import *
 from mongo_utils import *
 
 
@@ -9,7 +10,10 @@ db_name = 'cities'
 city = sys.argv[1]
 
 # Read dirty data from DB.
-df = mongo_to_dataframe(db_name, city)
+df = pd.read_csv('../static/data/%s.csv' % city)
+
+# Use lowercase column headers.
+df.columns = [x.lower() for x in df.columns]
 
 # Show which fields are missing.
 df.replace('', np.nan, inplace=True)
@@ -21,13 +25,15 @@ print('\nColumns with missing values:')
 for key in map:
     print(key)
 
-# Replace known missing fields.
-df.number_killed.fillna(0, inplace=True)
-df.number_injured.fillna(0, inplace=True)
+# Tag missing fields with sentinel.
+df.fillna(-1, inplace=True)
+
+# Convert all elements to object (string) types.
+df = df.applymap(str)
 
 # Perform numeric conversions.
-df['latitude'] = pd.to_numeric(df.latitude)
-df['longitude'] = pd.to_numeric(df.longitude)
+df['latitude'] = pd.to_numeric(df['latitude'])
+df['longitude'] = pd.to_numeric(df['longitude'])
 
 # Filter for coordinates outside LA.
 fields_before = len(df)
@@ -44,6 +50,9 @@ df['datetime'] = df.datetime.str[:4] + "/" + df.datetime.str[4:]
 df['datetime'] = df.datetime.str[:7] + "/" + df.datetime.str[7:]
 df = df[df.datetime.str[-5:] < "24:00"]
 df['datetime'] = pd.to_datetime(df.datetime)
+
+# Zero pad the 'pcf_violation_category' columns
+df['pcf_violation_category'] = df.collision_time.str.zfill(2)
 
 # Delete dirty data.
 db = get_mongo_database(db_name)
