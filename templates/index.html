@@ -56,7 +56,9 @@
 				<h3>Summary</h3>
 				<p class="summary">This perspective shows accidents that occurred in Long Beach over the given year. Accidents are presented as a circular marker at the location where the accident occurred. Accident severity is encoded in both the size and color of the marker as shown in the legend given below.
 				</p>
+				<br/>
 				<h3>Legend</h3>
+				<h4>Injury Severity</h4>
 				<div id="ctrlMapLegend">
 					<div class="ctrlMapLegendEntry">
 						<div class="ctrlMapCircle" id="ctrlMapCircleRed"></div>
@@ -68,29 +70,32 @@
 					</div>
 					<div class="ctrlMapLegendEntry">
 						<div class="ctrlMapCircle" id="ctrlMapCircleMustard"></div>
-						<div class="ctrlMapCircleLabel">Mild</div>	
+						<div class="ctrlMapCircleLabel">Visible</div>	
 					</div>
 					<div class="ctrlMapLegendEntry">
 						<div class="ctrlMapCircle" id="ctrlMapCircleYellow"></div>
-						<div class="ctrlMapCircleLabel">Minor</div>	
+						<div class="ctrlMapCircleLabel">Complaint</div>	
 					</div>
 					<div class="ctrlMapLegendEntry">
 						<div class="ctrlMapCircle" id="ctrlMapCircleWhite"></div>
 						<div class="ctrlMapCircleLabel">No Injury</div>	
 					</div> 		
 				</div>				
+				<br/>
 				<h3>Controls</h3>
 				<div id="ctrlMapYearSection" class="ctrlSettingSection">
-					<div id="sevTxt" class="ctrlSettingLabel">Year</div>
+					<h4 class="ctrlSettingLabel">Year<h4>
 					<div class="ctrlSelectBox">
 						<p class="yearLabel">2001</p><input type="range" id="ctrlMapYear" min="2001" max="2010" step="1" value="2001" /><p class="yearLabel">2010</p>
 						<p id="selectedYear">2001</p>
 					</div>
+					<br/>
 				</div>
 				<div id="ctrlMapSeveritySetting" class="ctrlSettingSection">
-					<div id="sevTxt" class="ctrlSettingLabel">Severity</div>
+					<h4 class="ctrlSettingLabel">Severity<h4>
 					<div class="ctrlSelectBox">
 						<select id="ctrlMapSeverity" class="ctrlSelect">
+							<option value='*' selected>All</option>
 							{% for key, value in severity_opts.items() %}
 							<option value='{{ key }}'>{{ value }}</option>
 							{% endfor %}
@@ -98,15 +103,17 @@
 					</div>
 				</div>
 				<div id="ctrlMapFactorSetting" class="ctrlMapSettingSection">
-					<div id="facTxt" class="ctrlSettingLabel">Factor</div>
+					<h4  class="ctrlSettingLabel">Factor</h4>
 					<div class="ctrlSelectBox">
 						<select id="ctrlMapFactor" class="ctrlSelect">
+							<option value='*' selected>All</option>
 							{% for key, value in factor_opts.items() %}
 							<option value='{{ key }}'>{{ value }}</option>
 							{% endfor %}
 						</select>
 					</div>
 				</div>	
+				<br/>
 				<div id="ctrlMapFilterSection">
 					<button id="ctrlMapFilterButton" class="filterButton">Filter</button>
 				</div>

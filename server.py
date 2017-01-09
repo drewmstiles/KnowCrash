@@ -29,11 +29,11 @@ factor_map = {
 }
 
 severity_map = {
-	'0': 'None',
+	'0': 'No Injury',
 	'1': 'Fatal',
-	'2': 'Injury (Severe)',
-	'3': 'Injury (Other Visible)',
-	'4': 'Injury (Complaint of Pain)'
+	'2': 'Severe',
+	'3': 'Visible',
+	'4': 'Complaint'
 }
 
 @app.route('/')
