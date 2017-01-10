@@ -12,7 +12,7 @@ var MAX_RADIUS_M = 2.0;
 var MIN_RADIUS_M = 1.0;
 var INIT_MAP_ZOOM = 13;
 
-var mapData;
+var mapData = [];
 var map;
 var svg;
 var severity = "*";
@@ -64,8 +64,6 @@ function showHistoricalMap(endFunction, conditions) {
 	// Prevent absolutely positioned `mapContainer` from covering.
 	svg.style("position", "absolute"); 
 
-	
-	
 	render(endFunction, conditions);
 };
 
@@ -78,21 +76,24 @@ function render(endFunction, query) {
 		 console.warn(error);
 		}
 		else {
-			console.log(data);
-			mapData = data['_items'];
-			draw(endFunction);
+			mapData = mapData.concat(data['_items']);
+			draw(mapData, endFunction);
+			if (data['_links'].hasOwnProperty('next')) {
+				render(function() {}, data['_links'].next.href) 
+			}
+			else {
+				// No more pages to render.
+			}
 		}			
 	});
 }
 
 
-function draw(endFunction) {
+function draw(items, endFunction) {
 
-	clean();
+	mapCoordinatesToPixels(items);
 	
-	mapCoordinatesToPixels(mapData);
-	
-	append(endFunction);
+	append(items, endFunction);
 	
 	d3.select("#year")
 		.transition()
@@ -106,18 +107,31 @@ function clean() {
 }
 
 
-function mapCoordinatesToPixels(dd) {
-	for (var i = 0; i < dd.length; i++) {
-		var coordinates = applyLatLngToLayer(mapData[i]);
-		mapData[i]['pixel_x'] = coordinates.x;
-		mapData[i]['pixel_y'] = coordinates.y;
+function mapCoordinatesToPixels(items) {
+	for (var i = 0; i < items.length; i++) {
+		var coordinates = applyLatLngToLayer(items[i]);
+		items[i]['pixel_x'] = coordinates.x;
+		items[i]['pixel_y'] = coordinates.y;
 	}
 }
 
-function append(endFunction) {
+
+function applyLatLngToLayer(item) {
+	var y = item['latitude'];
+	var x = item['longitude'];
+	return map.project(getLngLat(x, y))
+}
+
+
+function getLngLat(x, y) {
+	return new mapboxgl.LngLat(x, y);
+}
+
+
+function append(items, endFunction) {
 	
 	svg.selectAll("circle")
-		.data(mapData)
+		.data(items)
 		.enter()
 		.append("circle")
 		.attr("cy", function(d) { return d['pixel_y']; })
@@ -161,17 +175,6 @@ function append(endFunction) {
 		});
 }
 
-function applyLatLngToLayer(d) {
-	var y = d['latitude'];
-	var x = d['longitude'];
-	return map.project(getLngLat(x, y))
-}
-
-
-function getLngLat(x, y) {
-	return new mapboxgl.LngLat(x, y);
-}
-
 	
 
 /*
@@ -197,6 +200,8 @@ d3.select("#ctrlMapFilterButton").on("click", function() {
 		clearInterval(loadInterval); 
 		d3.select("#ctrlMapFilterButton").html("Filter");
 	};
+	
+	clean();
 	
 	render(callback, histMapGetQuery('long_beach'));
 });
