@@ -46,7 +46,11 @@ function showHistoricalMap(endFunction, conditions) {
 		zoom: 12,
 		minZoom: 10,
 		maxZoom: 15,
+		attributionControl: false
 	})
+	
+	var nav = new mapboxgl.NavigationControl();
+	map.addControl(nav, 'top-right');
 	
 	var mapContainer = map.getCanvasContainer();
 	
@@ -76,12 +80,12 @@ function render(endFunction, query) {
 		 console.warn(error);
 		}
 		else {
+		
 			var items = data['_items'];
 			itemPool = itemPool.concat(items);
 			var slice = itemPool.length / 10;
 			var batchTime = 0;
 			while (itemPool.length > 0) {
-				console.log("LOOP");
 				slice = itemPool.length > slice ? slice : itemPool.length;
 				mapData = mapData.concat(itemPool.slice(0, slice));
 				drawAtTime(batchTime++ * 100, mapData);
