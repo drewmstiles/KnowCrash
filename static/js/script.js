@@ -239,14 +239,8 @@ function getCollisionDateQuery() {
 
 
 function getCollisionTimeQuery() {
-		
-	var timeRange = $("#ctrlMapTime").slider('option', 'values');
-
-	var format = d3.format("0>4");
-	var lowerBound = format("" + timeRange[0]).substring(0, 2);
-	var upperBound = format("" + timeRange[1]).substring(0, 2);
-	
-	return { '$gte' :lowerBound, '$lte' : upperBound };
+	var timeRange = getTimeRange();
+	return { '$gte' :timeRange[0], '$lte' : timeRange[1] };
 }
 
 

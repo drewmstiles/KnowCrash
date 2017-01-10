@@ -229,3 +229,74 @@ function getElementWidthAsPercent(e) {
 	console.log(percent);
 	return percent + '%';
 }
+
+
+$("#ctrlMapYear").slider({
+	range: true,
+	min: 2001,
+	max: 2009,
+	values: [2001,  2001],
+	slide: function(event, ui) {
+		var lower = $("#yearLower");
+		var range = $("#yearRange");
+		var upper = $("#yearUpper");
+		if (ui.values[0] == ui.values[1]) {
+			lower.hide();
+			range.hide();
+			// Upper always showing
+			upper.html(ui.values[0]);
+		}
+		else {
+			lower.show().html(ui.values[0]);
+			range.show();
+			// Upper always showing
+			upper.html(ui.values[1]);
+		}
+	}
+});
+
+
+$("#ctrlMapTime").slider({
+	range: true,
+	min: 0000,
+	max: 2400,
+	step: 100,
+	values: [0000, 2400],
+	slide: function(event, ui) {
+		
+		var timeRange = getTimeRange();
+		
+		var lower = $("#timeLower");
+		var range = $("#timeRange");
+		var upper = $("#timeUpper");
+		
+		if (timeRange[0] == timeRange[1]) {
+			lower.hide();
+			range.hide();
+			upper.html(timeRange[0] + ":00");
+		}
+		else {
+			lower.show().html(timeRange[0] + ":00");
+			range.show();
+			upper.html(timeRange[1] + ":00");
+		}
+	}
+});
+		
+
+function getTimeRange() {
+
+	var format = d3.format("0>4");
+	
+	var values = $("#ctrlMapTime").slider('option', 'values');
+
+	var formattedValues = [];
+	formattedValues[0] = format("" + values[0]).substring(0,2);
+	formattedValues[1] = format("" + values[1]).substring(0,2);
+	
+	return formattedValues;
+}
+			
+			
+			
+			
