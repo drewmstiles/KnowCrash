@@ -67,7 +67,7 @@ function showHistoricalMap(endFunction, conditions) {
 	render(endFunction, conditions);
 };
 
-
+var itemPool = [];
 function render(endFunction, query) {
 
 	d3.json(API_URL + query, function(error, data) {
@@ -76,8 +76,20 @@ function render(endFunction, query) {
 		 console.warn(error);
 		}
 		else {
-			mapData = mapData.concat(data['_items']);
-			draw(mapData, endFunction);
+			var items = data['_items'];
+			itemPool = itemPool.concat(items);
+			var slice = itemPool.length / 10;
+			var batchTime = 0;
+			while (itemPool.length > 0) {
+				console.log("LOOP");
+				slice = itemPool.length > slice ? slice : itemPool.length;
+				mapData = mapData.concat(itemPool.slice(0, slice));
+				drawAtTime(batchTime++ * 100, mapData);
+				itemPool = itemPool.slice(slice);
+			}	
+			
+			endFunction();
+			
 			if (data['_links'].hasOwnProperty('next')) {
 				render(function() {}, data['_links'].next.href) 
 			}
@@ -88,6 +100,12 @@ function render(endFunction, query) {
 	});
 }
 
+
+function drawAtTime(t, items) {
+	setTimeout(function() {
+		draw(items)
+	}, t);
+}
 
 function draw(items, endFunction) {
 
@@ -103,6 +121,8 @@ function draw(items, endFunction) {
 
 
 function clean() {
+	itemPool = [];
+	mapData = [];
 	svg.selectAll("circle").remove();
 }
 
@@ -136,14 +156,14 @@ function append(items, endFunction) {
 		.append("circle")
 		.attr("cy", function(d) { return d['pixel_y']; })
 		.attr("cx",	 function(d) { return d['pixel_x']; })
-		.style("fill-opacity", function(d) { 
+		.attr("r",  function(d) { 
 			var cs = d['collision_severity'];
 		
 			if (cs == 0) {
-				return MIN_OPACITY;
+				return MIN_RADIUS * zoomToRadiusMultiplierScale(map.getZoom());
 			}
 			else {
-				return deathsToOpacityScale(cs); 
+				return deathsToRadiusScale(cs) * zoomToRadiusMultiplierScale(map.getZoom());
 			}
 		})
 		.style("fill", function(d) { 				
@@ -155,14 +175,14 @@ function append(items, endFunction) {
 				return deathsToColorScale(cs); 
 			}
 		})
-		.attr("r",  function(d) { 
+		.style("fill-opacity", function(d) { 
 			var cs = d['collision_severity'];
 		
 			if (cs == 0) {
-				return MIN_RADIUS * zoomToRadiusMultiplierScale(map.getZoom());
+				return MIN_OPACITY;
 			}
 			else {
-				return deathsToRadiusScale(cs) * zoomToRadiusMultiplierScale(map.getZoom());
+				return deathsToOpacityScale(cs); 
 			}
 		})
 		.call(function() {
