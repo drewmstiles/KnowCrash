@@ -319,6 +319,10 @@ button {
 	font-weight:normal;
 }
 
+#yearRange, #yearLower{
+display:none;
+}
+
 #ctrlHeatmapGradient {
 	width:80%;
 	height:30px;

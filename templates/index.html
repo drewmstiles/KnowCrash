@@ -43,7 +43,7 @@
 					</div>
 				</section>
 				<section class="homeSec">
-					<button id="visButton">Visualize</button>
+					<button id="visButton" tabindex="1">Visualize</button>
 				</section>
 			</div>
 		</div>
@@ -85,16 +85,20 @@
 				<div class="ctrlSettingSection">
 					<h4 class="ctrlSettingLabel">Year</h4>
 					<div class="ctrlSelectBox">
-						<div id="ctrlMapYear" /><p class="yearLabel"></div>
-						<p id="selectedYear" class="selectedTemporal">2001</p>
+						<div id="ctrlMapYear"></div>
+						<p id="selectedYear" class="selectedTemporal">
+							<span id="yearLower"></span><span id="yearRange">&nbsp;&ndash;&nbsp;</span><span id="yearUpper">2001</span>
+						</p>
 					</div>
 					<br/>
 				</div>
 				<div class="ctrlSettingSection">
 					<h4 class="ctrlSettingLabel">Time</h4>
 					<div class="ctrlSelectBox">
-					<div id="ctrlMapTimeRange"></div>
-					<p id="selectedTime" class="selectedTemporal">00:00 - 24:00</p>
+					<div id="ctrlMapTime"></div>
+					<p id="selectedTime" class="selectedTemporal">
+						<span id="timeLower">00:00</span><span id="timeRange">&nbsp;&ndash;&nbsp;</span><span id="timeUpper">24:00</span>
+					</p>
 				</div>
 				<br/>
 				<div class="ctrlSettingSection">
