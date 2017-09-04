@@ -47,7 +47,7 @@ function showHistoricalMap(endFunction, conditions) {
 		minZoom: 10,
 		maxZoom: 15,
 		attributionControl: false
-	})
+	});
 	
 	var nav = new mapboxgl.NavigationControl();
 	map.addControl(nav, 'top-right');
@@ -239,22 +239,21 @@ d3.select("#ctrlMapYear").on("input", function() {
  * Query Building
  */
 function getCollisionSeverityQuery() {
-	
-	var node = d3.select("#ctrlMapSeverity").node();
-	var severity = node.options[node.selectedIndex].value;
-	
+	var severity = getSelectedOptions('#ctrlMapSeverity');
 	return severity == '*' ? null : severity;
 }
 
 
 function getPrimaryCollisionFactorQuery() {
-	
-	var node = d3.select("#ctrlMapFactor").node();
-	var factor = node.options[node.selectedIndex].value;
-	
+	var factor = getSelectedOption('#ctrlMapFactor');
 	return factor == '*' ? null : factor;
 }
 
+
+function getSelectedOption(selector) {
+	var node = d3.select(selector).node();
+	return node.options[node.selectedIndex].value;
+}
 
 function getCollisionDateQuery() {
 	
