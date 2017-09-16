@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 factor_map = {
 	'0': 'Unknown',
@@ -43,4 +44,4 @@ def home_page():
                            factor_opts=factor_map)
 
 if __name__ == '__main__':
-    app.run(port=800, debug=True)
+    app.run(port=8000, debug=True)

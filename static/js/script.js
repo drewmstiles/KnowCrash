@@ -54,12 +54,15 @@ function showHistoricalMap(endFunction, conditions) {
 	
 	var mapContainer = map.getCanvasContainer();
 	
-	
 	map.on("zoomstart", clean);
-	map.on("zoomend", draw);
+	map.on("zoomend", function(e) {
+		draw(mapData);
+	});
 	
 	map.on("movestart", clean);
-	map.on("moveend", draw);
+	map.on("moveend", function(e) {
+		draw(mapData);
+	});
 	
 	svg = d3.select(mapContainer).append("svg")
 		.attr("height", window.innerHeight + "px")
@@ -95,7 +98,7 @@ function render(endFunction, query) {
 			endFunction();
 			
 			if (data['_links'].hasOwnProperty('next')) {
-				render(function() {}, data['_links'].next.href) 
+				render(function() {}, data['_links'].next.href);
 			}
 			else {
 				// No more pages to render.
@@ -125,9 +128,13 @@ function draw(items, endFunction) {
 
 
 function clean() {
+
+	var markers = svg.selectAll('circle');
+	
 	itemPool = [];
-	mapData = [];
-	svg.selectAll("circle").remove();
+	mapData = markers.data();
+
+	markers.remove();
 }
 
 
@@ -239,7 +246,7 @@ d3.select("#ctrlMapYear").on("input", function() {
  * Query Building
  */
 function getCollisionSeverityQuery() {
-	var severity = getSelectedOptions('#ctrlMapSeverity');
+//	var severity = getSelectedOption('#ctrlMapSeverity');
 	return severity == '*' ? null : severity;
 }
 
@@ -315,3 +322,4 @@ function buildQuery(city, where, project) {
 	+ '?where=' + JSON.stringify(where) 
 	+ '&projection=' + JSON.stringify(project);
 }
+
