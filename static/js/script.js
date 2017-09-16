@@ -13,6 +13,9 @@ var MIN_RADIUS_M = 1.0;
 var INIT_MAP_ZOOM = 13;
 
 var mapData = [];
+var moveFilter = 3;
+var moveCount = 0;
+
 var map;
 var svg;
 var severity = "*";
@@ -34,7 +37,16 @@ var zoomToRadiusMultiplierScale = d3.scaleLinear()
 	.domain([15, 12])
 	.range([MAX_RADIUS_M,MIN_RADIUS_M]);
 	
-			
+
+g_windowPosition = {
+	x : 0,
+	y : 0,
+	dx : 0,
+	dy : 0
+};
+
+og_mapData = [];
+
 function showHistoricalMap(endFunction, conditions) {
 	
 	mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
@@ -56,11 +68,60 @@ function showHistoricalMap(endFunction, conditions) {
 	
 	map.on("zoomstart", clean);
 	map.on("zoomend", function(e) {
+		console.log(og_mapData);
+		mapData = og_mapData;
 		draw(mapData);
 	});
+
 	
-	map.on("movestart", clean);
+	map.on('move', function(e) {
+
+		
+		var x = e.originalEvent.x;
+		var y = e.originalEvent.y;
+		var dx = g_windowPosition.x - x;
+		var dy = g_windowPosition.y - y;
+		
+		clean();
+
+		g_windowPosition.x = x;
+		g_windowPosition.y = y;
+		
+		mapData = mapData.map(function(item) {
+			item.pixel_x -= dx;
+			item.pixel_y -= dy;
+			return item;
+		});
+
+		append(mapData);
+	});
+		
+	map.on("movestart", function(e) {
+
+		og_mapData = mapData.slice();
+
+		var items = mapData.length;
+
+		var MAX_ITEMS_SHOWING = 500;
+		if (items < MAX_ITEMS_SHOWING) {
+			// Enough data to move at once without performance issues.
+		}
+		else {
+
+			var keepCount = Math.floor(items / MAX_ITEMS_SHOWING);
+			mapData = mapData.filter(function(item, i) {
+				return i % keepCount == 0;
+			});
+		}
+									 
+		g_windowPosition.x = e.originalEvent.x;
+		g_windowPosition.y = e.originalEvent.y;
+
+		clean();
+	});
+
 	map.on("moveend", function(e) {
+		mapData = og_mapData;
 		draw(mapData);
 	});
 	
@@ -119,7 +180,7 @@ function draw(items, endFunction) {
 	mapCoordinatesToPixels(items);
 	
 	append(items, endFunction);
-	
+
 	d3.select("#year")
 		.transition()
 		.duration(1000)
@@ -128,13 +189,8 @@ function draw(items, endFunction) {
 
 
 function clean() {
-
-	var markers = svg.selectAll('circle');
-	
+	svg.selectAll('circle').remove();
 	itemPool = [];
-	mapData = markers.data();
-
-	markers.remove();
 }
 
 
@@ -233,6 +289,8 @@ d3.select("#ctrlMapFilterButton").on("click", function() {
 	};
 	
 	clean();
+
+	mapData = [];
 	
 	render(callback, histMapGetQuery('long_beach'));
 });
