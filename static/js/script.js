@@ -78,7 +78,7 @@ var itemPool = [];
 function render(endFunction, query) {
 
 	d3.json(API_URL + query, function(error, data) {
-	
+
 		if (error) {
 		 console.warn(error);
 		}
@@ -128,13 +128,8 @@ function draw(items, endFunction) {
 
 
 function clean() {
-
-	var markers = svg.selectAll('circle');
-	
+	svg.selectAll('circle').remove();
 	itemPool = [];
-	mapData = markers.data();
-
-	markers.remove();
 }
 
 
@@ -233,12 +228,15 @@ d3.select("#ctrlMapFilterButton").on("click", function() {
 	};
 	
 	clean();
-	
+
+	mapData = [];
 	render(callback, histMapGetQuery('long_beach'));
+
+	debugger;
 });
 
 d3.select("#ctrlMapYear").on("input", function() {
-	d3.select("#selectedYear").html(this.value);
+	d3.select("#yearLabel").html(this.value);
 });
 
 
@@ -246,7 +244,7 @@ d3.select("#ctrlMapYear").on("input", function() {
  * Query Building
  */
 function getCollisionSeverityQuery() {
-//	var severity = getSelectedOption('#ctrlMapSeverity');
+	var severity = getSelectedOption('#ctrlMapSeverity');
 	return severity == '*' ? null : severity;
 }
 
@@ -264,10 +262,13 @@ function getSelectedOption(selector) {
 
 function getCollisionDateQuery() {
 	
-	var yearRange = $("#ctrlMapYear").slider('option', 'values');
+	var year = $("#ctrlMapYear").slider('option', 'value');
+
 	
-	var lowerBound = new Date(yearRange[0], 0, 1);
-	var upperBound = new Date(yearRange[1], 11, 31);
+	d3.select("#yearLabel").html(year);
+	
+	var lowerBound = new Date(year, 0, 1);
+	var upperBound = new Date(year, 11, 31);
 
 	return { '$gte' :lowerBound.toUTCString(), '$lte' : upperBound.toUTCString() };
 }

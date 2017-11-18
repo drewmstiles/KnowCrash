@@ -29,7 +29,7 @@ d3.select("#ctrlInfo").on("click", function() {
 		d3.select("#ctrl")
 			.transition()
 			.duration(1000)
-				.style("height", (headHeight + bodyHeight) + "px")
+			.style("height", (headHeight + bodyHeight) + "px");
 	}
 	else {
 		d3.selectAll(".ctrlLine")
@@ -40,7 +40,7 @@ d3.select("#ctrlInfo").on("click", function() {
 		d3.select("#ctrl")
 			.transition()
 			.duration(1000)
-				.style("height", headHeight + "px")
+			.style("height", headHeight + "px");
 	}
 });
 
@@ -66,7 +66,7 @@ d3.select("#ctrlSett").on("click", function() {
 		d3.select("#ctrl")
 			.transition()
 			.duration(1000)
-				.style("height", (headHeight + bodyHeight) + "px")
+			.style("height", (headHeight + bodyHeight) + "px");
 	}
 	else {
 		d3.selectAll(".ctrlLine")
@@ -77,7 +77,7 @@ d3.select("#ctrlSett").on("click", function() {
 		d3.select("#ctrl")
 			.transition()
 			.duration(1000)
-				.style("height", headHeight + "px")
+			.style("height", headHeight + "px");
 	}
 });
 
@@ -232,26 +232,11 @@ function getElementWidthAsPercent(e) {
 
 
 $("#ctrlMapYear").slider({
-	range: true,
 	min: 2001,
 	max: 2009,
-	values: [2001,  2001],
+	value: 2001,
 	slide: function(event, ui) {
-		var lower = $("#yearLower");
-		var range = $("#yearRange");
-		var upper = $("#yearUpper");
-		if (ui.values[0] == ui.values[1]) {
-			lower.hide();
-			range.hide();
-			// Upper always showing
-			upper.html(ui.values[0]);
-		}
-		else {
-			lower.show().html(ui.values[0]);
-			range.show();
-			// Upper always showing
-			upper.html(ui.values[1]);
-		}
+		$('#yearLabel').text(ui.value);
 	}
 });
 
